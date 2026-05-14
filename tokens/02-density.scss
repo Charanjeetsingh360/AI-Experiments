@@ -1,0 +1,87 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL - DESIGN TOKENS
+// Layer 2b: Density Modes
+// File: tokens/02-density.scss
+// Description: Spacing and text-size scaling for small/medium/default/large views.
+//               Controlled via [data-density] attribute.
+//               Mirrors Figma density variable groups.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// DENSITY MODES -- [data-density] attribute
+// -----------------------------------------------------------------------------
+
+// Default (Medium) -- base density, comfortable for most users
+:root,
+[data-density="default"],
+[data-density="medium"] {
+  // Spacing
+  --density-space-inline:      var(--cs360-space-4);   // 16px - horizontal padding
+  --density-space-block:       var(--cs360-space-4);   // 16px - vertical padding
+  --density-space-component:   var(--cs360-space-3);   // 12px - inside components
+  --density-space-section:     var(--cs360-space-6);   // 24px - between sections
+  --density-space-page:        var(--cs360-space-8);   // 32px - page padding
+
+  // Component sizing
+  --density-row-height:        48px;      // Table row / list item
+  --density-control-height:    40px;      // Input/button height
+  --density-icon-size:         20px;      // Default icon
+
+  // Typography
+  --density-text-title:        var(--cs360-text-2xl);
+  --density-text-heading:      var(--cs360-text-xl);
+  --density-text-body:         var(--cs360-text-base);
+  --density-text-body-muted:   var(--cs360-text-sm);
+  --density-text-caption:      var(--cs360-text-xs);
+
+  // Sidebar
+  --density-nav-item-height:   44px;      // Nav item row
+  --density-logo-height:       56px;      // Logo area
+}
+
+// Compact (Small) -- more content per screen, for power users
+[data-density="compact"],
+[data-density="small"] {
+  --density-space-inline:      var(--cs360-space-3);   // 12px
+  --density-space-block:       var(--cs360-space-3);   // 12px
+  --density-space-component:   var(--cs360-space-2);   //  8px
+  --density-space-section:     var(--cs360-space-4);   // 16px
+  --density-space-page:        var(--cs360-space-6);   // 24px
+
+  --density-row-height:        36px;
+  --density-control-height:    32px;
+  --density-icon-size:         16px;
+
+  --density-text-title:        var(--cs360-text-xl);
+  --density-text-heading:      var(--cs360-text-lg);
+  --density-text-body:         var(--cs360-text-sm);
+  --density-text-body-muted:   var(--cs360-text-xs);
+  --density-text-caption:      var(--cs360-text-xs);
+
+  --density-nav-item-height:   36px;
+  --density-logo-height:       48px;
+}
+
+// Comfortable (Large) -- more whitespace, for reduced density preference
+[data-density="comfortable"],
+[data-density="large"] {
+  --density-space-inline:      var(--cs360-space-6);   // 24px
+  --density-space-block:       var(--cs360-space-6);   // 24px
+  --density-space-component:   var(--cs360-space-4);   // 16px
+  --density-space-section:     var(--cs360-space-8);   // 32px
+  --density-space-page:        var(--cs360-space-12);  // 48px
+
+  --density-row-height:        60px;
+  --density-control-height:    48px;
+  --density-icon-size:         24px;
+
+  --density-text-title:        var(--cs360-text-3xl);
+  --density-text-heading:      var(--cs360-text-2xl);
+  --density-text-body:         var(--cs360-text-lg);
+  --density-text-body-muted:   var(--cs360-text-base);
+  --density-text-caption:      var(--cs360-text-sm);
+
+  --density-nav-item-height:   52px;
+  --density-logo-height:       64px;
+}
+
