@@ -1,0 +1,335 @@
+// ============================================================================
+// Layer: Components
+// File: _forms.scss
+// Description: Form component styles using CSS custom property tokens
+// ============================================================================
+
+// --- Form Container ---
+.cs360-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-4);
+  max-width: var(--cs360-size-form);
+}
+
+.cs360-form--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .cs360-form__field {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+.cs360-form--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--cs360-space-3);
+
+  .cs360-form__field {
+    flex: 0 0 auto;
+  }
+}
+
+// --- Form Field ---
+.cs360-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-1);
+}
+
+.cs360-form__field--error {
+  .cs360-input,
+  .cs360-select,
+  .cs360-textarea {
+    border-color: var(--cs360-action-destructive-default);
+    background-color: var(--cs360-action-destructive-subtle);
+  }
+}
+
+// --- Form Label ---
+.cs360-form__label {
+  font-size: var(--cs360-text-sm);
+  font-weight: 600;
+  color: var(--cs360-text-primary);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+
+  &.cs360-form__label--required::after {
+    content: " *";
+    color: var(--cs360-action-destructive-default);
+  }
+}
+
+// --- Form Hint / Helper Text ---
+.cs360-form__hint {
+  font-size: var(--cs360-text-xs);
+  color: var(--cs360-text-muted);
+  line-height: 1.4;
+}
+
+// --- Form Error Message ---
+.cs360-form__error {
+  font-size: var(--cs360-text-xs);
+  color: var(--cs360-action-destructive-default);
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-1);
+
+  svg {
+    width: em(14, 14);
+    height: em(14, 14);
+    flex-shrink: 0;
+  }
+}
+
+// --- Input Base ---
+.cs360-input {
+  --_input-bg: var(--cs360-bg-default);
+  --_input-bg-hover: var(--cs360-bg-surface-hover);
+  --_input-border: var(--cs360-border-default);
+  --_input-border-hover: var(--cs360-border-subtle);
+  --_input-text: var(--cs360-text-primary);
+  --_input-placeholder: var(--cs360-text-muted);
+  --_input-height: var(--cs360-size-input-md);
+  --_input-padding-x: var(--cs360-space-3);
+  --_input-font-size: var(--cs360-text-sm);
+  --_input-radius: var(--cs360-radius-sm);
+
+  min-height: var(--_input-height);
+  width: 100%;
+  padding: 0 var(--_input-padding-x);
+  font-size: var(--_input-font-size);
+  line-height: 1.5;
+  color: var(--_input-text);
+  background-color: var(--_input-bg);
+  border: 1px solid var(--_input-border);
+  border-radius: var(--_input-radius);
+  outline: none;
+  transition: border-color var(--cs360-transition-fast), background-color var(--cs360-transition-fast);
+
+  &::placeholder {
+    color: var(--_input-placeholder);
+  }
+
+  &:hover:not(:disabled):not(:read-only) {
+    --_input-bg: var(--_input-bg-hover);
+    --_input-border: var(--_input-border-hover);
+  }
+
+  &:focus {
+    border-color: var(--cs360-border-focus);
+    box-shadow: 0 0 0 1px var(--cs360-border-focus);
+  }
+
+  &:disabled,
+  &:read-only {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--cs360-bg-muted);
+  }
+}
+
+// --- Input Sizes ---
+.cs360-input--sm {
+  --_input-height: var(--cs360-size-input-sm);
+  --_input-padding-x: var(--cs360-space-2);
+  --_input-font-size: var(--cs360-text-xs);
+}
+
+.cs360-input--lg {
+  --_input-height: var(--cs360-size-input-lg);
+  --_input-padding-x: var(--cs360-space-4);
+  --_input-font-size: var(--cs360-text-base);
+}
+
+// --- Input with Icon ---
+.cs360-input-wrapper {
+  position: relative;
+  width: 100%;
+
+  .cs360-input__icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cs360-text-muted);
+    pointer-events: none;
+    width: em(18, 16);
+    height: em(18, 16);
+  }
+
+  .cs360-input__icon--leading {
+    left: var(--_input-padding-x);
+  }
+
+  .cs360-input__icon--trailing {
+    right: var(--_input-padding-x);
+  }
+
+  .cs360-input--icon-leading {
+    padding-left: calc(var(--_input-padding-x) + em(24, 16));
+  }
+
+  .cs360-input--icon-trailing {
+    padding-right: calc(var(--_input-padding-x) + em(24, 16));
+  }
+}
+
+// --- Textarea ---
+.cs360-textarea {
+  --_input-padding-y: var(--cs360-space-2);
+
+  min-height: 80px;
+  padding-top: var(--_input-padding-y);
+  padding-bottom: var(--_input-padding-y);
+  resize: vertical;
+}
+
+.cs360-textarea--auto {
+  resize: none;
+  height: auto;
+}
+
+// --- Select ---
+.cs360-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--_input-padding-x) center;
+  background-repeat: no-repeat;
+  background-size: em(20, 16);
+  padding-right: calc(var(--_input-padding-x) * 3);
+  cursor: pointer;
+
+  option {
+    background-color: var(--cs360-bg-default);
+    color: var(--cs360-text-primary);
+  }
+}
+
+// --- Checkbox & Radio ---
+.cs360-checkbox,
+.cs360-radio {
+  width: em(18, 16);
+  height: em(18, 16);
+  accent-color: var(--cs360-action-primary-default);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+.cs360-checkbox-group,
+.cs360-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-2);
+}
+
+.cs360-radio-group {
+  .cs360-radio {
+    border-radius: 50%;
+  }
+}
+
+// --- Toggle Switch ---
+.cs360-toggle {
+  --_toggle-size: em(22, 16);
+  --_toggle-width: calc(var(--_toggle-size) * 2);
+  --_toggle-bg: var(--cs360-bg-muted);
+  --_toggle-handle: var(--cs360-bg-surface);
+
+  width: var(--_toggle-width);
+  height: var(--_toggle-size);
+  background-color: var(--_toggle-bg);
+  border-radius: calc(var(--_toggle-size) / 2);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  transition: background-color var(--cs360-transition-fast);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: em(1, 16);
+    left: em(1, 16);
+    width: calc(var(--_toggle-size) - em(2, 16));
+    height: calc(var(--_toggle-size) - em(2, 16));
+    background-color: var(--_toggle-handle);
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: transform var(--cs360-transition-fast);
+  }
+
+  &:checked {
+    --_toggle-bg: var(--cs360-action-primary-default);
+
+    &::before {
+      transform: translateX(calc(var(--_toggle-size) - em(2, 16)));
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-border-focus);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// --- Input Group ---
+.cs360-input-group {
+  display: flex;
+  align-items: stretch;
+
+  .cs360-input {
+    border-radius: 0;
+
+    &:first-child {
+      border-radius: var(--_input-radius) 0 0 var(--_input-radius);
+    }
+
+    &:last-child {
+      border-radius: 0 var(--_input-radius) var(--_input-radius) 0;
+    }
+
+    &:not(:first-child) {
+      border-left: none;
+    }
+  }
+
+  .cs360-btn {
+    border-radius: 0;
+  }
+}
+
+// --- Form Section ---
+.cs360-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-3);
+  padding: var(--cs360-space-4);
+  background-color: var(--cs360-bg-surface);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+}
+
+.cs360-form__section-title {
+  font-size: var(--cs360-text-base);
+  font-weight: 600;
+  color: var(--cs360-text-primary);
+  border-bottom: 1px solid var(--cs360-border-subtle);
+  padding-bottom: var(--cs360-space-2);
+  margin-bottom: var(--cs360-space-2);
+}
