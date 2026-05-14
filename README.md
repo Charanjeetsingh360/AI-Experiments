@@ -1,4 +1,4 @@
-# CareGiver360 - Design Token Scaffold
+# CareGiver - Design Token Scaffold
 
 A 4-layer, token-driven design system scaffold for the CareGiver Web Portal.
 
