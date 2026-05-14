@@ -1,0 +1,152 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL
+// File: styles/base.scss
+// Description: CSS reset + base styles using semantic design tokens.
+// =============================================================================
+
+@import '../tokens/01-primitives';
+@import '../tokens/02-semantic';
+@import '../tokens/02-density';
+@import '../tokens/03-styles';
+
+// -----------------------------------------------------------------------------
+// CSS RESET (Modern, minimal reset)
+// -----------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--cs360-font-sans);
+  font-size: 16px;
+  line-height: var(--cs360-line-height-base);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--cs360-bg-page);
+  color: var(--cs360-text-primary);
+  font-size: var(--density-text-body);
+}
+
+// -----------------------------------------------------------------------------
+// BASE ELEMENT STYLES
+// -----------------------------------------------------------------------------
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--cs360-font-semi);
+  line-height: var(--cs360-line-height-tight);
+  color: var(--cs360-text-primary);
+}
+
+h1 { font-size: var(--density-text-title); }
+h2 { font-size: var(--density-text-heading); }
+h3 { font-size: var(--density-text-body); font-weight: var(--cs360-font-semi); }
+
+p {
+  margin-bottom: var(--density-space-block);
+}
+
+a {
+  color: var(--cs360-text-link);
+  text-decoration: none;
+  transition: color var(--cs360-transition-fast);
+
+  &:hover {
+    color: var(--cs360-text-link-hover);
+    text-decoration: underline;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+// -----------------------------------------------------------------------------
+// APP SHELL STRUCTURE
+// -----------------------------------------------------------------------------
+/**
+ * Main app layout container.
+ * Matches CGPortal structure: sidebar + topbar + main content.
+ */
+.cs360-app {
+  display: grid;
+  grid-template-columns: var(--cs360-sidebar-width) 1fr;
+  grid-template-rows: var(--cs360-topbar-height) 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar content";
+  min-height: 100vh;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 4rem 1fr;
+  }
+}
+
+.cs360-sidebar {
+  grid-area: sidebar;
+  background-color: var(--cs360-sidebar-bg);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--cs360-sidebar-border);
+}
+
+.cs360-topbar {
+  grid-area: topbar;
+  background-color: var(--cs360-topbar-bg);
+  border-bottom: 1px solid var(--cs360-topbar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--density-space-inline);
+  position: sticky;
+  top: 0;
+  z-index: var(--cs360-z-sticky);
+}
+
+.cs360-main {
+  grid-area: content;
+  background-color: var(--cs360-bg);
+  overflow-y: auto;
+  padding: var(--density-space-page);
+}
+
+// -----------------------------------------------------------------------------
+// PAGE CONTAINER
+// -----------------------------------------------------------------------------
+.cs360-page {
+  max-width: var(--cs360-max-content-width);
+  margin: 0 auto;
+}
+
+.cs360-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--density-space-section);
+  padding-bottom: var(--density-space-block);
+  border-bottom: 1px solid var(--cs360-border-subtle);
+}
+
+.cs360-page-actions {
+  display: flex;
+  gap: var(--cs360-space-3);
+}
+
