@@ -1,0 +1,146 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL
+// File: styles/components/_sidebar.scss
+// Description: Left navigation sidebar component.
+// =============================================================================
+
+.cs360-sidebar {
+  width: var(--cs360-sidebar-width);
+  background-color: var(--cs360-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid var(--cs360-sidebar-border);
+
+  @media (max-width: 1024px) {
+    width: 4rem;
+
+    .cs360-sidebar-label {
+      display: none;
+    }
+    .cs360-sidebar-logo-text {
+      display: none;
+    }
+    .cs360-nav-item {
+      justify-content: center;
+    }
+  }
+}
+
+// --- Logo area ---
+.cs360-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+  padding: var(--density-space-block) var(--density-space-inline);
+  min-height: var(--density-logo-height);
+  border-bottom: 1px solid var(--cs360-sidebar-border);
+}
+
+.cs360-sidebar-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--cs360-radius-md);
+  flex-shrink: 0;
+}
+
+.cs360-sidebar-logo-text {
+  font-size: var(--cs360-text-lg);
+  font-weight: var(--cs360-font-bold);
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+// --- Navigation ---
+.cs360-sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--cs360-space-4) var(--cs360-space-3);
+  overflow-y: auto;
+}
+
+.cs360-nav-group-label {
+  font-size: var(--cs360-text-xs);
+  font-weight: var(--cs360-font-medium);
+  color: var(--cs360-sidebar-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: var(--cs360-space-2) var(--cs360-space-3);
+  margin-top: var(--cs360-space-4);
+  margin-bottom: var(--cs360-space-1);
+  opacity: 0.7;
+}
+
+.cs360-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+  min-height: var(--density-nav-item-height);
+  padding: 0 var(--cs360-space-3);
+  border-radius: var(--cs360-radius-sm);
+  color: var(--cs360-sidebar-text);
+  text-decoration: none;
+  font-size: var(--cs360-text-sm);
+  font-weight: var(--cs360-font-medium);
+  transition: background-color var(--cs360-transition-fast),
+              color var(--cs360-transition-fast);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cs360-sidebar-hover);
+    color: #FFFFFF;
+  }
+
+  &.is-active {
+    background-color: var(--cs360-sidebar-active);
+    color: var(--cs360-sidebar-text-active);
+    font-weight: var(--cs360-font-semi);
+  }
+
+  .cs360-nav-icon {
+    width: var(--density-icon-size);
+    height: var(--density-icon-size);
+    flex-shrink: 0;
+  }
+}
+
+.cs360-sidebar-footer {
+  border-top: 1px solid var(--cs360-sidebar-border);
+  padding: var(--cs360-space-4) var(--cs360-space-3);
+}
+
+.cs360-sidebar-footer-text {
+  font-size: var(--cs360-text-xs);
+  color: var(--cs360-sidebar-text);
+  opacity: 0.5;
+  line-height: var(--cs360-line-height-relaxed);
+}
+
+// --- Shift toggle (per Figma: Clock-In badge in sidebar) ---
+.cs360-sidebar-shift-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+  padding: var(--cs360-space-3);
+  margin: var(--cs360-space-3);
+  background-color: rgba(255,255,255,0.1);
+  border-radius: var(--cs360-radius-md);
+
+  .cs360-shift-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--cs360-radius-full);
+    background-color: var(--cs360-feedback-success);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+
+  .cs360-shift-status {
+    font-size: var(--cs360-text-sm);
+    font-weight: var(--cs360-font-medium);
+    color: #FFFFFF;
+  }
+}
+
