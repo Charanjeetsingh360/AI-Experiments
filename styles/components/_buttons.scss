@@ -1,0 +1,187 @@
+// ============================================================================
+// Layer: Components
+// File: _buttons.scss
+// Description: Button component styles using CSS custom property tokens
+// ============================================================================
+
+// --- Base Button ---
+.cs360-btn {
+  --_btn-bg: var(--cs360-action-primary-default);
+  --_btn-bg-hover: var(--cs360-action-primary-hover);
+  --_btn-bg-active: var(--cs360-action-primary-active);
+  --_btn-text: var(--cs360-text-inverse);
+  --_btn-border: transparent;
+  --_btn-border-hover: transparent;
+  --_btn-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --_btn-min-height: var(--cs360-size-input-md);
+  --_btn-min-width: auto;
+  --_btn-padding-x: var(--cs360-space-4);
+  --_btn-radius: var(--cs360-radius-sm);
+  --_btn-font-size: var(--cs360-text-sm);
+  --_btn-font-weight: 600;
+  --_btn-letter-spacing: 0.01em;
+  --_btn-transition: all var(--cs360-transition-fast);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs360-space-2);
+  min-height: var(--_btn-min-height);
+  min-width: var(--_btn-min-width);
+  padding: var(--cs360-space-2) var(--_btn-padding-x);
+  font-size: var(--_btn-font-size);
+  font-weight: var(--_btn-font-weight);
+  letter-spacing: var(--_btn-letter-spacing);
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--_btn-text);
+  background-color: var(--_btn-bg);
+  border: 1px solid var(--_btn-border);
+  border-radius: var(--_btn-radius);
+  cursor: pointer;
+  box-shadow: var(--_btn-shadow);
+  transition: var(--_btn-transition);
+  outline: none;
+  text-decoration: none;
+
+  &:hover {
+    --_btn-bg: var(--_btn-bg-hover);
+    --_btn-border: var(--_btn-border-hover);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    --_btn-bg: var(--_btn-bg-active);
+    box-shadow: 0 0 0 2px var(--cs360-action-primary-subtle);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+// --- Button Sizes ---
+.cs360-btn--sm {
+  --_btn-min-height: var(--cs360-size-input-sm);
+  --_btn-padding-x: var(--cs360-space-3);
+  --_btn-font-size: var(--cs360-text-xs);
+}
+
+.cs360-btn--lg {
+  --_btn-min-height: var(--cs360-size-input-lg);
+  --_btn-padding-x: var(--cs360-space-6);
+  --_btn-font-size: var(--cs360-text-base);
+}
+
+// --- Button Variants (Intent) ---
+
+// Secondary
+.cs360-btn--secondary {
+  --_btn-bg: var(--cs360-bg-surface);
+  --_btn-bg-hover: var(--cs360-bg-surface-hover);
+  --_btn-bg-active: var(--cs360-bg-surface-active);
+  --_btn-text: var(--cs360-text-primary);
+  --_btn-border: var(--cs360-border-default);
+  --_btn-border-hover: var(--cs360-border-subtle);
+}
+
+// Tertiary / Ghost
+.cs360-btn--tertiary {
+  --_btn-bg: transparent;
+  --_btn-bg-hover: var(--cs360-action-ghost-hover);
+  --_btn-bg-active: var(--cs360-action-ghost-active);
+  --_btn-text: var(--cs360-text-primary);
+  --_btn-border: transparent;
+  --_btn-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+// Destructive
+.cs360-btn--destructive {
+  --_btn-bg: var(--cs360-action-destructive-default);
+  --_btn-bg-hover: var(--cs360-action-destructive-hover);
+  --_btn-bg-active: var(--cs360-action-destructive-active);
+  --_btn-text: var(--cs360-text-inverse);
+  --_btn-border: transparent;
+}
+
+// --- Button Layout Variants ---
+
+// Icon-only (square)
+.cs360-btn--icon {
+  --_btn-min-width: var(--_btn-min-height);
+  --_btn-padding-x: 0;
+  border-radius: var(--cs360-radius-sm);
+
+  svg, .cs360-btn__icon {
+    width: em(20, 16);
+    height: em(20, 16);
+  }
+}
+
+// Full width
+.cs360-btn--full {
+  width: 100%;
+}
+
+// --- Button Loading State ---
+.cs360-btn--loading {
+  pointer-events: none;
+  opacity: 0.8;
+
+  .cs360-btn__icon {
+    animation: cs360-spin 1s linear infinite;
+  }
+}
+
+// --- Button Group ---
+.cs360-btn-group {
+  display: inline-flex;
+
+  .cs360-btn {
+    border-radius: 0;
+
+    &:first-child {
+      border-radius: var(--cs360-radius-sm) 0 0 var(--cs360-radius-sm);
+    }
+
+    &:last-child {
+      border-radius: 0 var(--cs360-radius-sm) var(--cs360-radius-sm) 0;
+    }
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--cs360-action-ghost-border);
+    }
+  }
+}
+
+// --- Button with Icon Slots ---
+.cs360-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cs360-btn__icon--leading {
+  margin-right: var(--cs360-space-1);
+}
+
+.cs360-btn__icon--trailing {
+  margin-left: var(--cs360-space-1);
+}
+
+@keyframes cs360-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
