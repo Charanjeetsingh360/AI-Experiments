@@ -1,0 +1,383 @@
+:root {
+  --cs360-blue-0: #E8F0FE;
+  --cs360-blue-100: #D0E1FC;
+  --cs360-blue-200: #A7C6F8;
+  --cs360-blue-300: #75A9F1;
+  --cs360-blue-400: #4A85EA;
+  --cs360-blue-500: #1F63DA;
+  --cs360-blue-600: #164CA8;
+  --cs360-blue-700: #123B82;
+  --cs360-blue-800: #0E2E63;
+  --cs360-blue-900: #0A1E40;
+  --cs360-neutral-0: #FFFFFF;
+  --cs360-neutral-50: #F8FAFC;
+  --cs360-neutral-100: #F1F5F9;
+  --cs360-neutral-150: #E6EBF1;
+  --cs360-neutral-200: #D1D9E2;
+  --cs360-neutral-250: #BFC8D4;
+  --cs360-neutral-300: #A7B1BF;
+  --cs360-neutral-400: #7D8A9C;
+  --cs360-neutral-500: #5C6C82;
+  --cs360-neutral-600: #425065;
+  --cs360-neutral-700: #2C394B;
+  --cs360-neutral-800: #1A2432;
+  --cs360-neutral-900: #0D131A;
+  --cs360-neutral-950: #06090D;
+  --cs360-green-0: #ECFDF0;
+  --cs360-green-100: #DCFCE8;
+  --cs360-green-200: #B2F8C9;
+  --cs360-green-500: #10B981;
+  --cs360-green-700: #059669;
+  --cs360-green-900: #065F46;
+  --cs360-red-0: #FEF2F3;
+  --cs360-red-100: #FEE2E2;
+  --cs360-red-200: #FECACA;
+  --cs360-red-500: #EF4444;
+  --cs360-red-700: #B91C1C;
+  --cs360-red-900: #7F1D1D;
+  --cs360-amber-0: #FEF6E2;
+  --cs360-amber-100: #FEF0C0;
+  --cs360-amber-200: #FDE091;
+  --cs360-amber-500: #F59E0B;
+  --cs360-amber-700: #B45309;
+  --cs360-amber-900: #78350F;
+  --cs360-info-0: #EFF6FF;
+  --cs360-info-100: #DBEAFE;
+  --cs360-info-500: #3B82F6;
+  --cs360-info-700: #1D4ED8;
+  --cs360-accent-start: #FEF3C7;
+  --cs360-accent-end: #FDE68A;
+  --cs360-accent-text: #92400E;
+}
+
+:root {
+  --cs360-space-0: 0;
+  --cs360-space-px: 1px;
+  --cs360-space-0-5: 0.125rem;
+  --cs360-space-1: 0.25rem;
+  --cs360-space-1-5: 0.375rem;
+  --cs360-space-2: 0.5rem;
+  --cs360-space-2-5: 0.625rem;
+  --cs360-space-3: 0.75rem;
+  --cs360-space-4: 1rem;
+  --cs360-space-5: 1.25rem;
+  --cs360-space-6: 1.5rem;
+  --cs360-space-8: 2rem;
+  --cs360-space-10: 2.5rem;
+  --cs360-space-12: 3rem;
+  --cs360-space-16: 4rem;
+  --cs360-space-20: 5rem;
+  --cs360-space-24: 6rem;
+  --cs360-space-32: 8rem;
+  --cs360-sidebar-width: 16rem;
+  --cs360-topbar-height: 4rem;
+  --cs360-right-panel-width: 20rem;
+  --cs360-max-content-width: 72rem;
+}
+
+:root {
+  --cs360-radius-none: 0;
+  --cs360-radius-xs: 2px;
+  --cs360-radius-sm: 4px;
+  --cs360-radius-md: 8px;
+  --cs360-radius-lg: 12px;
+  --cs360-radius-xl: 16px;
+  --cs360-radius-2xl: 20px;
+  --cs360-radius-full: 9999px;
+}
+
+:root {
+  --cs360-shadow-none: 0 0 0 #0000;
+  --cs360-shadow-xs: 0 1px 2px rgba(12, 18, 26, 0.05);
+  --cs360-shadow-sm: 0 2px 4px rgba(12, 18, 26, 0.08);
+  --cs360-shadow-md: 0 4px 8px rgba(12, 18, 26, 0.10), 0 1px 3px rgba(12, 18, 26, 0.08);
+  --cs360-shadow-lg: 0 8px 16px rgba(12, 18, 26, 0.12), 0 2px 4px rgba(12, 18, 26, 0.10);
+  --cs360-shadow-xl: 0 16px 32px rgba(12, 18, 26, 0.15), 0 4px 8px rgba(12, 18, 26, 0.12);
+  --cs360-shadow-2xl: 0 24px 48px rgba(12, 18, 26, 0.20), 0 8px 16px rgba(12, 18, 26, 0.15);
+  --cs360-shadow-inner: inset 0 2px 4px rgba(12, 18, 26, 0.06);
+}
+
+:root {
+  --cs360-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --cs360-font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --cs360-text-xs: 0.75rem;
+  --cs360-text-sm: 0.875rem;
+  --cs360-text-base: 1rem;
+  --cs360-text-lg: 1.125rem;
+  --cs360-text-xl: 1.25rem;
+  --cs360-text-2xl: 1.5rem;
+  --cs360-text-3xl: 1.875rem;
+  --cs360-text-4xl: 2.25rem;
+  --cs360-font-normal: 400;
+  --cs360-font-medium: 500;
+  --cs360-font-semi: 600;
+  --cs360-font-bold: 700;
+  --cs360-line-height-none: 1;
+  --cs360-line-height-tight: 1.25;
+  --cs360-line-height-base: 1.5;
+  --cs360-line-height-relaxed: 1.75;
+}
+
+:root {
+  --cs360-motion-fast: 100ms;
+  --cs360-motion-base: 200ms;
+  --cs360-motion-slow: 300ms;
+  --cs360-motion-slowest: 500ms;
+  --cs360-ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --cs360-ease-in: cubic-bezier(0.12, 0, 0.39, 0);
+  --cs360-ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --cs360-ease-in-out: cubic-bezier(0.37, 0, 0.63, 1);
+  --cs360-transition-fast: var(--cs360-motion-fast) var(--cs360-ease-default);
+  --cs360-transition-base: var(--cs360-motion-base) var(--cs360-ease-default);
+  --cs360-transition-slow: var(--cs360-motion-slow) var(--cs360-ease-default);
+}
+
+:root {
+  --cs360-z-dropdown: 1000;
+  --cs360-z-sticky: 1020;
+  --cs360-z-fixed: 1030;
+  --cs360-z-modal-back: 1040;
+  --cs360-z-modal: 1050;
+  --cs360-z-popover: 1060;
+  --cs360-z-tooltip: 1070;
+  --cs360-z-toast: 1080;
+}
+
+:root,
+[data-theme=light] {
+  /* BACKGROUND SURFACE TOKENS */
+  --cs360-bg: var(--cs360-neutral-50);
+  --cs360-bg-page: var(--cs360-neutral-50);
+  --cs360-bg-surface: var(--cs360-neutral-0);
+  --cs360-bg-surface-hover:var(--cs360-neutral-50);
+  --cs360-bg-raised: var(--cs360-neutral-0);
+  --cs360-bg-overlay: rgba(12, 18, 26, 0.5);
+  /* SIDEBAR TOKENS (Figma: Blue sidebar) */
+  --cs360-sidebar-bg: var(--cs360-blue-900);
+  --cs360-sidebar-hover: var(--cs360-blue-800);
+  --cs360-sidebar-active: var(--cs360-blue-700);
+  --cs360-sidebar-text: var(--cs360-neutral-200);
+  --cs360-sidebar-text-active: var(--cs360-neutral-0);
+  --cs360-sidebar-border: var(--cs360-blue-700);
+  /* TOPBAR TOKENS */
+  --cs360-topbar-bg: var(--cs360-neutral-0);
+  --cs360-topbar-border: var(--cs360-neutral-200);
+  /* TEXT TOKENS */
+  --cs360-text-primary: var(--cs360-neutral-900);
+  --cs360-text-secondary: var(--cs360-neutral-500);
+  --cs360-text-tertiary: var(--cs360-neutral-400);
+  --cs360-text-inverse: var(--cs360-neutral-0);
+  --cs360-text-link: var(--cs360-blue-500);
+  --cs360-text-link-hover: var(--cs360-blue-700);
+  /* BORDER TOKENS */
+  --cs360-border-subtle: var(--cs360-neutral-200);
+  --cs360-border-default: var(--cs360-neutral-300);
+  --cs360-border-strong: var(--cs360-neutral-400);
+  /* ACTION / INTERACTIVE TOKENS */
+  --cs360-action-primary: var(--cs360-blue-500);
+  --cs360-action-primary-hover:var(--cs360-blue-600);
+  --cs360-action-primary-text: var(--cs360-neutral-0);
+  --cs360-action-secondary: var(--cs360-neutral-150);
+  --cs360-action-secondary-hover: var(--cs360-neutral-200);
+  --cs360-action-secondary-text: var(--cs360-neutral-700);
+  --cs360-action-ghost: transparent;
+  --cs360-action-ghost-hover: var(--cs360-neutral-100);
+  --cs360-action-ghost-text: var(--cs360-neutral-600);
+  /* STATUS / FEEDBACK TOKENS */
+  --cs360-feedback-success: var(--cs360-green-500);
+  --cs360-feedback-success-bg: var(--cs360-green-0);
+  --cs360-feedback-success-border: var(--cs360-green-100);
+  --cs360-feedback-error: var(--cs360-red-500);
+  --cs360-feedback-error-bg: var(--cs360-red-0);
+  --cs360-feedback-error-border:var(--cs360-red-100);
+  --cs360-feedback-warning: var(--cs360-amber-500);
+  --cs360-feedback-warning-bg: var(--cs360-amber-0);
+  --cs360-feedback-warning-border: var(--cs360-amber-100);
+  --cs360-feedback-info: var(--cs360-info-500);
+  --cs360-feedback-info-bg: var(--cs360-info-0);
+  --cs360-feedback-info-border: var(--cs360-info-100);
+  /* PROMO BANNER TOKENS */
+  --cs360-promo-bg-start: var(--cs360-accent-start);
+  --cs360-promo-bg-end: var(--cs360-accent-end);
+  --cs360-promo-text: var(--cs360-accent-text);
+  /* FOCUS RING TOKEN */
+  --cs360-focus-ring: 0 0 0 2px var(--cs360-blue-200);
+}
+
+[data-theme=dark] {
+  /* BACKGROUND SURFACE TOKENS */
+  --cs360-bg: var(--cs360-neutral-900);
+  --cs360-bg-page: var(--cs360-neutral-950);
+  --cs360-bg-surface: var(--cs360-neutral-800);
+  --cs360-bg-surface-hover:var(--cs360-neutral-700);
+  --cs360-bg-raised: var(--cs360-neutral-800);
+  --cs360-bg-overlay: rgba(0, 0, 0, 0.7);
+  /* SIDEBAR TOKENS */
+  --cs360-sidebar-bg: var(--cs360-neutral-950);
+  --cs360-sidebar-hover: var(--cs360-neutral-900);
+  --cs360-sidebar-active: var(--cs360-blue-800);
+  --cs360-sidebar-text: var(--cs360-neutral-400);
+  --cs360-sidebar-text-active: var(--cs360-neutral-50);
+  --cs360-sidebar-border: var(--cs360-neutral-800);
+  /* TOPBAR TOKENS */
+  --cs360-topbar-bg: var(--cs360-neutral-900);
+  --cs360-topbar-border: var(--cs360-neutral-800);
+  /* TEXT TOKENS */
+  --cs360-text-primary: var(--cs360-neutral-50);
+  --cs360-text-secondary: var(--cs360-neutral-400);
+  --cs360-text-tertiary: var(--cs360-neutral-500);
+  --cs360-text-inverse: var(--cs360-neutral-900);
+  --cs360-text-link: var(--cs360-blue-400);
+  --cs360-text-link-hover: var(--cs360-blue-300);
+  /* BORDER TOKENS */
+  --cs360-border-subtle: var(--cs360-neutral-800);
+  --cs360-border-default: var(--cs360-neutral-700);
+  --cs360-border-strong: var(--cs360-neutral-600);
+  /* ACTION / INTERACTIVE TOKENS */
+  --cs360-action-primary: var(--cs360-blue-500);
+  --cs360-action-primary-hover:var(--cs360-blue-400);
+  --cs360-action-primary-text: var(--cs360-neutral-0);
+  --cs360-action-secondary: var(--cs360-neutral-800);
+  --cs360-action-secondary-hover: var(--cs360-neutral-700);
+  --cs360-action-secondary-text: var(--cs360-neutral-200);
+  --cs360-action-ghost: transparent;
+  --cs360-action-ghost-hover: var(--cs360-neutral-800);
+  --cs360-action-ghost-text: var(--cs360-neutral-300);
+  /* STATUS / FEEDBACK TOKENS */
+  --cs360-feedback-success: var(--cs360-green-200);
+  --cs360-feedback-success-bg: rgba(16, 185, 129, 0.1);
+  --cs360-feedback-success-border: rgba(16, 185, 129, 0.2);
+  --cs360-feedback-error: var(--cs360-red-200);
+  --cs360-feedback-error-bg: rgba(239, 68, 68, 0.1);
+  --cs360-feedback-error-border:rgba(239, 68, 68, 0.2);
+  --cs360-feedback-warning: var(--cs360-amber-200);
+  --cs360-feedback-warning-bg: rgba(245, 158, 11, 0.1);
+  --cs360-feedback-warning-border: rgba(245, 158, 11, 0.2);
+  --cs360-feedback-info: var(--cs360-info-200);
+  --cs360-feedback-info-bg: rgba(59, 130, 246, 0.1);
+  --cs360-feedback-info-border: rgba(59, 130, 246, 0.2);
+  /* PROMO BANNER TOKENS */
+  --cs360-promo-bg-start: var(--cs360-amber-200);
+  --cs360-promo-bg-end: var(--cs360-amber-100);
+  --cs360-promo-text: var(--cs360-amber-700);
+  /* FOCUS RING TOKEN */
+  --cs360-focus-ring: 0 0 0 2px var(--cs360-blue-600);
+}
+
+[data-theme=high-contrast] {
+  /* BACKGROUND SURFACE TOKENS */
+  --cs360-bg: #000000;
+  --cs360-bg-page: #000000;
+  --cs360-bg-surface: #000000;
+  --cs360-bg-surface-hover:#000000;
+  --cs360-bg-raised: #000000;
+  --cs360-bg-overlay: rgba(0, 0, 0, 0.9);
+  /* SIDEBAR TOKENS */
+  --cs360-sidebar-bg: #000000;
+  --cs360-sidebar-hover: #1A1A1A;
+  --cs360-sidebar-active: #000000;
+  --cs360-sidebar-text: #FFFFFF;
+  --cs360-sidebar-text-active: var(--cs360-neutral-0);
+  --cs360-sidebar-border: #FFFFFF;
+  /* TOPBAR TOKENS */
+  --cs360-topbar-bg: #000000;
+  --cs360-topbar-border: #FFFFFF;
+  /* TEXT TOKENS */
+  --cs360-text-primary: #FFFFFF;
+  --cs360-text-secondary: #D0D0D0;
+  --cs360-text-tertiary: #A0A0A0;
+  --cs360-text-inverse: #000000;
+  --cs360-text-link: #FFFF00;
+  --cs360-text-link-hover: #FFFFA0;
+  /* BORDER TOKENS - all borders solid white for max contrast */
+  --cs360-border-subtle: #FFFFFF;
+  --cs360-border-default: #FFFFFF;
+  --cs360-border-strong: #FFFFFF;
+  /* ACTION / INTERACTIVE TOKENS */
+  --cs360-action-primary: #0000FF;
+  --cs360-action-primary-hover:#4040FF;
+  --cs360-action-primary-text: #FFFFFF;
+  --cs360-action-secondary: #1A1A1A;
+  --cs360-action-secondary-hover: #303030;
+  --cs360-action-secondary-text: #FFFFFF;
+  --cs360-action-ghost: transparent;
+  --cs360-action-ghost-hover: #1A1A1A;
+  --cs360-action-ghost-text: #FFFFFF;
+  /* STATUS / FEEDBACK TOKENS - bold contrasting colors */
+  --cs360-feedback-success: #00FF00;
+  --cs360-feedback-success-bg: #000000;
+  --cs360-feedback-success-border: #00FF00;
+  --cs360-feedback-error: #FF0000;
+  --cs360-feedback-error-bg: #000000;
+  --cs360-feedback-error-border:#FF0000;
+  --cs360-feedback-warning: #FFFF00;
+  --cs360-feedback-warning-bg: #000000;
+  --cs360-feedback-warning-border: #FFFF00;
+  --cs360-feedback-info: #00FFFF;
+  --cs360-feedback-info-bg: #000000;
+  --cs360-feedback-info-border: #00FFFF;
+  /* PROMO BANNER TOKENS */
+  --cs360-promo-bg-start: #000000;
+  --cs360-promo-bg-end: #1A1A1A;
+  --cs360-promo-text: #FFFF00;
+  /* FOCUS RING TOKEN - thick yellow outline */
+  --cs360-focus-ring: 0 0 0 3px #FFFF00;
+}
+
+:root,
+[data-density=default],
+[data-density=medium] {
+  --density-space-inline: var(--cs360-space-4);
+  --density-space-block: var(--cs360-space-4);
+  --density-space-component: var(--cs360-space-3);
+  --density-space-section: var(--cs360-space-6);
+  --density-space-page: var(--cs360-space-8);
+  --density-row-height: 48px;
+  --density-control-height: 40px;
+  --density-icon-size: 20px;
+  --density-text-title: var(--cs360-text-2xl);
+  --density-text-heading: var(--cs360-text-xl);
+  --density-text-body: var(--cs360-text-base);
+  --density-text-body-muted: var(--cs360-text-sm);
+  --density-text-caption: var(--cs360-text-xs);
+  --density-nav-item-height: 44px;
+  --density-logo-height: 56px;
+}
+
+[data-density=compact],
+[data-density=small] {
+  --density-space-inline: var(--cs360-space-3);
+  --density-space-block: var(--cs360-space-3);
+  --density-space-component: var(--cs360-space-2);
+  --density-space-section: var(--cs360-space-4);
+  --density-space-page: var(--cs360-space-6);
+  --density-row-height: 36px;
+  --density-control-height: 32px;
+  --density-icon-size: 16px;
+  --density-text-title: var(--cs360-text-xl);
+  --density-text-heading: var(--cs360-text-lg);
+  --density-text-body: var(--cs360-text-sm);
+  --density-text-body-muted: var(--cs360-text-xs);
+  --density-text-caption: var(--cs360-text-xs);
+  --density-nav-item-height: 36px;
+  --density-logo-height: 48px;
+}
+
+[data-density=comfortable],
+[data-density=large] {
+  --density-space-inline: var(--cs360-space-6);
+  --density-space-block: var(--cs360-space-6);
+  --density-space-component: var(--cs360-space-4);
+  --density-space-section: var(--cs360-space-8);
+  --density-space-page: var(--cs360-space-12);
+  --density-row-height: 60px;
+  --density-control-height: 48px;
+  --density-icon-size: 24px;
+  --density-text-title: var(--cs360-text-3xl);
+  --density-text-heading: var(--cs360-text-2xl);
+  --density-text-body: var(--cs360-text-lg);
+  --density-text-body-muted: var(--cs360-text-base);
+  --density-text-caption: var(--cs360-text-sm);
+  --density-nav-item-height: 52px;
+  --density-logo-height: 64px;
+}

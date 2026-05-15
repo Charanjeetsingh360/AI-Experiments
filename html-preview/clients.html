@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-density="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caregiver Web App — Clients</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,1,-50..200&display=swap" />
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./preview-layout.css" />
+</head>
+<body class="bg-gray-50">
+  <div class="app-shell">
+
+    <!-- ── SIDEBAR ─────────────────────────────────── -->
+    <aside class="app-sidebar bg-blue-600 flex flex-col">
+      <!-- Brand Logo -->
+      <div class="px-4 py-4 border-b border-blue-500 flex-shrink-0">
+        <div class="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center">
+          <span class="material-symbols-rounded text-white text-xl">favorite</span>
+        </div>
+      </div>
+
+      <!-- Nav Items -->
+      <nav class="flex-1 py-3 px-2 space-y-0.5 overflow-y-auto">
+        <!-- Each link is a self-contained NavItem component -->
+        <a href="./index.html"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">home</span>
+          <span>Home</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">calendar_month</span>
+          <span>Shift Calendar</span>
+        </a>
+        <!-- Active Item -->
+        <a href="./clients.html"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white bg-white/20 font-medium">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">people</span>
+          <span>My Clients</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">mail</span>
+          <span>Messages</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">schedule</span>
+          <span>Availability</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">description</span>
+          <span>Documents</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">edit_note</span>
+          <span>Caregiver Forms</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">school</span>
+          <span>Trainings</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">open_in_new</span>
+          <span>Learn2Care</span>
+        </a>
+        <a href="#"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-blue-700 hover:text-white transition-colors">
+          <span class="material-symbols-rounded text-xl flex-shrink-0">open_in_new</span>
+          <span>LMS</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="px-4 py-3 border-t border-blue-500 text-xs text-blue-200 flex-shrink-0">
+        © 2026 Caresmartz, Inc.<br />All Rights Reserved.
+      </div>
+    </aside>
+
+    <!-- ── TOPBAR ──────────────────────────────────── -->
+    <header class="app-topbar bg-white border-b border-gray-200">
+      <div class="flex items-center justify-between w-full px-6 py-2 h-14">
+        <!-- Left: Breadcrumb + User Clock-In -->
+        <div class="flex items-center gap-6">
+          <nav class="text-sm text-gray-500" aria-label="Breadcrumb">
+            Home&nbsp;/&nbsp;Clients&nbsp;/&nbsp;View
+          </nav>
+          <!-- UserClockBar Component -->
+          <div class="flex items-center gap-3 pl-5 border-l border-gray-200">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-semibold text-blue-700 flex-shrink-0">
+              ME
+            </div>
+            <div class="leading-tight">
+              <div class="text-sm font-medium text-slate-900">Marry, Edison</div>
+              <div class="text-xs text-gray-500 flex items-center gap-1">
+                <span class="material-symbols-rounded icon-sm">access_time</span>
+                Clock-In at 2:05 PM
+              </div>
+            </div>
+            <button class="ml-1 text-xs font-medium text-gray-600 border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 transition-colors">
+              Clock-Out
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-3">
+          <button class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <span class="material-symbols-rounded icon-sm">add</span>
+            Adhoc Shift
+          </button>
+          <button class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Notifications">
+            <span class="material-symbols-rounded">notifications</span>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
+            ME
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── MAIN CONTENT ───────────────────────────── -->
+    <main class="app-main bg-gray-50 p-6">
+
+      <!-- Page Header -->
+      <div class="mb-5">
+        <div class="flex items-center justify-between mb-1">
+          <h1 class="text-xl font-bold text-slate-900">Clients</h1>
+          <button class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Refresh">
+            <span class="material-symbols-rounded">refresh</span>
+          </button>
+        </div>
+        <p class="text-sm text-gray-500">
+          You can view the Emergency Contact and Care Plan of each Client by clicking on Client Name.
+        </p>
+      </div>
+
+      <!-- ── CLIENT CARD GRID ──────────────────────────────────────────────────
+           ClientCard is a reusable component (Figma: node-id=4445-169799).
+           To add a new client: copy one <article class="client-card …"> block.
+           Specs: padding 12px · gap 8px · name Inter 16px/500 · address 14px/400
+           ────────────────────────────────────────────────────────────────────── -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open Marry Edison's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <!-- Avatar -->
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-medium">
+              ME
+            </div>
+            <!-- Client Info -->
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">Marry, Edison</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">9800 Fredericksburg USA Corporate Office, Sacramento</p>
+            </div>
+          </div>
+          <!-- Chevron -->
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open John Doe's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-sm font-medium">
+              JD
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">John, Doe</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">123 Main Street, San Francisco, CA 94102</p>
+            </div>
+          </div>
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open Sarah Johnson's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-sm font-medium">
+              SJ
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">Sarah, Johnson</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">456 Oak Avenue, Berkeley, CA 94704</p>
+            </div>
+          </div>
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open Robert Miller's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-sm font-medium">
+              RM
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">Robert, Miller</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">789 Pine Road, Oakland, CA 94601</p>
+            </div>
+          </div>
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open Caresmartz Healthcare's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white text-sm font-medium">
+              CS
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">Caresmartz Healthcare</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">533 Hansen Junction Apt. 021, Lindmouth, California 95221</p>
+            </div>
+          </div>
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+        <!-- ClientCard -->
+        <article class="client-card flex items-center justify-between p-3 gap-2 cursor-pointer"
+                 role="button" tabindex="0" aria-label="Open Emma Brown's profile">
+          <div class="flex items-start gap-2 min-w-0">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+              EB
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-base font-medium text-slate-900 leading-6 tracking-tight truncate">Emma, Brown</h3>
+              <p class="text-sm text-slate-600 leading-5 truncate">321 Elm Street, Palo Alto, CA 94301</p>
+            </div>
+          </div>
+          <span class="material-symbols-rounded text-slate-400 flex-shrink-0" style="font-size:20px">chevron_right</span>
+        </article>
+
+      </div><!-- /client card grid -->
+    </main>
+
+  </div><!-- /app-shell -->
+
+  <!-- Dev Preview Controls -->
+  <div class="preview-controls">
+    <label>Theme</label>
+    <select id="themeSelect" onchange="setTheme(this.value)">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="high-contrast">High Contrast</option>
+    </select>
+    <label>Density</label>
+    <select id="densitySelect" onchange="setDensity(this.value)">
+      <option value="default">Default</option>
+      <option value="compact">Compact</option>
+      <option value="comfortable">Comfortable</option>
+    </select>
+  </div>
+
+  <script>
+    (function () {
+      const theme   = localStorage.getItem('cs360-theme')   || 'light';
+      const density = localStorage.getItem('cs360-density') || 'default';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-density', density);
+      document.getElementById('themeSelect').value   = theme;
+      document.getElementById('densitySelect').value = density;
+    })();
+
+    function setTheme(t)   { document.documentElement.setAttribute('data-theme', t);   localStorage.setItem('cs360-theme', t); }
+    function setDensity(d) { document.documentElement.setAttribute('data-density', d); localStorage.setItem('cs360-density', d); }
+  </script>
+</body>
+</html>
