@@ -1,0 +1,136 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL
+// File: styles/components/_topbar.scss
+// Description: Top navigation bar with breadcrumb, user info, actions.
+// =============================================================================
+
+.cs360-topbar {
+  grid-area: topbar;
+  background-color: var(--cs360-topbar-bg);
+  border-bottom: 1px solid var(--cs360-topbar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--density-space-inline);
+  min-height: var(--cs360-topbar-height);
+  position: sticky;
+  top: 0;
+  z-index: var(--cs360-z-sticky);
+}
+
+// --- Breadcrumb ---
+.cs360-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-2);
+  font-size: var(--cs360-text-sm);
+  color: var(--cs360-text-secondary);
+
+  .cs360-breadcrumb-sep {
+    color: var(--cs360-text-tertiary);
+  }
+
+  .cs360-breadcrumb-link {
+    color: var(--cs360-text-muted);
+    text-decoration: none;
+    transition: color var(--cs360-transition-fast);
+
+    &:hover {
+      color: var(--cs360-text-link);
+    }
+  }
+
+  .cs360-breadcrumb-current {
+    color: var(--cs360-text-primary);
+    font-weight: var(--cs360-font-medium);
+  }
+}
+
+// --- User area (Clock-In/Out badge) ---
+.cs360-topbar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+}
+
+.cs360-clock-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-2);
+  font-size: var(--cs360-text-sm);
+  color: var(--cs360-text-secondary);
+}
+
+.cs360-clock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--cs360-radius-full);
+  background-color: var(--cs360-feedback-success);
+  box-shadow: 0 0 0 3px var(--cs360-feedback-success-bg);
+}
+
+// --- User avatar ---
+.cs360-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--cs360-radius-full);
+  overflow: hidden;
+  border: 2px solid var(--cs360-neutral-100);
+  cursor: pointer;
+}
+
+.cs360-user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// --- Right actions ---
+.cs360-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+}
+
+// Badge count on notification/alert icons
+.cs360-action-icon {
+  position: relative;
+  cursor: pointer;
+
+  &.has-badge::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background-color: var(--cs360-feedback-error);
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: var(--cs360-font-bold);
+    padding: 1px 4px;
+    border-radius: var(--cs360-radius-full);
+    min-width: 16px;
+    text-align: center;
+  }
+}
+
+// --- Addhock Shift button ---
+.cs360-addhoc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs360-space-2);
+  min-height: var(--density-control-height);
+  padding: 0 var(--cs360-space-4);
+  background-color: var(--cs360-feedback-success);
+  color: #FFFFFF;
+  border-radius: var(--cs360-radius-sm);
+  font-size: var(--cs360-text-sm);
+  font-weight: var(--cs360-font-medium);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--cs360-transition-fast);
+
+  &:hover {
+    background-color: var(--cs360-feedback-success-700);
+  }
+}
+

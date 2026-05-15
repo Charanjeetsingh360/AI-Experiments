@@ -1,0 +1,21 @@
+/* Custom scrollbar styling */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--cs360-border-subtle);
+    border-radius: 3px;
+    
+    &:hover {
+      background: var(--cs360-text-tertiary);
+    }
+  }
+}

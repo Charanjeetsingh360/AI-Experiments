@@ -1,0 +1,280 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL
+// File: styles/components/_cards.scss
+// Description: Card components -- shift cards, KPI stat cards, promo banner.
+// =============================================================================
+
+// --- Base card ---
+.cs360-card {
+  background-color: var(--cs360-bg-surface);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  padding: var(--density-space-component);
+  transition: box-shadow var(--cs360-transition-base);
+
+  &:hover {
+    box-shadow: var(--cs360-shadow-md);
+  }
+}
+
+.cs360-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--cs360-space-3);
+  padding-bottom: var(--cs360-space-3);
+  border-bottom: 1px solid var(--cs360-border-subtle);
+}
+
+.cs360-card-title {
+  font-size: var(--cs360-text-base);
+  font-weight: var(--cs360-font-semi);
+  color: var(--cs360-text-primary);
+}
+
+.cs360-card-actions {
+  display: flex;
+  gap: var(--cs360-space-2);
+  align-items: center;
+}
+
+.cs360-card-body {
+  padding-top: var(--cs360-space-2);
+}
+
+// --- KPI Stat Card ---
+.cs360-kpi-card {
+  background-color: var(--cs360-bg-surface);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  padding: var(--density-space-component);
+  min-width: 180px;
+
+  .cs360-kpi-label {
+    font-size: var(--cs360-text-sm);
+    color: var(--cs360-text-secondary);
+    margin-bottom: var(--cs360-space-1);
+  }
+
+  .cs360-kpi-value {
+    font-size: var(--cs360-text-2xl);
+    font-weight: var(--cs360-font-bold);
+    color: var(--cs360-text-primary);
+  }
+
+  .cs360-kpi-subtext {
+    font-size: var(--cs360-text-xs);
+    color: var(--cs360-text-tertiary);
+    margin-top: var(--cs360-space-1);
+
+    &.positive { color: var(--cs360-feedback-success); }
+    &.negative { color: var(--cs360-feedback-error); }
+    &.warning  { color: var(--cs360-feedback-warning); }
+  }
+}
+
+// --- Shift Card (per Figma: Ongoing/Upcoming Shift) ---
+.cs360-shift-card {
+  background-color: var(--cs360-bg-surface);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  padding: var(--density-space-component);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--density-space-component);
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  &.cs360-shift-card--ongoing {
+    border-left: 4px solid var(--cs360-feedback-success);
+  }
+
+  &.cs360-shift-card--upcoming {
+    border-left: 4px solid var(--cs360-feedback-info);
+  }
+}
+
+.cs360-shift-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-2);
+}
+
+.cs360-shift-client-name {
+  font-size: var(--cs360-text-base);
+  font-weight: var(--cs360-font-semi);
+  color: var(--cs360-text-primary);
+}
+
+.cs360-shift-address {
+  font-size: var(--cs360-text-sm);
+  color: var(--cs360-text-secondary);
+}
+
+.cs360-shift-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-3);
+  font-size: var(--cs360-text-sm);
+  color: var(--cs360-text-muted);
+
+  .cs360-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--cs360-space-1);
+  }
+}
+
+.cs360-shift-times {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-4);
+  font-size: var(--cs360-text-sm);
+  color: var(--cs360-text-secondary);
+
+  .cs360-start-time { font-weight: var(--cs360-font-medium); }
+  .cs360-end-time   { font-weight: var(--cs360-font-medium); }
+}
+
+.cs360-shift-actions {
+  display: flex;
+  gap: var(--cs360-space-2);
+  justify-content: flex-end;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    margin-top: var(--cs360-space-4);
+  }
+}
+
+// --- Promo Banner Card (per Figma: 25% Extra Weekend) ---
+.cs360-promo-card {
+  background: linear-gradient(
+    135deg,
+    var(--cs360-promo-bg-start),
+    var(--cs360-promo-bg-end)
+  );
+  border-radius: var(--cs360-radius-lg);
+  padding: var(--density-space-block) var(--density-space-inline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--density-space-component);
+  position: relative;
+  overflow: hidden;
+
+  .cs360-promo-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cs360-promo-percent {
+    font-size: var(--cs360-text-4xl);
+    font-weight: var(--cs360-font-bold);
+    color: var(--cs360-promo-text);
+  }
+
+  .cs360-promo-heading {
+    font-size: var(--cs360-text-lg);
+    font-weight: var(--cs360-font-semi);
+    color: var(--cs360-promo-text);
+  }
+
+  .cs360-promo-cta {
+    background-color: #FFFFFF;
+    color: var(--cs360-promo-text);
+    padding: var(--cs360-space-2) var(--cs360-space-4);
+    border-radius: var(--cs360-radius-sm);
+    font-size: var(--cs360-text-sm);
+    font-weight: var(--cs360-font-medium);
+    border: none;
+    cursor: pointer;
+    transition: box-shadow var(--cs360-transition-fast);
+
+    &:hover {
+      box-shadow: var(--cs360-shadow-sm);
+    }
+  }
+}
+
+// --- Alert / Alert Item (per Figma: Missed Clock-Out alerts) ---
+.cs360-alert-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cs360-space-3);
+  padding: var(--cs360-space-3);
+  border-radius: var(--cs360-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--cs360-transition-fast);
+
+  &:hover {
+    background-color: var(--cs360-feedback-warning-bg);
+  }
+
+  .cs360-alert-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .cs360-alert-content {
+    flex: 1;
+  }
+
+  .cs360-alert-title {
+    font-size: var(--cs360-text-sm);
+    font-weight: var(--cs360-font-medium);
+    color: var(--cs360-text-primary);
+  }
+
+  .cs360-alert-desc {
+    font-size: var(--cs360-text-xs);
+    color: var(--cs360-text-secondary);
+    margin-top: var(--cs360-space-1);
+  }
+
+  .cs360-alert-time {
+    font-size: var(--cs360-text-xs);
+    color: var(--cs360-text-tertiary);
+    margin-top: var(--cs360-space-1);
+  }
+
+  &.cs360-alert-item--error {
+    background-color: var(--cs360-feedback-error-bg);
+  }
+}
+
+// --- Right Panel Tabs (Alerts/SMS/Expense Review) ---
+.cs360-panel-tabs {
+  display: flex;
+  gap: var(--cs360-space-1);
+  padding-bottom: var(--cs360-space-2);
+  border-bottom: 1px solid var(--cs360-border-subtle);
+  margin-bottom: var(--cs360-space-4);
+
+  .cs360-panel-tab {
+    font-size: var(--cs360-text-sm);
+    font-weight: var(--cs360-font-medium);
+    color: var(--cs360-text-secondary);
+    padding: var(--cs360-space-2) var(--cs360-space-4);
+    border-radius: var(--cs360-radius-sm);
+    cursor: pointer;
+    transition: color var(--cs360-transition-fast);
+
+    &:hover {
+      color: var(--cs360-text-primary);
+    }
+
+    &.is-active {
+      color: var(--cs360-text-primary);
+      background-color: var(--cs360-bg-surface);
+      font-weight: var(--cs360-font-semi);
+    }
+  }
+}
+

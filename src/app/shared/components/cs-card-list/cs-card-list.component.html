@@ -1,0 +1,141 @@
+<div class="flex flex-col h-full overflow-hidden">
+  <!-- Scrollable items grid -->
+  <div class="flex-1 overflow-y-auto p-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border">
+    <div [class]="gridClasses[columns] || gridClasses[3]">
+      @for (item of items; track trackItem($index, item)) {
+        <div
+          class="client-card flex items-center justify-between p-4 bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)] rounded-lg cursor-pointer transition-all duration-150 outline-none gap-3 min-h-[99px] hover:border-[var(--cs360-action-primary)] hover:shadow-md focus-visible:border-[var(--cs360-action-primary)] focus-visible:shadow-md"
+          role="button"
+          tabindex="0"
+          (click)="onItemClick(item)"
+          (keydown.enter)="onItemClick(item)"
+          (keydown.space)="onItemClick(item)"
+        >
+          <!-- Card body — provided via csCardTemplate -->
+          <div class="flex-1 min-w-0">
+            <ng-container
+              *ngTemplateOutlet="cardTemplate?.templateRef ?? null; context: { $implicit: item }"
+            ></ng-container>
+          </div>
+
+          <!-- Chevron right indicator -->
+          <svg
+            class="w-5 h-5 shrink-0 text-[var(--cs360-text-tertiary)]"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      }
+
+      @empty {
+        <div class="col-span-full flex items-center justify-center py-8">
+          <p class="text-base text-[var(--cs360-text-tertiary)]">{{ emptyMessage }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Sticky bottom bar: pagination -->
+  @if (totalItems > 0) {
+    <div class="flex-shrink-0 bg-[var(--cs360-bg-surface)] border-t border-[var(--cs360-border-subtle)]">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3">
+        <!-- Showing X–Y of Z -->
+        <span class="text-sm text-[var(--cs360-text-secondary)] whitespace-nowrap">
+          Showing {{ startItem }} to {{ endItem }} of {{ totalItems }} items
+        </span>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-4">
+          <!-- Page size selector -->
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-[var(--cs360-text-secondary)]">Show</span>
+            <select
+              class="h-8 px-2 text-sm rounded border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] cursor-pointer outline-none transition-colors duration-150 hover:border-[var(--cs360-action-primary)] focus:border-[var(--cs360-action-primary)]"
+              [value]="pageSize"
+              (change)="onPageSizeChange($event)"
+              aria-label="Page size"
+            >
+              @for (opt of pageSizeOptions; track opt) {
+                <option [value]="opt" [selected]="opt === pageSize">{{ opt }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Nav buttons -->
+          <nav class="flex items-center gap-0.5" aria-label="Pagination">
+            <button
+              class="inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border border-transparent bg-transparent text-[var(--cs360-text-primary)] text-sm font-medium cursor-pointer transition-all duration-150 select-none hover:bg-[var(--cs360-bg-alt)] hover:border-[var(--cs360-border-subtle)] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+              [attr.disabled]="currentPage === 1 ? true : null"
+              (click)="goFirst()"
+              aria-label="First page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="11 17 6 12 11 7"></polyline>
+                <polyline points="18 17 13 12 18 7"></polyline>
+              </svg>
+            </button>
+
+            <button
+              class="inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border border-transparent bg-transparent text-[var(--cs360-text-primary)] text-sm font-medium cursor-pointer transition-all duration-150 select-none hover:bg-[var(--cs360-bg-alt)] hover:border-[var(--cs360-border-subtle)] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+              [attr.disabled]="currentPage === 1 ? true : null"
+              (click)="goPrev()"
+              aria-label="Previous page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            @for (page of pages; track $index) {
+              @if (page === '...') {
+                <span class="w-8 h-8 flex items-center justify-center text-sm text-[var(--cs360-text-tertiary)]">…</span>
+              } @else {
+                <button
+                  [class]="page === currentPage
+                    ? 'inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border text-sm font-medium cursor-pointer transition-all duration-150 select-none bg-[var(--cs360-action-primary)] text-white border-[var(--cs360-action-primary)]'
+                    : 'inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border border-transparent bg-transparent text-[var(--cs360-text-primary)] text-sm font-medium cursor-pointer transition-all duration-150 select-none hover:bg-[var(--cs360-bg-alt)] hover:border-[var(--cs360-border-subtle)]'"
+                  (click)="goToPage(+page)"
+                  [attr.aria-current]="page === currentPage ? 'page' : null"
+                  [attr.aria-label]="'Page ' + page"
+                >
+                  {{ page }}
+                </button>
+              }
+            }
+
+            <button
+              class="inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border border-transparent bg-transparent text-[var(--cs360-text-primary)] text-sm font-medium cursor-pointer transition-all duration-150 select-none hover:bg-[var(--cs360-bg-alt)] hover:border-[var(--cs360-border-subtle)] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+              [attr.disabled]="currentPage === totalPages ? true : null"
+              (click)="goNext()"
+              aria-label="Next page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            <button
+              class="inline-flex items-center justify-center min-w-8 h-8 px-1 rounded border border-transparent bg-transparent text-[var(--cs360-text-primary)] text-sm font-medium cursor-pointer transition-all duration-150 select-none hover:bg-[var(--cs360-bg-alt)] hover:border-[var(--cs360-border-subtle)] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+              [attr.disabled]="currentPage === totalPages ? true : null"
+              (click)="goLast()"
+              aria-label="Last page"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  }
+</div>

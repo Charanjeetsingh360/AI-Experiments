@@ -1,0 +1,45 @@
+{
+  "figmaConfig": {
+    "figmaFileId": "XCvAxa7G7QgiTfk08G2LGg",
+    "figmaAPIEndpoint": "https://api.figma.com/v1",
+    "tokenSetId": "cs360"
+  },
+  "themes": {
+    "light": {
+      "name": "Light",
+      "figmaModeName": "Light"
+    },
+    "dark": {
+      "name": "Dark",
+      "figmaModeName": "Dark"
+    },
+    "highContrast": {
+      "name": "High Contrast",
+      "figmaModeName": "High Contrast"
+    }
+  },
+  "densityModes": {
+    "compact": {
+      "name": "Compact",
+      "scale": 0.75
+    },
+    "default": {
+      "name": "Default",
+      "scale": 1
+    },
+    "comfortable": {
+      "name": "Comfortable",
+      "scale": 1.5
+    }
+  },
+  "automation": {
+    "enableDailySync": true,
+    "dailySyncTime": "02:00",
+    "autoCreatePR": true
+  },
+  "validation": {
+    "enforceNamingConvention": true,
+    "enforceThemeCoverage": true,
+    "enforceDensityCoverage": true
+  }
+}

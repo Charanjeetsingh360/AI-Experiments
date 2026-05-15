@@ -1,0 +1,253 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL - DESIGN TOKENS
+// Layer 3: Styles
+// File: tokens/03-styles.scss
+// Description: Reusable style classes -- text styles, elevation, focus, animations.
+//               These build on Layers 1 & 2. Consumed by Layer 4 (components).
+//               Mirrors Figma Styles (Text, Color, Effect definitions).
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// TEXT STYLES
+// -----------------------------------------------------------------------------
+/**
+ * Text styles that mirror Figma text style definitions.
+ * Map density-text-* variables to actual CSS classes.
+ */
+
+.cs360-text-display {
+  font-size:    var(--density-text-title);
+  font-weight:  var(--cs360-font-bold);
+  line-height:  var(--cs360-line-height-tight);
+  color:        var(--cs360-text-primary);
+}
+
+.cs360-text-heading-lg {
+  font-size:    var(--density-text-heading);
+  font-weight:  var(--cs360-font-semi);
+  line-height:  var(--cs360-line-height-tight);
+  color:        var(--cs360-text-primary);
+}
+
+.cs360-text-heading-md {
+  font-size:    var(--density-text-heading);
+  font-weight:  var(--cs360-font-medium);
+  line-height:  var(--cs360-line-height-tight);
+  color:        var(--cs360-text-primary);
+}
+
+.cs360-text-body {
+  font-size:    var(--density-text-body);
+  font-weight:  var(--cs360-font-normal);
+  line-height:  var(--cs360-line-height-base);
+  color:        var(--cs360-text-primary);
+}
+
+.cs360-text-muted {
+  font-size:    var(--density-text-body-muted);
+  font-weight:  var(--cs360-font-normal);
+  line-height:  var(--cs360-line-height-base);
+  color:        var(--cs360-text-secondary);
+}
+
+.cs360-text-caption {
+  font-size:    var(--density-text-caption);
+  font-weight:  var(--cs360-font-normal);
+  line-height:  var(--cs360-line-height-base);
+  color:        var(--cs360-text-tertiary);
+}
+
+.cs360-text-label {
+  font-size:    var(--cs360-text-xs);
+  font-weight:  var(--cs360-font-medium);
+  line-height:  var(--cs360-line-height-none);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color:        var(--cs360-text-tertiary);
+}
+
+// -----------------------------------------------------------------------------
+// ELEVATION / SHADOW CLASSES
+// -----------------------------------------------------------------------------
+.cs360-elevation-none {
+  box-shadow: var(--cs360-shadow-none);
+}
+
+.cs360-elevation-xs {
+  box-shadow: var(--cs360-shadow-xs);
+}
+
+.cs360-elevation-sm {
+  box-shadow: var(--cs360-shadow-sm);
+}
+
+.cs360-elevation-md {
+  box-shadow: var(--cs360-shadow-md);
+}
+
+.cs360-elevation-lg {
+  box-shadow: var(--cs360-shadow-lg);
+}
+
+.cs360-elevation-xl {
+  box-shadow: var(--cs360-shadow-xl);
+}
+
+.cs360-elevation-2xl {
+  box-shadow: var(--cs360-shadow-2xl);
+}
+
+.cs360-elevation-inner {
+  box-shadow: var(--cs360-shadow-inner);
+}
+
+// -----------------------------------------------------------------------------
+// BORDER CLASSES
+// -----------------------------------------------------------------------------
+.cs360-border {
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-sm);
+}
+
+.cs360-border-default {
+  border: 1px solid var(--cs360-border-default);
+  border-radius: var(--cs360-radius-sm);
+}
+
+.cs360-border-strong {
+  border: 1px solid var(--cs360-border-strong);
+  border-radius: var(--cs360-radius-sm);
+}
+
+// -----------------------------------------------------------------------------
+// FOCUS STYLES
+// -----------------------------------------------------------------------------
+/**
+ * Focus ring on interactive elements.
+ * Uses CSS custom property for easy theming overrides.
+ */
+.cs360-focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--cs360-focus-ring);
+  }
+}
+
+// Apply focus to common interactive elements
+.cs360-focus-ring,
+.cs360-btn,
+.cs360-input,
+.cs360-select,
+.cs360-checkbox,
+.cs360-radio,
+.cs360-nav-item {
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--cs360-focus-ring);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// SKELETON / LOADER STYLES
+// -----------------------------------------------------------------------------
+/**
+ * Skeleton loading animation for cards, tables, and content areas.
+ * Mirrors Figma skeleton/loading state definitions.
+ */
+.cs360-skeleton {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--cs360-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--cs360-neutral-100) 25%,
+    var(--cs360-neutral-150) 50%,
+    var(--cs360-neutral-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: cs360-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+[data-theme="dark"] .cs360-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--cs360-neutral-900) 25%,
+    var(--cs360-neutral-800) 50%,
+    var(--cs360-neutral-900) 75%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes cs360-skeleton-pulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// Skeleton variants
+.cs360-skeleton-circle {
+  border-radius: var(--cs360-radius-full);
+  height: var(--density-control-height);
+  width:  var(--density-control-height);
+}
+
+.cs360-skeleton-line {
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.cs360-skeleton-card {
+  height: 120px;
+  border-radius: var(--cs360-radius-md);
+}
+
+.cs360-skeleton-table {
+  height: var(--density-row-height);
+  border-radius: 0;
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// UTILITY CLASSES
+// -----------------------------------------------------------------------------
+/**
+ * Common utility helpers using semantic tokens.
+ * These replace hardcoded utility classes and ensure theme consistency.
+ */
+
+$semantic-utilities: (
+  "bg":        ("bg",        var(--cs360-bg)),
+  "bg-surface":("bg-surface",var(--cs360-bg-surface)),
+  "tx":        ("tx",        var(--cs360-text-primary)),
+  "tx-muted":  ("tx-muted",  var(--cs360-text-secondary)),
+  "tx-cap":    ("tx-cap",    var(--cs360-text-tertiary)),
+  "bd-subtle": ("bd-subtle", var(--cs360-border-subtle)),
+  "bd-default":("bd-default",var(--cs360-border-default)),
+);
+
+// Shorthand token utility helpers
+.s-bg { background-color: var(--cs360-bg); }
+.s-bg-surface { background-color: var(--cs360-bg-surface); }
+.s-bg-sidebar { background-color: var(--cs360-sidebar-bg); }
+.s-bg-raised { background-color: var(--cs360-bg-raised); }
+
+.s-tx { color: var(--cs360-text-primary); }
+.s-tx-muted { color: var(--cs360-text-secondary); }
+.s-tx-cap { color: var(--cs360-text-tertiary); }
+.s-tx-inverse { color: var(--cs360-text-inverse); }
+.s-tx-link { color: var(--cs360-text-link); }
+
+.s-bd { border-color: var(--cs360-border-subtle); }
+.s-bd-strong { border-color: var(--cs360-border-strong); }
+
+.s-txt-title  { font-size: var(--density-text-title); }
+.s-txt-body  { font-size: var(--density-text-body); }
+.s-txt-muted { font-size: var(--density-text-body-muted); }
+.s-txt-cap   { font-size: var(--density-text-caption); }
+
+.s-space-inline   { padding-inline: var(--density-space-inline); }
+.s-space-block    { padding-block:   var(--density-space-block); }
+.s-space-comp     { padding:         var(--density-space-component); }
+.s-space-section  { margin-block:    var(--density-space-section); }
+.s-space-page     { padding:         var(--density-space-page); }
+

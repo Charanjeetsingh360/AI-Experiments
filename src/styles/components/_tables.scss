@@ -1,0 +1,190 @@
+// =============================================================================
+// CS360 CAREGIVER WEB PORTAL
+// File: styles/components/_tables.scss
+// Description: Data table component with responsive support.
+// =============================================================================
+
+// --- Base table wrapper ---
+.cs360-table-wrapper {
+  background-color: var(--cs360-bg-surface);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  overflow: hidden;
+}
+
+// --- Data table ---
+.cs360-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--cs360-text-sm);
+
+  thead {
+    background-color: var(--cs360-bg-surface);
+    border-bottom: 1px solid var(--cs360-border-default);
+  }
+
+  th {
+    text-align: left;
+    padding: var(--cs360-space-3);
+    font-size: var(--cs360-text-xs);
+    font-weight: var(--cs360-font-medium);
+    color: var(--cs360-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color var(--cs360-transition-fast);
+
+    &:hover {
+      color: var(--cs360-text-primary);
+    }
+
+    &.sort-asc, &.sort-desc {
+      color: var(--cs360-text-primary);
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--cs360-border-subtle);
+    transition: background-color var(--cs360-transition-fast);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: var(--cs360-bg-surface-hover);
+    }
+
+    &.selected {
+      background-color: var(--cs360-info-0);
+    }
+  }
+
+  td {
+    padding: var(--cs360-space-3);
+    font-size: var(--cs360-text-sm);
+    color: var(--cs360-text-primary);
+    vertical-align: middle;
+    white-space: nowrap;
+
+    &:first-child {
+      border-left: none;
+    }
+  }
+
+  .table-cell--truncate {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// --- Interactive table row with checkbox ---
+.cs360-table-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  min-height: var(--density-row-height);
+  padding: 0 var(--density-space-component);
+  border-bottom: 1px solid var(--cs360-border-subtle);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: var(--cs360-bg-surface-hover);
+  }
+
+  .cs360-row-checkbox {
+    display: flex;
+    align-items: center;
+  }
+
+  .cs360-row-content {
+    display: flex;
+    align-items: center;
+    gap: var(--cs360-space-3);
+    min-width: 0;
+    flex: 1;
+  }
+
+  .cs360-row-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--cs360-radius-full);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .cs360-row-meta {
+    min-width: 0;
+    flex: 1;
+
+    .cs360-row-primary {
+      font-size: var(--cs360-text-sm);
+      font-weight: var(--cs360-font-medium);
+      color: var(--cs360-text-primary);
+    }
+
+    .cs360-row-secondary {
+      font-size: var(--cs360-text-xs);
+      color: var(--cs360-text-secondary);
+    }
+  }
+}
+
+// --- Table footer with pagination ---
+.cs360-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--cs360-space-3);
+  border-top: 1px solid var(--cs360-border-subtle);
+  background-color: var(--cs360-bg-surface);
+
+  .cs360-table-count {
+    font-size: var(--cs360-text-sm);
+    color: var(--cs360-text-muted);
+  }
+
+  .cs360-table-pagination {
+    display: flex;
+    align-items: center;
+    gap: var(--cs360-space-2);
+
+    button {
+      min-height: 32px;
+      min-width: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--cs360-border-subtle);
+      background-color: var(--cs360-bg-surface);
+      border-radius: var(--cs360-radius-sm);
+      cursor: pointer;
+      color: var(--cs360-text-primary);
+      transition: all var(--cs360-transition-fast);
+
+      &:hover:not(:disabled) {
+        background-color: var(--cs360-action-ghost-hover);
+        border-color: var(--cs360-border-default);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// --- Responsive table ---
+@media (max-width: 768px) {
+  .cs360-table th:nth-child(n+4),
+  .cs360-table td:nth-child(n+4) {
+    display: none;
+  }
+}
+

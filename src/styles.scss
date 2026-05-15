@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+/* =============================================================================
+   CS360 CareGiver Web Portal - Main Styles Entry Point
+   Angular + Tailwind + 4-Layer Token Architecture
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   Token System - 4 Layer Architecture (must come first due to @use rules)
+   ----------------------------------------------------------------------------- */
+
+/* Layer 1: Primitives - Raw design values */
+@use 'styles/tokens/01-primitives' as *;
+
+/* Layer 2: Semantic - Theme mappings (light/dark/high-contrast) */
+@use 'styles/tokens/02-semantic' as *;
+
+/* Layer 2b: Density - Spacing density presets */
+@use 'styles/tokens/02-density' as *;
+
+/* Layer 3: Styles - Typography, shadows, utilities */
+@use 'styles/tokens/03-styles' as *;
+
+/* Layer 4: Components - SCSS component partials */
+@use 'styles/components/buttons' as *;
+@use 'styles/components/forms' as *;
+@use 'styles/components/cards' as *;
+@use 'styles/components/tables' as *;
+@use 'styles/components/sidebar' as *;
+@use 'styles/components/topbar' as *;
+
+/* Tailwind Base, Components, Utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -----------------------------------------------------------------------------
+   Global Base Styles
+   ----------------------------------------------------------------------------- */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--cs360-font-family);
+  font-size: var(--cs360-font-size-base);
+  line-height: var(--cs360-line-height);
+  background-color: var(--cs360-bg);
+  color: var(--cs360-text-primary);
+  transition: background-color var(--cs360-motion-normal),
+              color var(--cs360-motion-normal);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Focus visible outline for accessibility */
+:focus-visible {
+  outline: 2px solid var(--cs360-action-primary);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--cs360-blue-200);
+  color: var(--cs360-blue-900);
+}
