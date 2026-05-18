@@ -43,8 +43,8 @@ export const routes: Routes = [
       },
       {
         path: 'availability',
-        loadComponent: () => import('./features/dashboard/dashboard.component')
-          .then(m => m.DashboardComponent),
+        loadComponent: () => import('./features/availability/availability.component')
+          .then(m => m.AvailabilityComponent),
         title: 'Availability - CareGiver 360'
       }
     ]

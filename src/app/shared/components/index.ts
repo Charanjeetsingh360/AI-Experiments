@@ -5,3 +5,5 @@ export * from './button/button.component';
 export * from './card/card.component';
 export * from './sidebar/sidebar.component';
 export * from './topbar/topbar.component';
+export * from './cs-tabs/cs-tabs.component';
+export * from './cs-flyout/cs-flyout.component';
