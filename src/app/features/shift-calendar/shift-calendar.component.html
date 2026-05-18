@@ -1,24 +1,31 @@
-<div class="flex h-full flex-col overflow-hidden bg-[var(--cs360-bg-primary)]">
+<div class="flex h-full flex-col overflow-hidden">
 
-  <!-- Header -->
-  <div class="flex shrink-0 items-center justify-between border-b border-[var(--cs360-border-subtle)] px-[var(--density-space-4)] py-[var(--density-space-3)]">
-    <h1 class="text-xl font-bold text-[var(--cs360-text-primary)]">Shift Calendar</h1>
-    <div class="flex items-center gap-2">
+  <!-- Page Header -->
+  <cs-page-header title="Shift Calendar" description="View and manage your assigned, adhoc, and open shifts.">
+    <div header-actions class="flex items-center gap-[var(--density-space-3)]">
       <button type="button"
-        class="flex items-center gap-1.5 rounded-lg border border-[var(--cs360-border-subtle)] px-3 py-1.5 text-sm text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]">
+        class="inline-flex items-center gap-1.5 rounded-md border border-[var(--cs360-border-subtle)]
+               bg-transparent px-[var(--density-space-3)] py-[var(--density-space-2)]
+               text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]
+               shadow-sm transition-colors hover:bg-[var(--cs360-bg-alt)]
+               focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]">
         <cs-icon name="grid_view" [size]="16" />
         Shift Details
       </button>
       <button type="button"
-        class="flex items-center gap-1 rounded-lg border border-[var(--cs360-border-subtle)] px-3 py-1.5 text-sm text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]">
+        class="inline-flex items-center gap-1 rounded-md border border-[var(--cs360-border-subtle)]
+               bg-transparent px-[var(--density-space-3)] py-[var(--density-space-2)]
+               text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]
+               shadow-sm transition-colors hover:bg-[var(--cs360-bg-alt)]
+               focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]">
         More Actions
         <cs-icon name="more_vert" [size]="16" />
       </button>
     </div>
-  </div>
+  </cs-page-header>
 
   <!-- Tabs + View Toggle -->
-  <div class="flex shrink-0 items-center justify-between border-b border-[var(--cs360-border-subtle)] px-[var(--density-space-4)]">
+  <div class="flex shrink-0 items-center justify-between border-b border-[var(--cs360-border-subtle)] px-[var(--density-space-page)]">
     <cs-tabs [tabs]="tabs" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)" />
 
     <!-- View Toggle -->
@@ -42,7 +49,7 @@
   <div class="flex flex-1 overflow-hidden">
 
     <!-- Shift List -->
-    <div class="flex-1 overflow-y-auto px-[var(--density-space-3)] py-[var(--density-space-2)]">
+    <div class="flex-1 overflow-y-auto px-[var(--density-space-page)] py-[var(--density-space-block)]">
 
       @for (group of shiftGroups; track group.date) {
         <div class="flex gap-3 border-b border-[var(--cs360-border-subtle)] py-[var(--density-space-4)]">

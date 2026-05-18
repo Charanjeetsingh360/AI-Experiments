@@ -7,6 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.component';
+import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 
 export type ShiftStatus = 'completed' | 'clocked-in' | 'upcoming' | 'missed';
 
@@ -42,7 +43,7 @@ interface CalendarDay {
 @Component({
   selector: 'app-shift-calendar',
   standalone: true,
-  imports: [CommonModule, CSIconComponent, CSTabsComponent],
+  imports: [CommonModule, CSIconComponent, CSTabsComponent, CsPageHeaderComponent],
   templateUrl: './shift-calendar.component.html',
   styleUrl: './shift-calendar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

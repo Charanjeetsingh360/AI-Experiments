@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
+import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
 
 export interface ClientInfo {
   id: number;
@@ -16,51 +17,41 @@ export interface ClientInfo {
   nextVisit?: string;
 }
 
-/** Gradient palette cycles deterministically per card index */
-const GRADIENTS = [
-  'from-blue-400 to-blue-600',
-  'from-green-400 to-green-600',
-  'from-purple-400 to-purple-600',
-  'from-orange-400 to-orange-600',
-  'from-red-400 to-red-600',
-  'from-indigo-400 to-indigo-600',
-  'from-teal-400 to-teal-600',
-  'from-pink-400 to-pink-600',
-];
-
 /**
- * ClientCardComponent — matches the HTML prototype exactly.
- * Square gradient avatar · name · address · chevron
+ * ClientCardComponent — Figma client card layout.
+ * Circular avatar · name (LastName, FirstName) · address · chevron
  */
 @Component({
   selector: 'app-client-card',
   standalone: true,
-  imports: [CommonModule, CSIconComponent],
+  imports: [CommonModule, CSIconComponent, CSAvatarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex items-center justify-between gap-2 w-full">
-      <!-- Square gradient avatar -->
-      <div class="flex items-start gap-2 min-w-0">
-        <div
-          class="shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br flex items-center justify-center text-white text-sm font-medium"
-          [ngClass]="gradient"
-        >
-          {{ initials }}
-        </div>
+    <div class="flex items-center gap-[var(--density-space-3)] w-full min-w-0">
 
-        <!-- Name + address -->
-        <div class="min-w-0">
-          <h3 class="text-base font-medium text-[var(--cs360-text-primary)] leading-6 tracking-tight truncate">
-            {{ clientName }}
-          </h3>
-          <p class="text-sm text-[var(--cs360-text-secondary)] leading-5 truncate">
-            {{ clientAddress }}
-          </p>
-        </div>
+      <!-- Circular avatar -->
+      <cs-avatar
+        [name]="clientName"
+        [src]="client.avatar"
+        size="lg"
+        class="shrink-0"
+      />
+
+      <!-- Name + address -->
+      <div class="flex-1 min-w-0">
+        <h3 class="font-semibold text-[length:var(--density-text-body)]
+                   text-[var(--cs360-text-primary)] truncate leading-snug">
+          {{ clientName }}
+        </h3>
+        <p class="text-[length:var(--density-text-body-muted)]
+                  text-[var(--cs360-text-secondary)] truncate mt-0.5">
+          {{ clientAddress }}
+        </p>
       </div>
 
       <!-- Chevron -->
-      <cs-icon name="chevron_right" [size]="20" class="shrink-0 text-[var(--cs360-text-tertiary)]" />
+      <cs-icon name="chevron_right" [size]="20"
+               class="shrink-0 text-[var(--cs360-text-tertiary)]" />
     </div>
   `,
   styles: [`:host { display: block; }`],
@@ -69,20 +60,12 @@ export class ClientCardComponent {
   @Input({ required: true }) client!: ClientInfo;
   @Input() index = 0;
 
-  get initials(): string {
-    return `${this.client.firstName[0] ?? ''}${this.client.lastName[0] ?? ''}`.toUpperCase();
-  }
-
   get clientName(): string {
     return `${this.client.lastName}, ${this.client.firstName}`;
   }
 
   get clientAddress(): string {
     return `${this.client.address}, ${this.client.city}, ${this.client.state}`;
-  }
-
-  get gradient(): string {
-    return GRADIENTS[this.index % GRADIENTS.length];
   }
 }
 

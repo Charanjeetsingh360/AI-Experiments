@@ -1,19 +1,20 @@
-<div class="flex h-full flex-col overflow-hidden px-[var(--density-space-4)] pt-[var(--density-space-4)] gap-[var(--density-space-3)]">
+<div class="flex h-full flex-col overflow-hidden">
 
   <!-- Page Header -->
-  <div class="shrink-0">
-    <h1 class="text-xl font-bold text-[var(--cs360-text-primary)]">Trainings</h1>
-  </div>
+  <cs-page-header
+    title="Trainings"
+    description="Track your course progress, certifications and training reports."
+  />
 
   <!-- Tab Navigation -->
-  <div class="shrink-0">
+  <div class="shrink-0 px-[var(--density-space-page)] pt-[var(--density-space-3)]">
     <cs-tabs [tabs]="tabs" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)" />
   </div>
 
   <!-- Trainings Tab -->
   @if (activeTab() === 'trainings') {
     <cs-card-list
-      class="flex-1 min-h-0"
+      class="flex-1 min-h-0 mt-[var(--density-space-3)]"
       [items]="pagedTrainings"
       [totalItems]="trainings.length"
       [pageSize]="trainingsPageSize"
@@ -66,7 +67,7 @@
   <!-- Training Report Tab -->
   @if (activeTab() === 'report') {
     <cs-card-list
-      class="flex-1 min-h-0"
+      class="flex-1 min-h-0 mt-[var(--density-space-3)]"
       [items]="pagedReport"
       [totalItems]="reportItems.length"
       [pageSize]="reportPageSize"

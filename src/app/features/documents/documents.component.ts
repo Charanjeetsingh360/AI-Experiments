@@ -10,6 +10,7 @@ import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
+import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 
 export interface Document {
   id: string;
@@ -30,6 +31,7 @@ export interface Document {
     CsCardListComponent,
     CsCardTemplateDirective,
     CSFlyoutComponent,
+    CsPageHeaderComponent,
   ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',

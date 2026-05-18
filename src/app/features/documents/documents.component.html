@@ -1,24 +1,32 @@
-<div class="flex h-full flex-col overflow-hidden px-[var(--density-space-4)] pt-[var(--density-space-4)] gap-[var(--density-space-3)]">
+<div class="flex h-full flex-col overflow-hidden">
 
   <!-- Page Header -->
-  <div class="flex shrink-0 items-center justify-between">
-    <h1 class="text-xl font-bold text-[var(--cs360-text-primary)]">My Documents</h1>
-    <button type="button"
-      class="flex items-center gap-1.5 rounded-lg bg-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-      (click)="openAddFlyout()">
-      <cs-icon name="add" [size]="16" />
-      Add New
-    </button>
-  </div>
+  <cs-page-header
+    title="My Documents"
+    description="Store and manage your compliance documents, certifications and attachments."
+  >
+    <div header-actions>
+      <button type="button"
+        class="inline-flex items-center gap-1.5 rounded-md bg-[var(--cs360-action-primary)]
+               px-[var(--density-space-4)] py-[var(--density-space-2)]
+               text-[length:var(--density-text-body-muted)] font-medium text-white
+               shadow-sm transition-opacity hover:opacity-90
+               focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
+        (click)="openAddFlyout()">
+        <cs-icon name="add" [size]="16" />
+        Add New
+      </button>
+    </div>
+  </cs-page-header>
 
   <!-- Filter Tabs -->
-  <div class="shrink-0">
+  <div class="shrink-0 px-[var(--density-space-page)] pt-[var(--density-space-3)]">
     <cs-tabs [tabs]="filterTabs" [activeTab]="activeFilter()" (activeTabChange)="onFilterChange($event)" />
   </div>
 
   <!-- Document Card List -->
   <cs-card-list
-    class="flex-1 min-h-0"
+    class="flex-1 min-h-0 mt-[var(--density-space-3)]"
     [items]="pagedDocs"
     [totalItems]="totalItems"
     [pageSize]="pageSize"
@@ -66,19 +74,33 @@
 
     @if (addDocActiveTab() === 'document') {
       <div class="flex flex-col gap-[var(--density-space-3)] pt-2">
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-[var(--cs360-text-primary)]">File Name <span class="text-[var(--cs360-feedback-error)]">*</span></label>
+        <div class="flex flex-col gap-[var(--density-space-1)]">
+          <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
+            File Name <span class="text-[var(--cs360-feedback-error)]">*</span>
+          </label>
           <input type="text" [(ngModel)]="docFileName" maxlength="100"
-            class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)]"
+            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                   bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                   placeholder-[var(--cs360-text-disabled)] shadow-sm
+                   px-[var(--density-space-3)] py-[var(--density-space-2)]
+                   text-[length:var(--density-text-body)]
+                   focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                   focus:border-[var(--cs360-action-primary)]"
             placeholder="Enter file name" />
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
+        <div class="flex flex-col gap-[var(--density-space-1)]">
+          <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
           <textarea [(ngModel)]="docNotes" maxlength="200" rows="3"
-            class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] resize-none"
+            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                   bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                   placeholder-[var(--cs360-text-disabled)] shadow-sm resize-none
+                   px-[var(--density-space-3)] py-[var(--density-space-2)]
+                   text-[length:var(--density-text-body)]
+                   focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                   focus:border-[var(--cs360-action-primary)]"
             placeholder="Add notes (optional)"></textarea>
         </div>
-        <div class="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[var(--cs360-border-subtle)] p-6 text-[var(--cs360-text-tertiary)]">
+        <div class="flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-[var(--cs360-border-subtle)] p-6 text-[var(--cs360-text-tertiary)]">
           <cs-icon name="upload_file" [size]="32" />
           <span class="text-sm">Drag & drop file here, or click to browse</span>
           <span class="text-xs">Max 25 MB</span>
@@ -88,9 +110,16 @@
 
     @if (addDocActiveTab() === 'compliance') {
       <div class="flex flex-col gap-[var(--density-space-3)] pt-2">
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-[var(--cs360-text-primary)]">Compliance Type <span class="text-[var(--cs360-feedback-error)]">*</span></label>
-          <select class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)]">
+        <div class="flex flex-col gap-[var(--density-space-1)]">
+          <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
+            Compliance Type <span class="text-[var(--cs360-feedback-error)]">*</span>
+          </label>
+          <select class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                         bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                         shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
+                         text-[length:var(--density-text-body)]
+                         focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                         focus:border-[var(--cs360-action-primary)]">
             <option value="">Select type...</option>
             <option value="CPR">CPR Certification</option>
             <option value="FIRST_AID">First Aid</option>
@@ -98,28 +127,54 @@
             <option value="TB">TB Test</option>
           </select>
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-[var(--cs360-text-primary)]">License No.</label>
+        <div class="flex flex-col gap-[var(--density-space-1)]">
+          <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">License No.</label>
           <input type="text"
-            class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)]"
+            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                   bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                   placeholder-[var(--cs360-text-disabled)] shadow-sm
+                   px-[var(--density-space-3)] py-[var(--density-space-2)]
+                   text-[length:var(--density-text-body)]
+                   focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                   focus:border-[var(--cs360-action-primary)]"
             placeholder="Enter license number" />
         </div>
-        <div class="flex gap-3">
-          <div class="flex flex-1 flex-col gap-1 min-w-0">
-            <label class="text-sm font-medium text-[var(--cs360-text-primary)]">Origin Date <span class="text-[var(--cs360-feedback-error)]">*</span></label>
+        <div class="flex gap-[var(--density-space-3)]">
+          <div class="flex flex-1 flex-col gap-[var(--density-space-1)] min-w-0">
+            <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
+              Origin Date <span class="text-[var(--cs360-feedback-error)]">*</span>
+            </label>
             <input type="date"
-              class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)]" />
+              class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                     bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                     shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
+                     text-[length:var(--density-text-body)]
+                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                     focus:border-[var(--cs360-action-primary)]" />
           </div>
-          <div class="flex flex-1 flex-col gap-1 min-w-0">
-            <label class="text-sm font-medium text-[var(--cs360-text-primary)]">Expiration Date <span class="text-[var(--cs360-feedback-error)]">*</span></label>
+          <div class="flex flex-1 flex-col gap-[var(--density-space-1)] min-w-0">
+            <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
+              Expiration Date <span class="text-[var(--cs360-feedback-error)]">*</span>
+            </label>
             <input type="date"
-              class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)]" />
+              class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                     bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                     shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
+                     text-[length:var(--density-text-body)]
+                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                     focus:border-[var(--cs360-action-primary)]" />
           </div>
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
+        <div class="flex flex-col gap-[var(--density-space-1)]">
+          <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
           <textarea rows="3"
-            class="w-full rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-3 py-2 text-sm text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] resize-none"
+            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+                   bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+                   placeholder-[var(--cs360-text-disabled)] shadow-sm resize-none
+                   px-[var(--density-space-3)] py-[var(--density-space-2)]
+                   text-[length:var(--density-text-body)]
+                   focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                   focus:border-[var(--cs360-action-primary)]"
             placeholder="Add notes (optional)"></textarea>
         </div>
       </div>

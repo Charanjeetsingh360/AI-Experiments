@@ -12,6 +12,7 @@ import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-car
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { CsBtnComponent } from '../../shared/components/button/button.component';
+import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 
 export interface AvailabilityItem {
   id: string;
@@ -37,6 +38,7 @@ export interface AvailabilityItem {
     CsCardTemplateDirective,
     CSIconComponent,
     CsBtnComponent,
+    CsPageHeaderComponent,
   ],
   templateUrl: './availability.component.html',
   styleUrls: ['./availability.component.scss'],

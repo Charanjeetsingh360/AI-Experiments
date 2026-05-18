@@ -1,0 +1,208 @@
+<div class="flex h-full flex-col overflow-hidden">
+
+  <!-- Page Header -->
+  <cs-page-header title="Home">
+    <div header-actions>
+      <span class="text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]">
+        {{ today | date:'EEEE, MMMM d, y' }}
+      </span>
+    </div>
+  </cs-page-header>
+
+  <!-- Scrollable body -->
+  <div class="flex flex-1 flex-col gap-[var(--density-space-section)] overflow-y-auto px-[var(--density-space-page)] py-[var(--density-space-block)]">
+
+    <!-- ── Welcome Banner ───────────────────────────────────── -->
+    <div class="flex flex-col gap-[var(--density-space-2)] rounded-xl
+                bg-[var(--cs360-action-primary)] px-[var(--density-space-page)]
+                py-[var(--density-space-section)] text-white">
+      <p class="text-[length:var(--density-text-body-muted)] font-medium opacity-80">
+        {{ greeting }},
+      </p>
+      <h2 class="text-2xl font-bold leading-tight">{{ caregiverName }} 👋</h2>
+      <p class="text-[length:var(--density-text-body)] opacity-75">
+        Here's what's happening with your schedule today.
+      </p>
+    </div>
+
+    <!-- ── Summary Stats ────────────────────────────────────── -->
+    <div class="grid grid-cols-2 gap-[var(--density-space-block)] lg:grid-cols-4">
+      @for (stat of stats; track stat.key) {
+        <div class="flex items-start gap-[var(--density-space-3)]
+                    rounded-xl border border-[var(--cs360-border-subtle)]
+                    bg-[var(--cs360-bg-surface)]
+                    p-[var(--density-space-4)]">
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center
+                      rounded-lg bg-[var(--cs360-action-primary-subtle)]">
+            <cs-icon [name]="stat.icon" [size]="22"
+                     class="text-[var(--cs360-action-primary)]" />
+          </div>
+          <div class="flex min-w-0 flex-col">
+            <span class="text-[length:var(--density-text-body-muted)]
+                         text-[var(--cs360-text-secondary)] leading-snug">
+              {{ stat.label }}
+            </span>
+            <span class="text-2xl font-bold text-[var(--cs360-text-primary)]">
+              {{ stat.value }}
+            </span>
+            @if (stat.change) {
+              <span class="mt-0.5 text-[11px]"
+                    [class]="stat.changePositive
+                      ? 'text-[var(--cs360-feedback-success)]'
+                      : 'text-[var(--cs360-feedback-error)]'">
+                {{ stat.change }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Today's Shifts ────────────────────────────────────── -->
+    <div class="flex flex-col gap-[var(--density-space-3)]">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold text-[var(--cs360-text-primary)]">
+          Today's Shifts
+        </h3>
+        <a routerLink="/shift-calendar"
+           class="flex items-center gap-1 text-[length:var(--density-text-body-muted)]
+                  font-medium text-[var(--cs360-action-primary)]
+                  transition-opacity hover:opacity-80">
+          View All
+          <cs-icon name="chevron_right" [size]="16" />
+        </a>
+      </div>
+
+      @if (todayShifts.length === 0) {
+        <div class="flex flex-col items-center justify-center gap-[var(--density-space-3)]
+                    rounded-xl border border-dashed border-[var(--cs360-border-subtle)]
+                    py-[var(--density-space-section)] text-[var(--cs360-text-secondary)]">
+          <cs-icon name="event_available" [size]="40"
+                   class="opacity-40" />
+          <p class="text-sm">No shifts scheduled for today.</p>
+        </div>
+      } @else {
+        <div class="flex flex-col gap-[var(--density-space-2)]">
+          @for (shift of todayShifts; track shift.id) {
+            <div class="flex items-center gap-[var(--density-space-3)]
+                        rounded-xl border border-[var(--cs360-border-subtle)]
+                        bg-[var(--cs360-bg-surface)]
+                        px-[var(--density-space-4)] py-[var(--density-space-3)]
+                        transition-shadow hover:shadow-sm">
+
+              <!-- Left: time strip -->
+              <div class="flex w-[72px] shrink-0 flex-col items-center
+                          rounded-lg bg-[var(--cs360-action-primary-subtle)]
+                          py-[var(--density-space-2)]">
+                <span class="text-xs font-semibold text-[var(--cs360-action-primary)]">
+                  {{ shift.startTime }}
+                </span>
+                <span class="my-0.5 text-[10px] text-[var(--cs360-text-tertiary)]">to</span>
+                <span class="text-xs font-semibold text-[var(--cs360-action-primary)]">
+                  {{ shift.endTime }}
+                </span>
+              </div>
+
+              <!-- Middle: client + type -->
+              <div class="flex flex-1 items-center gap-[var(--density-space-3)] min-w-0">
+                <cs-avatar [name]="shift.clientName" size="md" />
+                <div class="flex min-w-0 flex-col">
+                  <span class="truncate font-medium text-[var(--cs360-text-primary)]">
+                    {{ shift.clientName }}
+                  </span>
+                  <span class="text-[length:var(--density-text-body-muted)]
+                               text-[var(--cs360-text-secondary)]">
+                    {{ shift.serviceType }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Right: status badge -->
+              <span class="shrink-0 rounded-full px-3 py-0.5
+                           text-[11px] font-semibold"
+                    [ngClass]="{
+                      'bg-[var(--cs360-feedback-success-bg)] text-[var(--cs360-feedback-success)]': shift.status === 'confirmed',
+                      'bg-[var(--cs360-feedback-warning-bg)] text-[var(--cs360-feedback-warning)]': shift.status === 'pending',
+                      'bg-[var(--cs360-feedback-error-bg)]   text-[var(--cs360-feedback-error)]'  : shift.status === 'cancelled'
+                    }">
+                {{ shift.status | titlecase }}
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- ── Two-column: Upcoming + Quick Actions ────────────── -->
+    <div class="grid grid-cols-1 gap-[var(--density-space-block)] xl:grid-cols-[1fr_320px]">
+
+      <!-- Upcoming Shifts -->
+      <div class="flex flex-col gap-[var(--density-space-3)]
+                  rounded-xl border border-[var(--cs360-border-subtle)]
+                  bg-[var(--cs360-bg-surface)]
+                  p-[var(--density-space-4)]">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold text-[var(--cs360-text-primary)]">
+            Upcoming Shifts
+          </h3>
+          <a routerLink="/shift-calendar"
+             class="text-[length:var(--density-text-body-muted)] font-medium
+                    text-[var(--cs360-action-primary)] transition-opacity hover:opacity-80">
+            View Calendar
+          </a>
+        </div>
+
+        <div class="flex flex-col divide-y divide-[var(--cs360-border-subtle)]">
+          @for (shift of upcomingShifts; track shift.id) {
+            <div class="flex items-center gap-[var(--density-space-3)]
+                        py-[var(--density-space-3)]">
+              <cs-avatar [name]="shift.clientName" size="sm" />
+              <div class="flex flex-1 min-w-0 flex-col">
+                <span class="truncate font-medium text-[var(--cs360-text-primary)]">
+                  {{ shift.clientName }}
+                </span>
+                <span class="text-xs text-[var(--cs360-text-secondary)]">
+                  {{ shift.date }} · {{ shift.startTime }}–{{ shift.endTime }}
+                </span>
+              </div>
+              <span class="shrink-0 text-xs font-medium text-[var(--cs360-text-tertiary)]">
+                {{ shift.serviceType }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex flex-col gap-[var(--density-space-3)]
+                  rounded-xl border border-[var(--cs360-border-subtle)]
+                  bg-[var(--cs360-bg-surface)]
+                  p-[var(--density-space-4)]">
+        <h3 class="text-base font-semibold text-[var(--cs360-text-primary)]">
+          Quick Actions
+        </h3>
+        <div class="grid grid-cols-2 gap-[var(--density-space-2)]">
+          @for (action of quickActions; track action.label) {
+            <a [routerLink]="action.route"
+               class="flex flex-col items-center gap-[var(--density-space-2)]
+                      rounded-xl border border-[var(--cs360-border-subtle)]
+                      p-[var(--density-space-3)]
+                      text-[var(--cs360-text-secondary)]
+                      transition-all hover:border-[var(--cs360-action-primary)]
+                      hover:bg-[var(--cs360-action-primary-subtle)]
+                      hover:text-[var(--cs360-action-primary)]
+                      focus:outline-none focus:ring-2
+                      focus:ring-[var(--cs360-action-primary)]">
+              <cs-icon [name]="action.icon" [size]="24" />
+              <span class="text-[11px] font-medium text-center leading-tight">
+                {{ action.label }}
+              </span>
+            </a>
+          }
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end scrollable body -->
+</div>

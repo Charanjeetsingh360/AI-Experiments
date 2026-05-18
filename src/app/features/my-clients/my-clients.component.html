@@ -1,39 +1,12 @@
-<div class="my-clients-page h-full flex flex-col bg-[var(--cs360-bg-canvas)]">
+<div class="flex h-full flex-col overflow-hidden">
 
-  <!-- Page Header — matches HTML prototype exactly -->
-  <header class="flex items-center justify-between px-6 py-5 border-b border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] flex-shrink-0">
-    <div>
-      <div class="flex items-center gap-4 mb-1">
-        <h1 class="text-xl font-bold text-[var(--cs360-text-primary)]">Clients</h1>
-      </div>
-      <p class="text-sm text-[var(--cs360-text-secondary)]">
-        You can view the Emergency Contact and Care Plan of each Client by clicking on Client Name.
-      </p>
-    </div>
-    <div class="flex items-center gap-3">
-      <!-- Search -->
-      <div class="relative">
-        <cs-icon name="search" [size]="16" class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--cs360-text-tertiary)] pointer-events-none" />
-        <input
-          type="text"
-          placeholder="Search clients..."
-          [value]="searchQuery()"
-          (input)="onSearch($event)"
-          class="pl-9 pr-4 py-1.5 w-56 text-sm rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] placeholder:text-[var(--cs360-text-tertiary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors"
-        />
-      </div>
-      <!-- Refresh -->
-      <button
-        class="p-2 rounded-lg text-[var(--cs360-text-secondary)] hover:text-[var(--cs360-text-primary)] hover:bg-[var(--cs360-bg-alt)] transition-colors border-none bg-transparent cursor-pointer"
-        aria-label="Refresh"
-        title="Refresh"
-      >
-        <cs-icon name="refresh" [size]="20" />
-      </button>
-    </div>
-  </header>
+  <!-- Page Header -->
+  <cs-page-header
+    title="Clients"
+    description="Click on a client card to view their Care Plan, Emergency Contact and upcoming shifts."
+  />
 
-  <!-- Client Grid -->
+    <!-- Client Grid -->
   <div class="flex-1 overflow-hidden">
     <cs-card-list
       [items]="filteredClients()"
@@ -44,7 +17,7 @@
       (itemClick)="onClientClick($any($event))"
     >
       <ng-template csCardTemplate let-client let-i="index">
-        <app-client-card [client]="client" [index]="i"></app-client-card>
+        <app-client-card [client]="client" [index]="i" />
       </ng-template>
     </cs-card-list>
   </div>
@@ -54,7 +27,7 @@
     <app-client-detail-modal
       [client]="selectedClient()!"
       (close)="closeFlyout()"
-    ></app-client-detail-modal>
+    />
   }
 </div>
 

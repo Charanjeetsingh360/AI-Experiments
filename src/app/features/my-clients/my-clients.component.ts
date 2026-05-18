@@ -6,6 +6,7 @@ import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs
 import { ClientCardComponent } from './components/client-card/client-card.component';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { ClientDetailModalComponent } from './components/client-detail-modal/client-detail-modal.component';
+import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 
 export interface Client {
   id: number;
@@ -32,6 +33,7 @@ export interface Client {
     ClientCardComponent,
     CSIconComponent,
     ClientDetailModalComponent,
+    CsPageHeaderComponent,
   ],
   templateUrl: './my-clients.component.html',
   styleUrls: ['./my-clients.component.scss'],

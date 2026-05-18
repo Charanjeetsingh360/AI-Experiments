@@ -7,297 +7,248 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
+import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
 import type { Client } from '../../my-clients.component';
 
 export interface ClientShift {
   id: number;
-  date: string;
-  dayName: string;
-  timeRange: string;
-  type: string;
-  status: 'scheduled' | 'completed' | 'pending';
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  duration: string;
+  serviceType: string;
+  totalHrs: string;
+  remainingHrs: string;
+  payInfo: string;
+  isBackToBack: boolean;
 }
 
-/** Gradient palette cycles deterministically per client id */
-const GRADIENTS = [
-  ['#60a5fa', '#2563eb'], // blue
-  ['#34d399', '#059669'], // green
-  ['#a78bfa', '#7c3aed'], // purple
-  ['#fb923c', '#ea580c'], // orange
-  ['#f472b6', '#db2777'], // pink
-  ['#38bdf8', '#0284c7'], // sky
-  ['#a3e635', '#65a30d'], // lime
-  ['#fb7185', '#e11d48'], // rose
-];
-
-const MOCK_SHIFTS: ClientShift[] = [
-  { id: 1, date: 'Jan 22', dayName: 'Monday',    timeRange: '8:00 AM – 12:00 PM', type: 'Personal Care',  status: 'scheduled' },
-  { id: 2, date: 'Jan 24', dayName: 'Wednesday',  timeRange: '2:00 PM – 6:00 PM',  type: 'Companionship',  status: 'scheduled' },
-  { id: 3, date: 'Jan 26', dayName: 'Friday',     timeRange: '9:00 AM – 1:00 PM',  type: 'Homemaking',     status: 'pending' },
-];
+const MOCK_SHIFT: ClientShift = {
+  id: 1,
+  startDate: 'MM/DD/YY',
+  startTime: '2:00 AM (AST)',
+  endDate: 'MM/DD/YY',
+  endTime: '2:30 AM (AST)',
+  duration: '0h 30m',
+  serviceType: 'Healthcare Services (Authorized) - 123445',
+  totalHrs: '8.00',
+  remainingHrs: '8.00',
+  payInfo: 'Pay Rate: $30/15 min, Estimated Earnings: $60',
+  isBackToBack: true,
+};
 
 @Component({
   selector: 'app-client-detail-modal',
   standalone: true,
-  imports: [CommonModule, CSIconComponent],
+  imports: [CommonModule, CSIconComponent, CSAvatarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Backdrop -->
     <div
-      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      class="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
-      [attr.aria-label]="client ? client.firstName + ' ' + client.lastName + ' details' : 'Client details'"
+      [attr.aria-label]="client.firstName + ' ' + client.lastName + ' details'"
     >
       <!-- Scrim -->
-      <div
-        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        (click)="close.emit()"
-      ></div>
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+           (click)="close.emit()"></div>
 
-      <!-- Modal card -->
-      <div
-        class="relative z-10 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-        style="background: var(--cs360-bg-surface); max-height: 90vh;"
-      >
-        @if (client) {
+      <!-- Modal card: 500px wide, white bg -->
+      <div class="relative z-10 flex w-full max-w-[500px] flex-col overflow-hidden
+                  rounded-t-2xl sm:rounded-2xl bg-[var(--cs360-bg-surface)] shadow-2xl"
+           style="max-height: 92vh;">
 
-          <!-- ── SECTION 1: Header ──────────────────────────── -->
-          <div class="flex items-center justify-between px-5 py-4 border-b"
-            style="border-color: var(--cs360-border-subtle);">
-            <h2 class="text-base font-semibold" style="color: var(--cs360-text-primary);">
-              Client Details
-            </h2>
-            <button
-              (click)="close.emit()"
-              class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors border-none cursor-pointer"
-              style="background: transparent; color: var(--cs360-text-secondary);"
-              aria-label="Close"
-              (mouseenter)="onCloseHover($event, true)"
-              (mouseleave)="onCloseHover($event, false)"
-            >
-              <cs-icon name="close" [size]="20" />
+        <!-- ── Header ──────────────────────────────── -->
+        <div class="relative flex shrink-0 items-center justify-center
+                    border-b border-[var(--cs360-border-subtle)]
+                    px-4 py-3">
+          <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">
+            Client Details
+          </h2>
+          <button type="button" (click)="close.emit()" aria-label="Close"
+            class="absolute right-3 inline-flex h-8 w-8 items-center justify-center
+                   rounded-full text-[var(--cs360-text-primary)]
+                   transition-colors hover:bg-[var(--cs360-bg-alt)]
+                   focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]">
+            <cs-icon name="close" [size]="20" />
+          </button>
+        </div>
+
+        <!-- ── Scrollable body ─────────────────────── -->
+        <div class="flex-1 overflow-y-auto px-[10px] py-[10px]">
+
+          <!-- ── Profile row: 3 items, no gap, flush ─ -->
+          <!-- Figma: modal profile info HORIZONTAL, notes(155) + user_face(70) + directions(155) = 380, pad T12 B12 -->
+          <div class="flex items-center py-3">
+
+            <!-- Care Plan pill: flex-1, rounded-lg, bg action-primary-subtle, pad T10 R10 B10 L10, gap 6 -->
+            <button type="button"
+              class="flex flex-1 items-center justify-center gap-1.5
+                     rounded-lg bg-[var(--cs360-action-primary-subtle)]
+                     px-[10px] py-[10px]
+                     text-[var(--cs360-action-primary)]
+                     hover:opacity-90 transition-opacity
+                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
+              (click)="onAction('care-plan')">
+              <span class="whitespace-nowrap text-sm font-medium">Care Plan</span>
+              <cs-icon name="assignment" [size]="20" />
+            </button>
+
+            <!-- Avatar: 70x70, circle, gap 6 inside, pad T2 R6 B4 L6 -->
+            <div class="flex shrink-0 items-center justify-center px-[6px] py-[2px]">
+              <cs-avatar [name]="clientName" [src]="client.avatar" [sizePx]="70" />
+            </div>
+
+            <!-- Map Directions pill: flex-1, same style as Care Plan -->
+            <button type="button"
+              class="flex flex-1 items-center justify-center gap-1.5
+                     rounded-lg bg-[var(--cs360-action-primary-subtle)]
+                     px-[10px] py-[10px]
+                     text-[var(--cs360-action-primary)]
+                     hover:opacity-90 transition-opacity
+                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
+              (click)="onAction('directions')">
+              <cs-icon name="assistant_navigation" [size]="20" />
+              <span class="whitespace-nowrap text-sm font-medium">Map Directions</span>
             </button>
           </div>
 
-          <!-- Scrollable body -->
-          <div class="overflow-y-auto flex-1">
+          <!-- ── Address block: center, gap 6, pb 10 ─ -->
+          <!-- Figma: address pad(T0,R0,B10,L0) gap=6 VERTICAL, text centered -->
+          <div class="flex flex-col items-center pb-[10px]" style="gap:6px;">
+            <p class="text-base font-bold text-[var(--cs360-text-primary)]">
+              {{ clientName }}
+            </p>
+            <p class="text-sm text-[var(--cs360-text-primary)]">
+              {{ client.phoneNumber }}
+            </p>
+            <p class="text-sm text-[var(--cs360-text-primary)]">
+              {{ clientAddress }}
+            </p>
+          </div>
 
-            <!-- ── SECTION 2: User Information ─────────────── -->
-            <div class="px-5 py-6 border-b" style="border-color: var(--cs360-border-subtle);">
+          <!-- ── Quick Actions: 2-col grid, pad T12 B12, each pad T8 R16 B8 L16, r8, gap 8 ─ -->
+          <!-- Figma: quick actions GRID, py-12 wrapper, each action 184x40 r=8 pad(T8,R16,B8,L16) gap=8 -->
+          <div class="grid grid-cols-2 py-3" style="gap:8px;">
+            @for (action of quickActions; track action.key) {
+              <button type="button"
+                class="flex items-center justify-center
+                       rounded-lg bg-[var(--cs360-action-primary-subtle)]
+                       px-4 py-2
+                       text-center text-sm font-medium
+                       text-[var(--cs360-action-primary)]
+                       hover:opacity-90 transition-opacity
+                       focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
+                style="min-height:40px; gap:8px;"
+                (click)="onAction(action.key)">
+                {{ action.label }}
+              </button>
+            }
+          </div>
 
-              <!-- Avatar row: left action | avatar | right action -->
-              <div class="flex items-center justify-between gap-4">
+          <!-- ── Upcoming Shift title: pad T12 B12 ─── -->
+          <div class="py-3">
+            <h3 class="text-base font-bold text-[var(--cs360-text-primary)]">
+              Upcoming Shift
+            </h3>
+          </div>
 
-                <!-- Left action: Call -->
-                <button
-                  class="flex flex-col items-center gap-1.5 p-3 rounded-xl flex-1 transition-colors border cursor-pointer"
-                  style="background: var(--cs360-bg-alt); border-color: var(--cs360-border-subtle); color: var(--cs360-action-primary);"
-                  (click)="onCall()"
-                  title="Call client"
-                >
-                  <cs-icon name="call" [size]="22" />
-                  <span class="text-xs font-medium" style="color: var(--cs360-text-secondary);">Call</span>
-                </button>
+          <!-- ── Shift Card: bg #EAEEF8, r8, HORIZONTAL ─ -->
+          <!-- Figma: Shift Card Types bg=rgb(234,238,248) r=8, bar 6x185 + shif_data pad(T8,R8,B8,L8) gap=16 -->
+          <div class="flex overflow-hidden rounded-lg" style="background:#EAEEF8;">
 
-                <!-- Centered avatar -->
-                <div class="flex flex-col items-center gap-2 flex-shrink-0">
-                  <div
-                    class="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg"
-                    [style.background]="'linear-gradient(135deg, ' + gradient[0] + ', ' + gradient[1] + ')'"
-                  >
-                    {{ initials }}
-                  </div>
-                  <!-- Status badge -->
-                  <span
-                    class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
-                    [style.background]="statusBg"
-                    [style.color]="statusColor"
-                  >
-                    <span class="w-1.5 h-1.5 rounded-full inline-block" [style.background]="statusColor"></span>
-                    {{ client.status }}
-                  </span>
+            <!-- Left accent bar: 6px wide, blue -->
+            <div class="shrink-0" style="width:6px; background:#4DA6FF;"></div>
+
+            <!-- Shift data: pad 8px all sides, gap 16px vertical -->
+            <div class="flex flex-1 flex-col" style="padding:8px; gap:16px;">
+
+              <!-- Timings row: Start | Duration pill | End -->
+              <!-- Figma: module-shift-Timings HORIZONTAL, Start(136) + duration(87x28 r=9999) + End(136) -->
+              <div class="flex items-center">
+
+                <!-- Start: date bold + time -->
+                <div class="flex flex-col" style="gap:4px; flex:1;">
+                  <span class="text-sm text-[var(--cs360-text-primary)]">{{ shift.startDate }}</span>
+                  <span class="text-sm font-semibold text-[var(--cs360-text-primary)]">{{ shift.startTime }}</span>
                 </div>
 
-                <!-- Right action: Message -->
-                <button
-                  class="flex flex-col items-center gap-1.5 p-3 rounded-xl flex-1 transition-colors border cursor-pointer"
-                  style="background: var(--cs360-bg-alt); border-color: var(--cs360-border-subtle); color: var(--cs360-action-primary);"
-                  (click)="onMessage()"
-                  title="Send message"
-                >
-                  <cs-icon name="chat" [size]="22" />
-                  <span class="text-xs font-medium" style="color: var(--cs360-text-secondary);">Message</span>
-                </button>
+                <!-- Duration pill: r=9999, pad T4 R8 B4 L8, gap 4, white bg -->
+                <!-- dotted lines via flex lines on either side -->
+                <div class="flex items-center" style="flex:0 0 auto;">
+                  <!-- left dotted line -->
+                  <div class="h-px w-6 border-0 border-t border-dotted border-[var(--cs360-text-tertiary)]"></div>
+                  <!-- pill -->
+                  <div class="flex items-center rounded-full bg-[var(--cs360-bg-surface)]"
+                       style="padding: 4px 8px; gap:4px; border: 1px solid var(--cs360-border-subtle);">
+                    <cs-icon name="schedule" [size]="14" class="text-[var(--cs360-text-primary)]" />
+                    <span class="text-xs text-[var(--cs360-text-primary)]">{{ shift.duration }}</span>
+                  </div>
+                  <!-- right dotted line -->
+                  <div class="h-px w-6 border-0 border-t border-dotted border-[var(--cs360-text-tertiary)]"></div>
+                </div>
+
+                <!-- End: date + time, right-aligned -->
+                <div class="flex flex-col items-end" style="gap:4px; flex:1;">
+                  <span class="text-sm text-[var(--cs360-text-primary)]">{{ shift.endDate }}</span>
+                  <span class="text-sm font-semibold text-[var(--cs360-text-primary)]">{{ shift.endTime }}</span>
+                </div>
               </div>
 
-              <!-- Name & address -->
-              <div class="mt-4 text-center">
-                <h3 class="text-xl font-bold" style="color: var(--cs360-text-primary);">
-                  {{ client.lastName }}, {{ client.firstName }}
-                </h3>
-                <p class="mt-1 text-sm" style="color: var(--cs360-text-secondary);">
-                  <cs-icon name="location_on" [size]="14" class="inline-block align-text-bottom mr-0.5" style="color: var(--cs360-text-tertiary);" />
-                  {{ clientAddress }}
-                </p>
-                <p class="mt-0.5 text-sm" style="color: var(--cs360-text-secondary);">
-                  <cs-icon name="call" [size]="14" class="inline-block align-text-bottom mr-0.5" style="color: var(--cs360-text-tertiary);" />
-                  {{ client.phoneNumber }}
-                </p>
-              </div>
-            </div>
-
-            <!-- ── SECTION 3: Quick Actions ─────────────────── -->
-            <div class="px-5 py-5 border-b" style="border-color: var(--cs360-border-subtle);">
-              <p class="text-[10px] font-semibold uppercase tracking-widest mb-3"
-                style="color: var(--cs360-text-tertiary);">Quick Actions</p>
-
-              <div class="grid grid-cols-4 gap-2">
-                @for (action of quickActions; track action.label) {
-                  <button
-                    class="flex flex-col items-center gap-1.5 py-3 px-1 rounded-xl transition-colors border cursor-pointer"
-                    style="background: var(--cs360-bg-alt); border-color: var(--cs360-border-subtle);"
-                    [title]="action.label"
-                    (click)="onQuickAction(action.label)"
-                  >
-                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg"
-                      [style.background]="action.bgColor"
-                      [style.color]="action.iconColor">
-                      <cs-icon [name]="action.icon" [size]="18" />
-                    </span>
-                    <span class="text-[10px] font-medium text-center leading-tight"
-                      style="color: var(--cs360-text-secondary);">{{ action.label }}</span>
-                  </button>
-                }
-              </div>
-            </div>
-
-            <!-- ── SECTION 4: Upcoming Shifts ──────────────── -->
-            <div class="px-5 py-5">
-              <div class="flex items-center justify-between mb-3">
-                <p class="text-[10px] font-semibold uppercase tracking-widest"
-                  style="color: var(--cs360-text-tertiary);">Upcoming Shifts</p>
-                <button
-                  class="text-xs font-medium border-none bg-transparent cursor-pointer"
-                  style="color: var(--cs360-action-primary);"
-                >View all</button>
-              </div>
-
-              @if (upcomingShifts.length === 0) {
-                <div class="flex flex-col items-center py-6 gap-2">
-                  <cs-icon name="event_busy" [size]="32" style="color: var(--cs360-text-tertiary);" />
-                  <p class="text-sm" style="color: var(--cs360-text-tertiary);">No upcoming shifts</p>
+              <!-- Back to Back Shift row (centered) -->
+              <!-- Figma: state HORIZONTAL r=20 pad(T0,R10,B0,L10) gap=10, chronic icon + text -->
+              @if (shift.isBackToBack) {
+                <div class="flex items-center justify-center" style="gap:10px;">
+                  <cs-icon name="schedule" [size]="16" class="text-[var(--cs360-text-primary)]" />
+                  <span class="text-sm text-[var(--cs360-text-primary)]">Back to Back Shift</span>
                 </div>
               }
 
-              <div class="space-y-2">
-                @for (shift of upcomingShifts; track shift.id) {
-                  <div
-                    class="flex items-center gap-3 p-3 rounded-xl"
-                    style="background: var(--cs360-bg-alt);"
-                  >
-                    <!-- Date block -->
-                    <div
-                      class="flex flex-col items-center justify-center w-12 h-12 rounded-xl shrink-0 text-white"
-                      style="background: var(--cs360-action-primary);"
-                    >
-                      <span class="text-[10px] font-medium uppercase leading-none">
-                        {{ shift.date.split(' ')[0] }}
-                      </span>
-                      <span class="text-lg font-bold leading-none mt-0.5">
-                        {{ shift.date.split(' ')[1] }}
-                      </span>
-                    </div>
-
-                    <!-- Shift info -->
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-semibold truncate" style="color: var(--cs360-text-primary);">
-                        {{ shift.type }}
-                      </p>
-                      <div class="flex items-center gap-1 mt-0.5">
-                        <cs-icon name="schedule" [size]="12" style="color: var(--cs360-text-tertiary);" />
-                        <p class="text-xs" style="color: var(--cs360-text-secondary);">{{ shift.timeRange }}</p>
-                      </div>
-                    </div>
-
-                    <!-- Shift status -->
-                    <span
-                      class="shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                      [style.background]="shift.status === 'scheduled' ? 'var(--cs360-feedback-success-bg, #d1fae5)' : 'var(--cs360-feedback-warning-bg, #fef3c7)'"
-                      [style.color]="shift.status === 'scheduled' ? 'var(--cs360-feedback-success)' : 'var(--cs360-feedback-warning)'"
-                    >
-                      {{ shift.status | titlecase }}
-                    </span>
-                  </div>
-                }
+              <!-- Service info: 3 lines centered, pad T4 B4, gap 4 -->
+              <!-- Figma: shift other info pad(T4,R0,B4,L0) gap=4 VERTICAL, all text centered -->
+              <div class="flex flex-col items-center" style="padding: 4px 0; gap:4px;">
+                <p class="text-sm text-[var(--cs360-text-primary)] text-center">
+                  {{ shift.serviceType }}
+                </p>
+                <p class="text-sm text-[var(--cs360-text-primary)] text-center">
+                  Total / Remaining Hrs. : {{ shift.totalHrs }} / {{ shift.remainingHrs }} Hrs. Per Day
+                </p>
+                <p class="text-sm text-[var(--cs360-text-primary)] text-center">
+                  {{ shift.payInfo }}
+                </p>
               </div>
-            </div>
 
-          </div>
+            </div><!-- end shif_data -->
+          </div><!-- end shift card -->
 
-        }
-      </div>
-    </div>
+        </div><!-- end scrollable body -->
+      </div><!-- end modal card -->
+    </div><!-- end backdrop -->
   `,
 })
 export class ClientDetailModalComponent {
   @Input({ required: true }) client!: Client;
   @Output() close = new EventEmitter<void>();
 
-  readonly upcomingShifts = MOCK_SHIFTS;
+  readonly shift = MOCK_SHIFT;
 
   readonly quickActions = [
-    { label: 'Care Plan',  icon: 'medical_information', bgColor: 'var(--cs360-feedback-success-bg, #d1fae5)', iconColor: 'var(--cs360-feedback-success)' },
-    { label: 'Emergency',  icon: 'emergency',            bgColor: 'var(--cs360-feedback-error-bg, #fee2e2)',   iconColor: 'var(--cs360-feedback-error)' },
-    { label: 'Documents',  icon: 'description',          bgColor: 'var(--cs360-feedback-info-bg, #dbeafe)',   iconColor: 'var(--cs360-action-primary)' },
-    { label: 'Messages',   icon: 'chat',                 bgColor: 'var(--cs360-feedback-warning-bg, #fef3c7)',iconColor: 'var(--cs360-feedback-warning)' },
+    { key: 'contacts',          label: 'Contacts' },
+    { key: 'client-documents',  label: 'Client Documents' },
+    { key: 'create-assessment', label: 'Create Assessment' },
+    { key: 'completed-forms',   label: 'Client Completed Forms' },
+    { key: 'open-shifts',       label: 'Open Shifts' },
   ];
 
-  get initials(): string {
-    return `${this.client.firstName[0] ?? ''}${this.client.lastName[0] ?? ''}`.toUpperCase();
+  get clientName(): string {
+    return `${this.client.lastName}, ${this.client.firstName}`;
   }
 
   get clientAddress(): string {
     return `${this.client.address}, ${this.client.city}, ${this.client.state}`;
   }
 
-  get gradient(): [string, string] {
-    const idx = (this.client.id ?? 0) % GRADIENTS.length;
-    return GRADIENTS[idx] as [string, string];
-  }
-
-  get statusBg(): string {
-    const map: Record<string, string> = {
-      Active:   'var(--cs360-feedback-success-bg, #d1fae5)',
-      Inactive: 'var(--cs360-bg-alt)',
-      Pending:  'var(--cs360-feedback-warning-bg, #fef3c7)',
-    };
-    return map[this.client.status] ?? 'var(--cs360-bg-alt)';
-  }
-
-  get statusColor(): string {
-    const map: Record<string, string> = {
-      Active:   'var(--cs360-feedback-success)',
-      Inactive: 'var(--cs360-text-tertiary)',
-      Pending:  'var(--cs360-feedback-warning)',
-    };
-    return map[this.client.status] ?? 'var(--cs360-text-secondary)';
-  }
-
-  setHover(el: HTMLElement, on: boolean): void {
-    el.style.background = on ? 'var(--cs360-bg-alt)' : 'transparent';
-  }
-
-  onCloseHover(event: MouseEvent, on: boolean): void {
-    const el = event.currentTarget as HTMLElement;
-    el.style.background = on ? 'var(--cs360-bg-alt)' : 'transparent';
-  }
-
-  onCall(): void {
-    window.location.href = `tel:${this.client.phoneNumber}`;
-  }
-
-  onMessage(): void { /* navigate to messages */ }
-
-  onQuickAction(label: string): void { /* navigate to section */ }
+  onAction(_key: string): void { /* navigate to section */ }
 }

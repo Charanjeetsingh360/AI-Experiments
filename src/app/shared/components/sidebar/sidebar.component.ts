@@ -77,7 +77,7 @@ interface NavItem {
       top: 0;
       bottom: 0;
       width: var(--cs360-sidebar-width);
-      background-color: var(--cs360-sidebar-bg);
+      background-color: var(--cs360-sidebar-primary-bg);
       display: flex;
       flex-direction: column;
       transition: width var(--cs360-transition-base);
@@ -107,20 +107,20 @@ interface NavItem {
     }
 
     .logo-icon {
-      color: var(--cs360-sidebar-text-active);
+      color: var(--cs360-sidebar-primary-fg);
       flex-shrink: 0;
     }
 
     .logo-text {
       font-size: var(--cs360-text-lg);
       font-weight: 600;
-      color: var(--cs360-sidebar-text-active);
+      color: var(--cs360-sidebar-primary-fg);
       white-space: nowrap;
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: var(--cs360-space-4);
+      padding: var(--cs360-space-0);
       overflow-y: auto;
     }
 
@@ -137,19 +137,34 @@ interface NavItem {
       margin-bottom: var(--cs360-space-1);
 
       &:hover {
-        background-color: var(--cs360-sidebar-hover);
-        color: var(--cs360-sidebar-text-active);
+        background-color: var(--cs360-sidebar-secondary-bg);
+        color: var(--cs360-sidebar-secondary-fg);
+
+        .nav-icon {
+          color: var(--cs360-sidebar-secondary-fg);
+        }
       }
 
       &.active {
-        background-color: var(--cs360-sidebar-active);
-        color: var(--cs360-sidebar-text-active);
+        background-color: var(--cs360-sidebar-accent-bg);
+        color: var(--cs360-sidebar-accent-fg);
+        border-radius: var(--cs360-radius-none);
+
+        .nav-icon {
+          color: var(--cs360-sidebar-icon-active);
+        }
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--cs360-sidebar-ring);
       }
     }
 
     .nav-icon {
       flex-shrink: 0;
-      color: inherit;
+      color: var(--cs360-sidebar-icon);
+      transition: color var(--cs360-transition-fast);
     }
 
     .nav-label {
@@ -166,7 +181,7 @@ interface NavItem {
 
     .nav-badge {
       background-color: var(--cs360-feedback-error);
-      color: white;
+      color: var(--cs360-neutral-0);
       font-size: var(--cs360-text-xs);
       font-weight: 600;
       padding: 2px 6px;
@@ -211,6 +226,11 @@ interface NavItem {
 
       &:hover {
         color: var(--cs360-sidebar-text-active);
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--cs360-sidebar-ring);
       }
     }
 

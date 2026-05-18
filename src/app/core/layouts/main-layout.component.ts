@@ -50,8 +50,10 @@ import { ThemeService } from '../services/theme.service';
 
     .page-content {
       flex: 1;
-      padding: var(--cs360-space-6);
-      overflow-y: auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--cs360-bg-page);
     }
 
     @media (max-width: 768px) {

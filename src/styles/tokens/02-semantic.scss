@@ -16,7 +16,7 @@
 
   /* BACKGROUND SURFACE TOKENS */
   --cs360-bg:              var(--cs360-neutral-50);      // App background
-  --cs360-bg-page:         var(--cs360-neutral-50);      // Page body bg
+  --cs360-bg-page:         var(--cs360-neutral-0);       // Page body bg
   --cs360-bg-canvas:       var(--cs360-neutral-100);     // Page canvas/outer bg
   --cs360-bg-surface:      var(--cs360-neutral-0);       // Card/panel surface
   --cs360-bg-surface-hover:var(--cs360-neutral-50);      // Surface on hover
@@ -24,13 +24,20 @@
   --cs360-bg-raised:       var(--cs360-neutral-0);       // Modal/dropdown bg
   --cs360-bg-overlay:      rgba(12, 18, 26, 0.5);        // Modal backdrop
 
-  /* SIDEBAR TOKENS (Figma: Blue sidebar) */
-  --cs360-sidebar-bg:      var(--cs360-blue-900);         // Sidebar background
-  --cs360-sidebar-hover:   var(--cs360-blue-800);         // Nav item hover
-  --cs360-sidebar-active:  var(--cs360-blue-700);         // Active nav item
-  --cs360-sidebar-text:    var(--cs360-neutral-200);      // Inactive nav text
-  --cs360-sidebar-text-active: var(--cs360-neutral-0);    // Active nav text
-  --cs360-sidebar-border:  var(--cs360-blue-700);         // Divider/border
+  /* SIDEBAR TOKENS — Figma: sidebar semantic palette (shadcn-aligned)
+   * Figma source: XCvAxa7G7QgiTfk08G2LGg node 183-21091 */
+  --cs360-sidebar-primary-bg:      var(--cs360-blue-500);    // Main sidebar bg       (Figma: blue-600)
+  --cs360-sidebar-primary-fg:      var(--cs360-neutral-50);  // Logo/brand text+icon  (Figma: slate-50)
+  --cs360-sidebar-secondary-bg:    var(--cs360-neutral-50);  // Nav hover bg          (Figma: slate-50)
+  --cs360-sidebar-secondary-fg:    var(--cs360-neutral-700); // Text on hover state   (Figma: slate-700)
+  --cs360-sidebar-accent-bg:       var(--cs360-sidebar-ring); // Active nav item bg    (Figma: sidebar-ring = blue-500)
+  --cs360-sidebar-accent-fg:       var(--cs360-neutral-0);    // Text on active state  (Figma: white)
+  --cs360-sidebar-border:          var(--cs360-neutral-200); // Dividers/separators   (Figma: slate-200)
+  --cs360-sidebar-ring:            var(--cs360-blue-350);    // Focus ring + active bg (Figma: sidebar-ring = #2499FF)
+  --cs360-sidebar-text:            var(--cs360-neutral-0);   // Default nav text      (Figma: white)
+  --cs360-sidebar-text-active:     var(--cs360-neutral-0);   // Active nav text       (Figma: white)
+  --cs360-sidebar-icon:            var(--cs360-neutral-0);   // Default nav icon      (Figma: white)
+  --cs360-sidebar-icon-active:     var(--cs360-neutral-0);   // Active nav icon       (Figma: white)
 
   /* TOPBAR TOKENS */
   --cs360-topbar-bg:       var(--cs360-neutral-0);
@@ -132,12 +139,18 @@
   --cs360-bg-overlay:      rgba(0, 0, 0, 0.7);
 
   /* SIDEBAR TOKENS */
-  --cs360-sidebar-bg:      var(--cs360-neutral-950);
-  --cs360-sidebar-hover:   var(--cs360-neutral-900);
-  --cs360-sidebar-active:  var(--cs360-blue-800);
-  --cs360-sidebar-text:    var(--cs360-neutral-400);
-  --cs360-sidebar-text-active: var(--cs360-neutral-50);
-  --cs360-sidebar-border:  var(--cs360-neutral-800);
+  --cs360-sidebar-primary-bg:      var(--cs360-neutral-950);  // Dark sidebar bg
+  --cs360-sidebar-primary-fg:      var(--cs360-neutral-50);   // Logo/brand text+icon
+  --cs360-sidebar-secondary-bg:    var(--cs360-neutral-800);  // Nav hover bg
+  --cs360-sidebar-secondary-fg:    var(--cs360-neutral-100);  // Text on hover state
+  --cs360-sidebar-accent-bg:       var(--cs360-blue-900);     // Active nav item bg (dark blue)
+  --cs360-sidebar-accent-fg:       var(--cs360-neutral-0);    // Text on active state
+  --cs360-sidebar-border:          var(--cs360-neutral-800);  // Dividers/separators
+  --cs360-sidebar-ring:            var(--cs360-blue-400);     // Focus ring
+  --cs360-sidebar-text:            var(--cs360-neutral-400);  // Default nav text (muted)
+  --cs360-sidebar-text-active:     var(--cs360-neutral-0);    // Active nav text
+  --cs360-sidebar-icon:            var(--cs360-neutral-400);  // Default nav icon (muted)
+  --cs360-sidebar-icon-active:     var(--cs360-neutral-0);    // Active nav icon
 
   /* TOPBAR TOKENS */
   --cs360-topbar-bg:       var(--cs360-neutral-900);
@@ -210,12 +223,18 @@
   --cs360-bg-overlay:      rgba(0, 0, 0, 0.9);
 
   /* SIDEBAR TOKENS */
-  --cs360-sidebar-bg:      #000000;
-  --cs360-sidebar-hover:   #1A1A1A;
-  --cs360-sidebar-active:  #000000;
-  --cs360-sidebar-text:    #FFFFFF;
-  --cs360-sidebar-text-active: var(--cs360-neutral-0);
-  --cs360-sidebar-border:  #FFFFFF;
+  --cs360-sidebar-primary-bg:      var(--cs360-neutral-950);  // Near-black sidebar bg
+  --cs360-sidebar-primary-fg:      var(--cs360-neutral-0);    // White logo text+icon
+  --cs360-sidebar-secondary-bg:    var(--cs360-neutral-800);  // High-vis hover bg
+  --cs360-sidebar-secondary-fg:    var(--cs360-neutral-0);    // White text on hover
+  --cs360-sidebar-accent-bg:       var(--cs360-neutral-700);  // High-vis active bg
+  --cs360-sidebar-accent-fg:       var(--cs360-neutral-0);    // White text on active
+  --cs360-sidebar-border:          var(--cs360-neutral-0);    // White dividers (max contrast)
+  --cs360-sidebar-ring:            var(--cs360-neutral-0);    // White focus ring
+  --cs360-sidebar-text:            var(--cs360-neutral-0);    // White nav text
+  --cs360-sidebar-text-active:     var(--cs360-neutral-0);    // White active nav text
+  --cs360-sidebar-icon:            var(--cs360-neutral-0);    // White nav icon
+  --cs360-sidebar-icon-active:     var(--cs360-neutral-0);    // White active nav icon
 
   /* TOPBAR TOKENS */
   --cs360-topbar-bg:       #000000;
