@@ -1,134 +1,105 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CSIconComponent } from '../cs-icon/cs-icon.component';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
+/**
+ * CareGiver 360 Button Component
+ *
+ * Rules:
+ * - Tailwind utilities are the base layout/structure pattern
+ * - Colors come ONLY from semantic token layer (02-semantic.scss)
+ * - Sizes/padding/font-size come from density token layer (02-density.scss)
+ *   so all 3 density modes (compact/default/comfortable) work correctly
+ * - Never hardcode hex colors or fixed px sizes on interactive elements
+ */
 @Component({
-  selector: 'app-button, button[appButton]',
+  selector: 'cs-btn',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CSIconComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button 
-      [class]="buttonClasses"
+    <button
+      [ngClass]="hostClasses"
       [disabled]="disabled || loading"
-      [type]="type">
-      <span class="btn-spinner" *ngIf="loading">
-        <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/>
-          <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity="0.75"/>
-        </svg>
-      </span>
+      [type]="type"
+    >
+      <cs-icon *ngIf="loading" name="progress_activity" [size]="16"
+        class="animate-spin shrink-0" aria-hidden="true" />
       <ng-content></ng-content>
     </button>
   `,
   styles: [`
-    :host {
-      display: inline-flex;
-    }
+    :host { display: inline-flex; }
 
-    button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--cs360-space-2);
-      font-family: inherit;
-      font-weight: 500;
-      border: none;
-      border-radius: var(--cs360-radius-md);
-      cursor: pointer;
-      transition: all var(--cs360-motion-fast);
-      white-space: nowrap;
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      &:focus-visible {
-        box-shadow: var(--cs360-focus-ring);
-      }
-    }
-
-    /* Variants */
-    .btn-primary {
-      background-color: var(--cs360-action-primary);
-      color: var(--cs360-action-primary-text);
-
-      &:hover:not(:disabled) {
-        background-color: var(--cs360-action-primary-hover);
-      }
-    }
-
-    .btn-secondary {
-      background-color: var(--cs360-action-secondary);
-      color: var(--cs360-action-secondary-text);
-
-      &:hover:not(:disabled) {
-        background-color: var(--cs360-action-secondary-hover);
-      }
-    }
-
-    .btn-ghost {
-      background-color: var(--cs360-action-ghost);
-      color: var(--cs360-action-ghost-text);
-
-      &:hover:not(:disabled) {
-        background-color: var(--cs360-action-ghost-hover);
-      }
-    }
-
-    .btn-destructive {
-      background-color: var(--cs360-feedback-error);
-      color: white;
-
-      &:hover:not(:disabled) {
-        background-color: var(--cs360-red-700);
-      }
-    }
-
-    /* Sizes */
-    .btn-sm {
-      height: var(--cs360-input-height-sm);
-      padding: 0 var(--cs360-space-3);
-      font-size: var(--cs360-font-size-sm);
-    }
-
-    .btn-md {
-      height: var(--cs360-input-height-md);
-      padding: 0 var(--cs360-space-4);
-      font-size: var(--cs360-font-size-base);
-    }
-
-    .btn-lg {
-      height: var(--cs360-input-height-lg);
-      padding: 0 var(--cs360-space-6);
-      font-size: var(--cs360-font-size-md);
-    }
-
-    /* Loading spinner */
-    .btn-spinner {
-      display: inline-flex;
-    }
-
-    .animate-spin {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    /* Spin animation for loading state */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 0.8s linear infinite; }
   `]
 })
-export class ButtonComponent {
+export class CsBtnComponent {
   @Input() variant: ButtonVariant = 'primary';
   @Input() size: ButtonSize = 'md';
   @Input() disabled = false;
   @Input() loading = false;
+  @Input() fullWidth = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
 
-  get buttonClasses(): string {
-    return `btn-${this.variant} btn-${this.size}`;
+  /**
+   * Tailwind provides: layout, flex, transition, focus-visible ring, cursor, whitespace
+   * Semantic tokens provide: background, text color, border color, hover color
+   * Density tokens provide: height, padding, font-size
+   */
+  get hostClasses(): string {
+    const base = [
+      'inline-flex items-center justify-center gap-2',
+      'font-medium whitespace-nowrap cursor-pointer',
+      'rounded-[var(--cs360-radius-md)]',
+      'border transition-all duration-150',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1',
+      'disabled:opacity-50 disabled:cursor-not-allowed',
+      this.fullWidth ? 'w-full' : '',
+    ];
+
+    const variants: Record<ButtonVariant, string> = {
+      primary: [
+        'bg-[var(--cs360-action-primary)] text-[var(--cs360-action-primary-text)]',
+        'border-transparent',
+        'hover:bg-[var(--cs360-action-primary-hover)]',
+        'focus-visible:ring-[var(--cs360-action-primary)]',
+      ].join(' '),
+
+      secondary: [
+        'bg-[var(--cs360-action-secondary)] text-[var(--cs360-action-secondary-text)]',
+        'border-[var(--cs360-border-subtle)]',
+        'hover:bg-[var(--cs360-action-secondary-hover)]',
+        'focus-visible:ring-[var(--cs360-action-primary)]',
+      ].join(' '),
+
+      ghost: [
+        'bg-transparent text-[var(--cs360-text-primary)]',
+        'border-transparent',
+        'hover:bg-[var(--cs360-bg-alt)]',
+        'focus-visible:ring-[var(--cs360-action-primary)]',
+      ].join(' '),
+
+      destructive: [
+        'bg-[var(--cs360-feedback-error)] text-white',
+        'border-transparent',
+        'hover:bg-[var(--cs360-feedback-error-hover,var(--cs360-red-700))]',
+        'focus-visible:ring-[var(--cs360-feedback-error)]',
+      ].join(' '),
+    };
+
+    // Sizes use density tokens so compact/default/comfortable all work
+    const sizes: Record<ButtonSize, string> = {
+      sm: 'h-[var(--density-control-height-sm,28px)] px-[var(--density-space-3)] text-[length:var(--density-text-sm)]',
+      md: 'h-[var(--density-control-height-md,36px)] px-[var(--density-space-4)] text-[length:var(--density-text-body)]',
+      lg: 'h-[var(--density-control-height-lg,44px)] px-[var(--density-space-6)] text-[length:var(--density-text-body)]',
+    };
+
+    return [...base, variants[this.variant], sizes[this.size]].filter(Boolean).join(' ');
   }
 }

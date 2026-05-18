@@ -84,6 +84,36 @@
 
   /* FOCUS RING TOKEN */
   --cs360-focus-ring:      0 0 0 2px var(--cs360-blue-200);
+
+  /* -------------------------------------------------------------------------
+   * ALIAS TOKENS — backwards-compatible names used by component layer (Layer 4)
+   * These forward to the correct semantic tokens so existing component SCSS
+   * works without modification across all themes.
+   * ------------------------------------------------------------------------- */
+
+  // Action aliases
+  --cs360-action-primary-default:     var(--cs360-action-primary);
+  --cs360-action-primary-active:      var(--cs360-action-primary-hover);
+  --cs360-action-primary-subtle:      var(--cs360-blue-0);
+
+  --cs360-action-destructive-default: var(--cs360-feedback-error);
+  --cs360-action-destructive-hover:   var(--cs360-red-700);
+  --cs360-action-destructive-active:  var(--cs360-red-700);
+  --cs360-action-destructive-subtle:  var(--cs360-feedback-error-bg);
+
+  --cs360-action-ghost-active:        var(--cs360-action-ghost-hover);
+  --cs360-action-ghost-border:        var(--cs360-border-default);
+
+  // Surface aliases
+  --cs360-bg-default:                 var(--cs360-bg-surface);
+  --cs360-bg-muted:                   var(--cs360-bg-alt);
+  --cs360-bg-surface-active:          var(--cs360-bg-surface-hover);
+
+  // Text aliases
+  --cs360-text-muted:                 var(--cs360-text-tertiary);
+
+  // Border aliases
+  --cs360-border-focus:               var(--cs360-action-primary);
 }
 
 // -----------------------------------------------------------------------------

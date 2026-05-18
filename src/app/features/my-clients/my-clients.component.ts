@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
-import { CSAvatarComponent } from '../../shared/components/cs-avatar/cs-avatar.component';
 import { ClientCardComponent } from './components/client-card/client-card.component';
+import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
+import { ClientDetailModalComponent } from './components/client-detail-modal/client-detail-modal.component';
 
 export interface Client {
   id: number;
@@ -28,8 +29,9 @@ export interface Client {
     FormsModule,
     CsCardListComponent,
     CsCardTemplateDirective,
-    CSAvatarComponent,
     ClientCardComponent,
+    CSIconComponent,
+    ClientDetailModalComponent,
   ],
   templateUrl: './my-clients.component.html',
   styleUrls: ['./my-clients.component.scss'],

@@ -23,92 +23,91 @@ module.exports = {
   theme: {
     extend: {
       // =========================================================================
-      // COLOR PALETTE - References CSS custom properties from semantic layer
-      // These are the public-facing Tailwind color classes that map to tokens
+      // FONT FAMILY — Layer 1 primitive token (--cs360-font-sans)
+      // Ensures ALL Tailwind font-sans utilities use Inter via the token
+      // =========================================================================
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        mono: ['ui-monospace', '"SF Mono"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+      },
+
+      // =========================================================================
+      // COLOR PALETTE — Layer 2 semantic tokens (02-semantic.scss)
+      // Keys match actual --cs360-* variable names from semantic layer
       // =========================================================================
       colors: {
         // Action colors (buttons, links, interactive)
         primary: {
-          default: 'var(--cs360-action-primary-default)',
-          hover: 'var(--cs360-action-primary-hover)',
-          active: 'var(--cs360-action-primary-active)',
-          subtle: 'var(--cs360-action-primary-subtle)',
+          DEFAULT: 'var(--cs360-action-primary)',
+          hover:   'var(--cs360-action-primary-hover)',
+          text:    'var(--cs360-action-primary-text)',
         },
         secondary: {
-          default: 'var(--cs360-action-secondary-default)',
-          hover: 'var(--cs360-action-secondary-hover)',
-        },
-        destructive: {
-          default: 'var(--cs360-action-destructive-default)',
-          hover: 'var(--cs360-action-destructive-hover)',
-          active: 'var(--cs360-action-destructive-active)',
-          subtle: 'var(--cs360-action-destructive-subtle)',
+          DEFAULT: 'var(--cs360-action-secondary)',
+          hover:   'var(--cs360-action-secondary-hover)',
+          text:    'var(--cs360-action-secondary-text)',
         },
         ghost: {
-          hover: 'var(--cs360-action-ghost-hover)',
-          active: 'var(--cs360-action-ghost-active)',
-          border: 'var(--cs360-action-ghost-border)',
+          DEFAULT: 'var(--cs360-action-ghost)',
+          hover:   'var(--cs360-action-ghost-hover)',
+          text:    'var(--cs360-action-ghost-text)',
         },
 
-        // Status colors
+        // Feedback / Status
         success: {
-          default: 'var(--cs360-status-success-default)',
-          subtle: 'var(--cs360-status-success-subtle)',
+          DEFAULT: 'var(--cs360-feedback-success)',
+          bg:      'var(--cs360-feedback-success-bg)',
+          border:  'var(--cs360-feedback-success-border)',
         },
         warning: {
-          default: 'var(--cs360-status-warning-default)',
-          subtle: 'var(--cs360-status-warning-subtle)',
+          DEFAULT: 'var(--cs360-feedback-warning)',
+          bg:      'var(--cs360-feedback-warning-bg)',
+          border:  'var(--cs360-feedback-warning-border)',
         },
         error: {
-          default: 'var(--cs360-status-error-default)',
-          subtle: 'var(--cs360-status-error-subtle)',
+          DEFAULT: 'var(--cs360-feedback-error)',
+          bg:      'var(--cs360-feedback-error-bg)',
+          border:  'var(--cs360-feedback-error-border)',
         },
         info: {
-          default: 'var(--cs360-status-info-default)',
-          subtle: 'var(--cs360-status-info-subtle)',
+          DEFAULT: 'var(--cs360-feedback-info)',
+          bg:      'var(--cs360-feedback-info-bg)',
+          border:  'var(--cs360-feedback-info-border)',
         },
 
-        // Surface colors
-        default: {
-          DEFAULT: 'var(--cs360-bg-default)',
-        },
+        // Surface / Background
         surface: {
           DEFAULT: 'var(--cs360-bg-surface)',
-          hover: 'var(--cs360-bg-surface-hover)',
-          active: 'var(--cs360-bg-surface-active)',
-        },
-        muted: {
-          DEFAULT: 'var(--cs360-bg-muted)',
-        },
-        elevated: {
-          DEFAULT: 'var(--cs360-bg-elevated)',
+          hover:   'var(--cs360-bg-surface-hover)',
+          alt:     'var(--cs360-bg-alt)',
+          canvas:  'var(--cs360-bg-canvas)',
+          raised:  'var(--cs360-bg-raised)',
         },
 
         // Text colors
         text: {
-          primary: 'var(--cs360-text-primary)',
+          primary:   'var(--cs360-text-primary)',
           secondary: 'var(--cs360-text-secondary)',
-          muted: 'var(--cs360-text-muted)',
-          inverse: 'var(--cs360-text-inverse)',
-          link: 'var(--cs360-text-link)',
+          tertiary:  'var(--cs360-text-tertiary)',
+          inverse:   'var(--cs360-text-inverse)',
+          link:      'var(--cs360-text-link)',
         },
 
         // Border colors
         border: {
-          default: 'var(--cs360-border-default)',
-          subtle: 'var(--cs360-border-subtle)',
-          focus: 'var(--cs360-border-focus)',
+          subtle:  'var(--cs360-border-subtle)',
+          DEFAULT: 'var(--cs360-border-default)',
+          strong:  'var(--cs360-border-strong)',
         },
 
-        // Overlay
-        overlay: {
-          DEFAULT: 'var(--cs360-bg-overlay)',
-        },
-
-        // Inverse (for use on dark surfaces)
-        inverse: {
-          bg: 'var(--cs360-bg-inverse)',
-          surface: 'var(--cs360-bg-inverse-surface)',
+        // Sidebar
+        sidebar: {
+          bg:          'var(--cs360-sidebar-bg)',
+          hover:       'var(--cs360-sidebar-hover)',
+          active:      'var(--cs360-sidebar-active)',
+          text:        'var(--cs360-sidebar-text)',
+          'text-active': 'var(--cs360-sidebar-text-active)',
+          border:      'var(--cs360-sidebar-border)',
         },
       },
 

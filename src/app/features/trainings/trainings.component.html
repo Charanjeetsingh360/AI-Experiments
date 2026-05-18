@@ -1,0 +1,164 @@
+<div class="flex h-full flex-col overflow-hidden px-[var(--density-space-4)] pt-[var(--density-space-4)] gap-[var(--density-space-3)]">
+
+  <!-- Page Header -->
+  <div class="shrink-0">
+    <h1 class="text-xl font-bold text-[var(--cs360-text-primary)]">Trainings</h1>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="shrink-0">
+    <cs-tabs [tabs]="tabs" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)" />
+  </div>
+
+  <!-- Trainings Tab -->
+  @if (activeTab() === 'trainings') {
+    <cs-card-list
+      class="flex-1 min-h-0"
+      [items]="pagedTrainings"
+      [totalItems]="trainings.length"
+      [pageSize]="trainingsPageSize"
+      [currentPage]="trainingsPage"
+      [pageSizeOptions]="pageSizeOptions"
+      [columns]="3"
+      emptyMessage="No trainings found."
+      (itemClick)="onItemClick($event)"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageChange($event)"
+    >
+      <ng-template csCardTemplate let-item>
+        <div class="flex items-center gap-[var(--density-space-3)] min-w-0">
+
+          <!-- Circular Progress -->
+          <div class="shrink-0 relative" style="width:48px;height:48px">
+            <svg width="48" height="48" viewBox="0 0 48 48" class="rotate-[-90deg]">
+              <circle cx="24" cy="24" r="20"
+                fill="none"
+                stroke="var(--cs360-border-subtle)"
+                stroke-width="4" />
+              <circle cx="24" cy="24" r="20"
+                fill="none"
+                stroke="var(--cs360-action-primary)"
+                stroke-width="4"
+                [attr.stroke-dasharray]="progressCircumference(48, 4)"
+                [attr.stroke-dashoffset]="progressOffset(item.progress, 48, 4)"
+                stroke-linecap="round" />
+            </svg>
+            <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-[var(--cs360-text-primary)]">
+              {{ item.progress }}%
+            </span>
+          </div>
+
+          <!-- Course Info -->
+          <div class="flex flex-col gap-1 min-w-0">
+            <span class="font-medium text-[var(--cs360-text-primary)] line-clamp-2">{{ item.courseName }}</span>
+            @if (item.completedOn) {
+              <span class="text-xs text-[var(--cs360-text-secondary)]">Completed: {{ item.completedOn }}</span>
+            }
+            @if (item.validTill) {
+              <span class="text-xs text-[var(--cs360-text-secondary)]">Valid till: {{ item.validTill }}</span>
+            }
+          </div>
+        </div>
+      </ng-template>
+    </cs-card-list>
+  }
+
+  <!-- Training Report Tab -->
+  @if (activeTab() === 'report') {
+    <cs-card-list
+      class="flex-1 min-h-0"
+      [items]="pagedReport"
+      [totalItems]="reportItems.length"
+      [pageSize]="reportPageSize"
+      [currentPage]="reportPage"
+      [pageSizeOptions]="pageSizeOptions"
+      [columns]="3"
+      emptyMessage="No report items found."
+      (itemClick)="onItemClick($event)"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageChange($event)"
+    >
+      <ng-template csCardTemplate let-item>
+        <div class="flex flex-col gap-[var(--density-space-2)] min-w-0">
+          <span class="font-medium text-[var(--cs360-text-primary)] line-clamp-2">{{ item.courseName }}</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wide" [class]="typeBadgeClass()">
+              {{ item.courseType }}
+            </span>
+            <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wide" [class]="statusBadgeClass(item.status)">
+              {{ item.status }}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+    </cs-card-list>
+  }
+</div>
+
+<!-- Detail Flyout -->
+<cs-flyout [(isOpen)]="showDetailFlyout" position="right" width="480px">
+  <div flyout-header class="flex items-center justify-between w-full">
+    <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">
+      {{ activeTab() === 'trainings' ? 'Training Details' : 'Report Details' }}
+    </h2>
+    <button type="button"
+      class="rounded p-1 text-[var(--cs360-text-tertiary)] transition-colors hover:text-[var(--cs360-text-primary)]"
+      (click)="closeDetailFlyout()">
+      <cs-icon name="close" [size]="20" />
+    </button>
+  </div>
+
+  <div flyout-body class="flex flex-col gap-[var(--density-space-4)]">
+
+    <!-- Training Detail -->
+    @if (selectedTraining) {
+      <div class="flex items-center gap-[var(--density-space-3)]">
+        <div class="shrink-0 relative" style="width:64px;height:64px">
+          <svg width="64" height="64" viewBox="0 0 64 64" class="rotate-[-90deg]">
+            <circle cx="32" cy="32" r="27"
+              fill="none" stroke="var(--cs360-border-subtle)" stroke-width="5" />
+            <circle cx="32" cy="32" r="27"
+              fill="none" stroke="var(--cs360-action-primary)" stroke-width="5"
+              [attr.stroke-dasharray]="progressCircumference(64, 5)"
+              [attr.stroke-dashoffset]="progressOffset(selectedTraining.progress, 64, 5)"
+              stroke-linecap="round" />
+          </svg>
+          <span class="absolute inset-0 flex items-center justify-center text-sm font-bold text-[var(--cs360-text-primary)]">
+            {{ selectedTraining.progress }}%
+          </span>
+        </div>
+        <div>
+          <p class="text-base font-semibold text-[var(--cs360-text-primary)]">{{ selectedTraining.courseName }}</p>
+        </div>
+      </div>
+
+      @if (selectedTraining.completedOn) {
+        <div>
+          <p class="text-xs uppercase tracking-wide text-[var(--cs360-text-tertiary)] mb-1">Completed On</p>
+          <p class="text-sm text-[var(--cs360-text-primary)]">{{ selectedTraining.completedOn }}</p>
+        </div>
+      }
+      @if (selectedTraining.validTill) {
+        <div>
+          <p class="text-xs uppercase tracking-wide text-[var(--cs360-text-tertiary)] mb-1">Valid Till</p>
+          <p class="text-sm text-[var(--cs360-text-primary)]">{{ selectedTraining.validTill }}</p>
+        </div>
+      }
+    }
+
+    <!-- Report Detail -->
+    @if (selectedReport) {
+      <div class="flex flex-col gap-[var(--density-space-3)]">
+        <p class="text-base font-semibold text-[var(--cs360-text-primary)]">{{ selectedReport.courseName }}</p>
+        <div class="flex items-center gap-2">
+          <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wide" [class]="typeBadgeClass()">
+            {{ selectedReport.courseType }}
+          </span>
+          <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wide" [class]="statusBadgeClass(selectedReport.status)">
+            {{ selectedReport.status }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+</cs-flyout>

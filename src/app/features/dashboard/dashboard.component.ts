@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../shared/components/card/card.component';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { CsBtnComponent } from '../../shared/components/button/button.component';
+import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { ThemeService } from '../../core/services/theme.service';
 
 interface StatCard {
@@ -22,7 +23,7 @@ interface UpcomingShift {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonComponent],
+  imports: [CommonModule, CardComponent, CsBtnComponent, CSIconComponent],
   template: `
     <div class="dashboard">
       <!-- Page Header -->
@@ -31,12 +32,10 @@ interface UpcomingShift {
           <h1 class="page-title">Welcome back, John! 👋</h1>
           <p class="page-subtitle">Here's what's happening with your schedule today.</p>
         </div>
-        <app-button variant="primary">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 2a1 1 0 011 1v4h4a1 1 0 110 2H9v4a1 1 0 11-2 0V9H3a1 1 0 010-2h4V3a1 1 0 011-1z"/>
-          </svg>
+        <cs-btn variant="primary">
+          <cs-icon name="add" [size]="16" />
           New Shift
-        </app-button>
+        </cs-btn>
       </div>
 
       <!-- Promo Banner -->
@@ -45,7 +44,7 @@ interface UpcomingShift {
           <h3>🎉 Complete your profile to unlock premium features!</h3>
           <p>Add your certifications and availability to get matched with more clients.</p>
         </div>
-        <app-button variant="secondary" size="sm">Complete Profile</app-button>
+        <cs-btn variant="secondary" size="sm">Complete Profile</cs-btn>
       </div>
 
       <!-- Stats Grid -->
@@ -65,7 +64,7 @@ interface UpcomingShift {
         <!-- Upcoming Shifts -->
         <app-card title="Upcoming Shifts" [showHeader]="true">
           <div cardActions>
-            <app-button variant="ghost" size="sm">View All</app-button>
+            <cs-btn variant="ghost" size="sm">View All</cs-btn>
           </div>
           
           <div class="shifts-list">

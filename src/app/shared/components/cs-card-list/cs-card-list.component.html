@@ -4,7 +4,7 @@
     <div [class]="gridClasses[columns] || gridClasses[3]">
       @for (item of items; track trackItem($index, item)) {
         <div
-          class="client-card flex items-center justify-between p-4 bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)] rounded-lg cursor-pointer transition-all duration-150 outline-none gap-3 min-h-[99px] hover:border-[var(--cs360-action-primary)] hover:shadow-md focus-visible:border-[var(--cs360-action-primary)] focus-visible:shadow-md"
+          class="client-card p-4 bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)] rounded-lg cursor-pointer transition-all duration-150 outline-none min-h-[72px] hover:border-[var(--cs360-action-primary)] hover:shadow-md focus-visible:border-[var(--cs360-action-primary)] focus-visible:shadow-md"
           role="button"
           tabindex="0"
           (click)="onItemClick(item)"
@@ -14,24 +14,9 @@
           <!-- Card body — provided via csCardTemplate -->
           <div class="flex-1 min-w-0">
             <ng-container
-              *ngTemplateOutlet="cardTemplate?.templateRef ?? null; context: { $implicit: item }"
+              *ngTemplateOutlet="cardTemplate?.templateRef ?? null; context: { $implicit: item, index: $index }"
             ></ng-container>
           </div>
-
-          <!-- Chevron right indicator -->
-          <svg
-            class="w-5 h-5 shrink-0 text-[var(--cs360-text-tertiary)]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-              clip-rule="evenodd"
-            />
-          </svg>
         </div>
       }
 

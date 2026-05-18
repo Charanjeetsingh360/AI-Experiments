@@ -10,6 +10,8 @@ import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
+import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
+import { CsBtnComponent } from '../../shared/components/button/button.component';
 
 export interface AvailabilityItem {
   id: string;
@@ -33,6 +35,8 @@ export interface AvailabilityItem {
     CSFlyoutComponent,
     CsCardListComponent,
     CsCardTemplateDirective,
+    CSIconComponent,
+    CsBtnComponent,
   ],
   templateUrl: './availability.component.html',
   styleUrls: ['./availability.component.scss'],
@@ -72,7 +76,7 @@ export class AvailabilityComponent {
   });
 
   /* ── Mock data ── */
-  private readonly allItems: AvailabilityItem[] = [
+  private allItems: AvailabilityItem[] = [
     { id: '1',  date: 'Mon, Jan 6 2025',  timeRange: '08:00 – 16:00', isFullDay: false, type: 'availability',   description: 'Regular morning shift', repeatInfo: 'Every Monday' },
     { id: '2',  date: 'Tue, Jan 7 2025',  isFullDay: true,            type: 'availability',   description: 'Full day available' },
     { id: '3',  date: 'Wed, Jan 8 2025',  timeRange: '10:00 – 14:00', isFullDay: false, type: 'availability',   repeatInfo: 'Every Wednesday for 4 weeks' },

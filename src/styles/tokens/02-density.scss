@@ -23,9 +23,16 @@
   --density-space-page:        var(--cs360-space-8);   // 32px - page padding
 
   // Component sizing
-  --density-row-height:        48px;      // Table row / list item
-  --density-control-height:    40px;      // Input/button height
-  --density-icon-size:         20px;      // Default icon
+  --density-row-height:           48px;      // Table row / list item
+  --density-control-height:       40px;      // Input/button height (md)
+  --density-control-height-sm:    28px;      // Small button/input
+  --density-control-height-md:    36px;      // Medium button/input
+  --density-control-height-lg:    44px;      // Large button/input
+  --density-space-3:              var(--cs360-space-3);   // 12px
+  --density-space-4:              var(--cs360-space-4);   // 16px
+  --density-space-6:              var(--cs360-space-6);   // 24px
+  --density-text-sm:              var(--cs360-text-sm);
+  --density-icon-size:            20px;      // Default icon
 
   // Typography
   --density-text-title:        var(--cs360-text-2xl);
@@ -48,9 +55,16 @@
   --density-space-section:     var(--cs360-space-4);   // 16px
   --density-space-page:        var(--cs360-space-6);   // 24px
 
-  --density-row-height:        36px;
-  --density-control-height:    32px;
-  --density-icon-size:         16px;
+  --density-row-height:           36px;
+  --density-control-height:       32px;
+  --density-control-height-sm:    24px;
+  --density-control-height-md:    30px;
+  --density-control-height-lg:    38px;
+  --density-space-3:              var(--cs360-space-2);   // 8px
+  --density-space-4:              var(--cs360-space-3);   // 12px
+  --density-space-6:              var(--cs360-space-4);   // 16px
+  --density-text-sm:              var(--cs360-text-xs);
+  --density-icon-size:            16px;
 
   --density-text-title:        var(--cs360-text-xl);
   --density-text-heading:      var(--cs360-text-lg);
@@ -78,9 +92,16 @@
   --density-space-section:     var(--cs360-space-8);   // 32px
   --density-space-page:        var(--cs360-space-12);  // 48px
 
-  --density-row-height:        60px;
-  --density-control-height:    48px;
-  --density-icon-size:         24px;
+  --density-row-height:           60px;
+  --density-control-height:       48px;
+  --density-control-height-sm:    34px;
+  --density-control-height-md:    44px;
+  --density-control-height-lg:    56px;
+  --density-space-3:              var(--cs360-space-4);   // 16px
+  --density-space-4:              var(--cs360-space-5);   // 20px
+  --density-space-6:              var(--cs360-space-8);   // 32px
+  --density-text-sm:              var(--cs360-text-sm);
+  --density-icon-size:            24px;
 
   --density-text-title:        var(--cs360-text-3xl);
   --density-text-heading:      var(--cs360-text-2xl);

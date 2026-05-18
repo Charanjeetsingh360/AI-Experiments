@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
+import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
 
 export interface ClientInfo {
   id: number;
@@ -16,89 +16,73 @@ export interface ClientInfo {
   nextVisit?: string;
 }
 
+/** Gradient palette cycles deterministically per card index */
+const GRADIENTS = [
+  'from-blue-400 to-blue-600',
+  'from-green-400 to-green-600',
+  'from-purple-400 to-purple-600',
+  'from-orange-400 to-orange-600',
+  'from-red-400 to-red-600',
+  'from-indigo-400 to-indigo-600',
+  'from-teal-400 to-teal-600',
+  'from-pink-400 to-pink-600',
+];
+
 /**
- * ClientCardComponent — Reusable client card following Figma design
- * This component displays client information in a card format
- * Used within the cs-card-list for the My Clients page
+ * ClientCardComponent — matches the HTML prototype exactly.
+ * Square gradient avatar · name · address · chevron
  */
 @Component({
   selector: 'app-client-card',
   standalone: true,
-  imports: [CommonModule, CSAvatarComponent],
+  imports: [CommonModule, CSIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="client-card-content flex items-center gap-3">
-      <!-- Avatar -->
-      <cs-avatar
-        [name]="clientName"
-        [src]="client.avatar"
-        size="lg"
-      ></cs-avatar>
+    <div class="flex items-center justify-between gap-2 w-full">
+      <!-- Square gradient avatar -->
+      <div class="flex items-start gap-2 min-w-0">
+        <div
+          class="shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br flex items-center justify-center text-white text-sm font-medium"
+          [ngClass]="gradient"
+        >
+          {{ initials }}
+        </div>
 
-      <!-- Client Info -->
-      <div class="flex-1 min-w-0">
-        <!-- Name and Status -->
-        <div class="flex items-center gap-2 mb-1">
-          <h3 class="text-sm font-semibold text-[var(--cs360-text-primary)] truncate">
+        <!-- Name + address -->
+        <div class="min-w-0">
+          <h3 class="text-base font-medium text-[var(--cs360-text-primary)] leading-6 tracking-tight truncate">
             {{ clientName }}
           </h3>
-          <span 
-            class="status-badge shrink-0 px-2 py-0.5 text-xs font-medium rounded-full"
-            [class]="statusClasses"
-          >
-            {{ client.status }}
-          </span>
-        </div>
-
-        <!-- Phone -->
-        <div class="flex items-center gap-1.5 text-xs text-[var(--cs360-text-secondary)] mb-1">
-          <svg class="w-3.5 h-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" clip-rule="evenodd"/>
-          </svg>
-          <span class="truncate">{{ client.phoneNumber }}</span>
-        </div>
-
-        <!-- Address -->
-        <div class="flex items-center gap-1.5 text-xs text-[var(--cs360-text-tertiary)]">
-          <svg class="w-3.5 h-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd"/>
-          </svg>
-          <span class="truncate">{{ clientAddress }}</span>
+          <p class="text-sm text-[var(--cs360-text-secondary)] leading-5 truncate">
+            {{ clientAddress }}
+          </p>
         </div>
       </div>
+
+      <!-- Chevron -->
+      <cs-icon name="chevron_right" [size]="20" class="shrink-0 text-[var(--cs360-text-tertiary)]" />
     </div>
   `,
-  styles: [`
-    :host {
-      display: block;
-    }
-
-    .client-card-content {
-      width: 100%;
-    }
-  `],
+  styles: [`:host { display: block; }`],
 })
 export class ClientCardComponent {
   @Input({ required: true }) client!: ClientInfo;
+  @Input() index = 0;
+
+  get initials(): string {
+    return `${this.client.firstName[0] ?? ''}${this.client.lastName[0] ?? ''}`.toUpperCase();
+  }
 
   get clientName(): string {
-    return `${this.client.firstName} ${this.client.lastName}`;
+    return `${this.client.lastName}, ${this.client.firstName}`;
   }
 
   get clientAddress(): string {
     return `${this.client.address}, ${this.client.city}, ${this.client.state}`;
   }
 
-  get statusClasses(): string {
-    switch (this.client.status) {
-      case 'Active':
-        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-      case 'Inactive':
-        return 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400';
-      case 'Pending':
-        return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
-      default:
-        return 'bg-gray-100 text-gray-600';
-    }
+  get gradient(): string {
+    return GRADIENTS[this.index % GRADIENTS.length];
   }
 }
+

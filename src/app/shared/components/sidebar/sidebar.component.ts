@@ -1,50 +1,72 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CSIconComponent } from '../cs-icon/cs-icon.component';
 
 interface NavItem {
   label: string;
-  icon: string;
-  route: string;
+  icon: string;  // Material Symbols Rounded icon name
+  route?: string;
+  href?: string;
+  isExternal?: boolean;
   badge?: number;
 }
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, CSIconComponent],
   template: `
     <aside class="sidebar" [class.collapsed]="collapsed">
       <!-- Logo -->
       <div class="sidebar-logo">
         <div class="logo-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="currentColor"/>
-            <path d="M16 8C11.582 8 8 11.582 8 16s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 14c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z" fill="var(--cs360-sidebar-bg)"/>
-          </svg>
+          <cs-icon name="favorite" [size]="28" [filled]="true" />
         </div>
         <span class="logo-text" *ngIf="!collapsed">CareGiver 360</span>
       </div>
 
       <!-- Navigation -->
       <nav class="sidebar-nav">
-        <a *ngFor="let item of navItems"
-           [routerLink]="item.route"
-           routerLinkActive="active"
-           class="nav-item"
-           [title]="collapsed ? item.label : ''">
-          <span class="nav-icon" [innerHTML]="item.icon"></span>
-          <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
-          <span class="nav-badge" *ngIf="item.badge && !collapsed">{{ item.badge }}</span>
-        </a>
+        <ng-container *ngFor="let item of navItems">
+
+          <!-- Internal link -->
+          <a *ngIf="!item.isExternal"
+             [routerLink]="item.route"
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
+             class="nav-item"
+             [title]="collapsed ? item.label : ''">
+            <cs-icon [name]="item.icon" [size]="20" class="nav-icon" />
+            <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+            <span class="nav-badge" *ngIf="item.badge && !collapsed">{{ item.badge > 99 ? '99+' : item.badge }}</span>
+            <span class="nav-badge-dot" *ngIf="item.badge && collapsed"></span>
+          </a>
+
+          <!-- External link -->
+          <a *ngIf="item.isExternal"
+             [href]="item.href"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="nav-item"
+             [title]="collapsed ? item.label : ''">
+            <cs-icon [name]="item.icon" [size]="20" class="nav-icon" />
+            <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+            <cs-icon *ngIf="!collapsed" name="open_in_new" [size]="14" class="external-icon" />
+          </a>
+
+        </ng-container>
       </nav>
+
+      <!-- Copyright -->
+      <div class="sidebar-copyright" *ngIf="!collapsed">
+        <p class="copyright-text">&copy; {{ currentYear }} CareSmart, Inc.</p>
+        <p class="copyright-text">All rights reserved.</p>
+      </div>
 
       <!-- Collapse Toggle -->
       <button class="collapse-toggle" (click)="toggleCollapse.emit()">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path *ngIf="!collapsed" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/>
-          <path *ngIf="collapsed" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"/>
-        </svg>
+        <cs-icon [name]="collapsed ? 'chevron_right' : 'chevron_left'" [size]="20" />
       </button>
     </aside>
   `,
@@ -58,11 +80,11 @@ interface NavItem {
       background-color: var(--cs360-sidebar-bg);
       display: flex;
       flex-direction: column;
-      transition: width var(--cs360-motion-normal);
+      transition: width var(--cs360-transition-base);
       z-index: 100;
 
       &.collapsed {
-        width: var(--cs360-sidebar-collapsed-width);
+        width: var(--cs360-sidebar-collapsed-width, 64px);
 
         .sidebar-logo {
           justify-content: center;
@@ -90,7 +112,7 @@ interface NavItem {
     }
 
     .logo-text {
-      font-size: var(--cs360-font-size-lg);
+      font-size: var(--cs360-text-lg);
       font-weight: 600;
       color: var(--cs360-sidebar-text-active);
       white-space: nowrap;
@@ -103,6 +125,7 @@ interface NavItem {
     }
 
     .nav-item {
+      position: relative;
       display: flex;
       align-items: center;
       gap: var(--cs360-space-3);
@@ -110,7 +133,7 @@ interface NavItem {
       border-radius: var(--cs360-radius-md);
       color: var(--cs360-sidebar-text);
       text-decoration: none;
-      transition: all var(--cs360-motion-fast);
+      transition: all var(--cs360-transition-fast);
       margin-bottom: var(--cs360-space-1);
 
       &:hover {
@@ -126,24 +149,52 @@ interface NavItem {
 
     .nav-icon {
       flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: inherit;
     }
 
     .nav-label {
       flex: 1;
+      font-size: var(--cs360-text-sm);
+      font-weight: 500;
       white-space: nowrap;
+    }
+
+    .external-icon {
+      flex-shrink: 0;
+      opacity: 0.5;
     }
 
     .nav-badge {
       background-color: var(--cs360-feedback-error);
       color: white;
-      font-size: var(--cs360-font-size-xs);
+      font-size: var(--cs360-text-xs);
+      font-weight: 600;
       padding: 2px 6px;
       border-radius: var(--cs360-radius-full);
+      line-height: 1.4;
+    }
+
+    .nav-badge-dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--cs360-feedback-error);
+    }
+
+    .sidebar-copyright {
+      padding: var(--cs360-space-4) var(--cs360-space-5);
+      border-top: 1px solid var(--cs360-sidebar-border);
+    }
+
+    .copyright-text {
+      font-size: var(--cs360-text-xs);
+      color: var(--cs360-sidebar-text);
+      opacity: 0.6;
+      line-height: 1.5;
+      white-space: nowrap;
     }
 
     .collapse-toggle {
@@ -156,7 +207,7 @@ interface NavItem {
       border-top: 1px solid var(--cs360-sidebar-border);
       color: var(--cs360-sidebar-text);
       cursor: pointer;
-      transition: color var(--cs360-motion-fast);
+      transition: color var(--cs360-transition-fast);
 
       &:hover {
         color: var(--cs360-sidebar-text-active);
@@ -166,7 +217,7 @@ interface NavItem {
     @media (max-width: 768px) {
       .sidebar {
         transform: translateX(-100%);
-        
+
         &.open {
           transform: translateX(0);
         }
@@ -178,37 +229,20 @@ export class SidebarComponent {
   @Input() collapsed = false;
   @Output() toggleCollapse = new EventEmitter<void>();
 
+  readonly currentYear = new Date().getFullYear();
+
+  // Icon names from https://fonts.google.com/icons?icon.style=Rounded
+  // Navigation matches Figma: Caregiver Web Portal node 183-126608
   navItems: NavItem[] = [
-    {
-      label: 'Dashboard',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>',
-      route: '/dashboard'
-    },
-    {
-      label: 'My Schedule',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>',
-      route: '/schedule',
-      badge: 3
-    },
-    {
-      label: 'My Clients',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>',
-      route: '/clients'
-    },
-    {
-      label: 'Documents',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>',
-      route: '/documents'
-    },
-    {
-      label: 'Trainings',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z"/></svg>',
-      route: '/trainings'
-    },
-    {
-      label: 'Availability',
-      icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>',
-      route: '/availability'
-    }
+    { label: 'Home',            icon: 'home',           route: '/home' },
+    { label: 'Shift Calendar',  icon: 'calendar_today', route: '/shift-calendar' },
+    { label: 'My Clients',      icon: 'groups',         route: '/clients' },
+    { label: 'Messages',        icon: 'mail',           route: '/messages', badge: 3 },
+    { label: 'Availability',    icon: 'event_busy',     route: '/availability' },
+    { label: 'Documents',       icon: 'description',    route: '/documents' },
+    { label: 'Caregiver Forms', icon: 'assignment',     route: '/caregiver-forms' },
+    { label: 'Trainings',       icon: 'school',         route: '/trainings' },
+    { label: 'Learn2Care',      icon: 'menu_book',      href: 'https://learn2care.com', isExternal: true },
+    { label: 'LMS',             icon: 'launch',         href: 'https://lms.caresmart.com', isExternal: true },
   ];
 }

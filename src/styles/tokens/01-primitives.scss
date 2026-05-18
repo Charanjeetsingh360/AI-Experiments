@@ -185,7 +185,32 @@
 }
 
 // -----------------------------------------------------------------------------
-// 7. Z-INDEX PRIMITIVES
+// 7. SIZE PRIMITIVES (component sizes)
+// -----------------------------------------------------------------------------
+:root {
+  // Input / control heights
+  --cs360-size-input-sm:  32px;
+  --cs360-size-input-md:  40px;
+  --cs360-size-input-lg:  48px;
+
+  // Icon sizes
+  --cs360-size-icon-sm:   16px;
+  --cs360-size-icon-md:   20px;
+  --cs360-size-icon-lg:   24px;
+
+  // Avatar sizes
+  --cs360-size-avatar-xs: 24px;
+  --cs360-size-avatar-sm: 32px;
+  --cs360-size-avatar-md: 40px;
+  --cs360-size-avatar-lg: 56px;
+
+  // Layout sizes
+  --cs360-size-form:      28rem;     // max-width of a form
+  --cs360-size-sidebar:   16rem;     // matches --cs360-sidebar-width
+}
+
+// -----------------------------------------------------------------------------
+// 8. Z-INDEX PRIMITIVES
 // -----------------------------------------------------------------------------
 :root {
   --cs360-z-dropdown:    1000;

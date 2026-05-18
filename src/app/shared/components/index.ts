@@ -7,3 +7,4 @@ export * from './sidebar/sidebar.component';
 export * from './topbar/topbar.component';
 export * from './cs-tabs/cs-tabs.component';
 export * from './cs-flyout/cs-flyout.component';
+export * from './cs-icon/cs-icon.component';
