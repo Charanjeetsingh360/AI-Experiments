@@ -60,6 +60,13 @@
 
   --density-nav-item-height:   36px;
   --density-logo-height:       48px;
+
+  // Override layout-driving primitive space tokens so all components scale down
+  --cs360-space-4:  0.625rem; // 10px (was 16px)
+  --cs360-space-5:  0.875rem; // 14px (was 20px)
+  --cs360-space-6:  1rem;     // 16px (was 24px)
+  --cs360-space-8:  1.25rem;  // 20px (was 32px)
+  --cs360-topbar-height: 52px;
 }
 
 // Comfortable (Large) -- more whitespace, for reduced density preference
@@ -83,5 +90,12 @@
 
   --density-nav-item-height:   52px;
   --density-logo-height:       64px;
+
+  // Override layout-driving primitive space tokens so all components scale up
+  --cs360-space-4:  1.125rem; // 18px (was 16px)
+  --cs360-space-5:  1.5rem;   // 24px (was 20px)
+  --cs360-space-6:  1.75rem;  // 28px (was 24px)
+  --cs360-space-8:  2.25rem;  // 36px (was 32px)
+  --cs360-topbar-height: 68px;
 }
 

@@ -17,8 +17,10 @@
   /* BACKGROUND SURFACE TOKENS */
   --cs360-bg:              var(--cs360-neutral-50);      // App background
   --cs360-bg-page:         var(--cs360-neutral-50);      // Page body bg
+  --cs360-bg-canvas:       var(--cs360-neutral-100);     // Page canvas/outer bg
   --cs360-bg-surface:      var(--cs360-neutral-0);       // Card/panel surface
   --cs360-bg-surface-hover:var(--cs360-neutral-50);      // Surface on hover
+  --cs360-bg-alt:          var(--cs360-neutral-100);     // Alternate surface (subtle)
   --cs360-bg-raised:       var(--cs360-neutral-0);       // Modal/dropdown bg
   --cs360-bg-overlay:      rgba(12, 18, 26, 0.5);        // Modal backdrop
 
@@ -92,8 +94,10 @@
   /* BACKGROUND SURFACE TOKENS */
   --cs360-bg:              var(--cs360-neutral-900);
   --cs360-bg-page:         var(--cs360-neutral-950);
+  --cs360-bg-canvas:       var(--cs360-neutral-950);
   --cs360-bg-surface:      var(--cs360-neutral-800);
   --cs360-bg-surface-hover:var(--cs360-neutral-700);
+  --cs360-bg-alt:          var(--cs360-neutral-700);
   --cs360-bg-raised:       var(--cs360-neutral-800);
   --cs360-bg-overlay:      rgba(0, 0, 0, 0.7);
 
@@ -168,8 +172,10 @@
   /* BACKGROUND SURFACE TOKENS */
   --cs360-bg:              #000000;
   --cs360-bg-page:         #000000;
+  --cs360-bg-canvas:       #000000;
   --cs360-bg-surface:      #000000;
   --cs360-bg-surface-hover:#000000;
+  --cs360-bg-alt:          #1A1A1A;
   --cs360-bg-raised:       #000000;
   --cs360-bg-overlay:      rgba(0, 0, 0, 0.9);
 

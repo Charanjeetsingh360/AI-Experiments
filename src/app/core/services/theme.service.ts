@@ -1,6 +1,5 @@
-import { Injectable, Renderer2, RendererFactory2, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { inject } from '@angular/core';
 
 export type Theme = 'light' | 'dark' | 'high-contrast';
 export type Density = 'compact' | 'default' | 'comfortable';
@@ -12,8 +11,7 @@ const DENSITY_STORAGE_KEY = 'cs360-density';
   providedIn: 'root'
 })
 export class ThemeService {
-  private document = inject(DOCUMENT);
-  private renderer: Renderer2;
+  private readonly doc = inject(DOCUMENT);
 
   // Reactive signals for theme state
   private _theme = signal<Theme>('light');
@@ -29,8 +27,7 @@ export class ThemeService {
   readonly isCompact = computed(() => this._density() === 'compact');
   readonly isComfortable = computed(() => this._density() === 'comfortable');
 
-  constructor(rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
+  constructor() {
     this.initializeFromStorage();
   }
 
@@ -38,19 +35,17 @@ export class ThemeService {
    * Initialize theme and density from localStorage or system preference
    */
   private initializeFromStorage(): void {
-    // Check localStorage first
     const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
     const storedDensity = localStorage.getItem(DENSITY_STORAGE_KEY) as Density | null;
 
-    if (storedTheme) {
+    if (storedTheme && ['light', 'dark', 'high-contrast'].includes(storedTheme)) {
       this.setTheme(storedTheme);
     } else {
-      // Check system preference for dark mode
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       this.setTheme(prefersDark ? 'dark' : 'light');
     }
 
-    if (storedDensity) {
+    if (storedDensity && ['compact', 'default', 'comfortable'].includes(storedDensity)) {
       this.setDensity(storedDensity);
     } else {
       this.setDensity('default');
@@ -64,33 +59,29 @@ export class ThemeService {
     });
   }
 
-  /**
-   * Set the application theme
-   */
+  /** Set the application theme — directly sets data-theme on <html> */
   setTheme(theme: Theme): void {
     this._theme.set(theme);
-    this.renderer.setAttribute(this.document.documentElement, 'data-theme', theme);
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-
-    // Also set Tailwind dark class for compatibility
-    if (theme === 'dark') {
-      this.renderer.addClass(this.document.documentElement, 'dark');
+    const html = this.doc.documentElement;
+    html.setAttribute('data-theme', theme);
+    // Also toggle Tailwind dark class for any dark: utility classes
+    if (theme === 'dark' || theme === 'high-contrast') {
+      html.classList.add('dark');
     } else {
-      this.renderer.removeClass(this.document.documentElement, 'dark');
+      html.classList.remove('dark');
     }
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
   }
 
-  /**
-   * Set the UI density mode
-   */
+  /** Set the UI density mode — directly sets data-density on <html> */
   setDensity(density: Density): void {
     this._density.set(density);
-    this.renderer.setAttribute(this.document.documentElement, 'data-density', density);
+    this.doc.documentElement.setAttribute('data-density', density);
     localStorage.setItem(DENSITY_STORAGE_KEY, density);
   }
 
   /**
-   * Toggle between light and dark themes
+   * Toggle between light → dark → high-contrast → light
    */
   toggleTheme(): void {
     const current = this._theme();
@@ -104,7 +95,7 @@ export class ThemeService {
   }
 
   /**
-   * Cycle through density modes
+   * Cycle through density modes: compact → default → comfortable → compact
    */
   cycleDensity(): void {
     const current = this._density();
@@ -117,16 +108,10 @@ export class ThemeService {
     }
   }
 
-  /**
-   * Get all available themes
-   */
   getAvailableThemes(): Theme[] {
     return ['light', 'dark', 'high-contrast'];
   }
 
-  /**
-   * Get all available density modes
-   */
   getAvailableDensities(): Density[] {
     return ['compact', 'default', 'comfortable'];
   }
