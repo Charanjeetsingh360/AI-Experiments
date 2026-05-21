@@ -2,12 +2,8 @@
 // CS360 CAREGIVER WEB PORTAL
 // File: styles/base.scss
 // Description: CSS reset + base styles using semantic design tokens.
+//              Token files are loaded via styles.scss entry point.
 // =============================================================================
-
-@import '../tokens/01-primitives';
-@import '../tokens/02-semantic';
-@import '../tokens/02-density';
-@import '../tokens/03-styles';
 
 // -----------------------------------------------------------------------------
 // CSS RESET (Modern, minimal reset)

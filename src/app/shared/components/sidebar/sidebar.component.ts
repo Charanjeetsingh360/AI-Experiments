@@ -37,7 +37,7 @@ interface NavItem {
              [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
              class="nav-item"
              [title]="collapsed ? item.label : ''">
-            <cs-icon [name]="item.icon" [size]="20" class="nav-icon" />
+            <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
             <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
             <span class="nav-badge" *ngIf="item.badge && !collapsed">{{ item.badge > 99 ? '99+' : item.badge }}</span>
             <span class="nav-badge-dot" *ngIf="item.badge && collapsed"></span>
@@ -50,7 +50,7 @@ interface NavItem {
              rel="noopener noreferrer"
              class="nav-item"
              [title]="collapsed ? item.label : ''">
-            <cs-icon [name]="item.icon" [size]="20" class="nav-icon" />
+            <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
             <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
             <cs-icon *ngIf="!collapsed" name="open_in_new" [size]="14" class="external-icon" />
           </a>
@@ -82,6 +82,7 @@ interface NavItem {
       flex-direction: column;
       transition: width var(--cs360-transition-base);
       z-index: 100;
+      overflow: hidden;
 
       &.collapsed {
         width: var(--cs360-sidebar-collapsed-width, 64px);
@@ -103,7 +104,6 @@ interface NavItem {
       align-items: center;
       gap: var(--cs360-space-3);
       padding: var(--cs360-space-5);
-      border-bottom: 1px solid var(--cs360-sidebar-border);
     }
 
     .logo-icon {
@@ -128,13 +128,13 @@ interface NavItem {
       position: relative;
       display: flex;
       align-items: center;
-      gap: var(--cs360-space-3);
-      padding: var(--cs360-space-3) var(--cs360-space-4);
-      border-radius: var(--cs360-radius-md);
+      gap: var(--cs360-space-2-5);
+      padding: var(--cs360-space-2) var(--cs360-space-3);
+      border-radius: 0;
       color: var(--cs360-sidebar-text);
       text-decoration: none;
       transition: all var(--cs360-transition-fast);
-      margin-bottom: var(--cs360-space-1);
+      min-width: 0;
 
       &:hover {
         background-color: var(--cs360-sidebar-secondary-bg);
@@ -148,7 +148,7 @@ interface NavItem {
       &.active {
         background-color: var(--cs360-sidebar-accent-bg);
         color: var(--cs360-sidebar-accent-fg);
-        border-radius: var(--cs360-radius-none);
+        border-radius: 0;
 
         .nav-icon {
           color: var(--cs360-sidebar-icon-active);
@@ -171,15 +171,21 @@ interface NavItem {
       flex: 1;
       font-size: var(--cs360-text-sm);
       font-weight: 500;
+      line-height: 24px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
     }
 
     .external-icon {
       flex-shrink: 0;
       opacity: 0.5;
+      margin-left: auto;
     }
 
     .nav-badge {
+      flex-shrink: 0;
       background-color: var(--cs360-feedback-error);
       color: var(--cs360-neutral-0);
       font-size: var(--cs360-text-xs);
@@ -187,6 +193,7 @@ interface NavItem {
       padding: 2px 6px;
       border-radius: var(--cs360-radius-full);
       line-height: 1.4;
+      margin-left: auto;
     }
 
     .nav-badge-dot {
@@ -201,7 +208,6 @@ interface NavItem {
 
     .sidebar-copyright {
       padding: var(--cs360-space-4) var(--cs360-space-5);
-      border-top: 1px solid var(--cs360-sidebar-border);
     }
 
     .copyright-text {
@@ -219,7 +225,6 @@ interface NavItem {
       padding: var(--cs360-space-4);
       background: none;
       border: none;
-      border-top: 1px solid var(--cs360-sidebar-border);
       color: var(--cs360-sidebar-text);
       cursor: pointer;
       transition: color var(--cs360-transition-fast);

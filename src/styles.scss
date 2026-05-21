@@ -4,28 +4,30 @@
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
-   Token System - 4 Layer Architecture (must come first due to @use rules)
+   Layer 4: Components - SCSS component partials (@use must come first in Sass)
    ----------------------------------------------------------------------------- */
-
-/* Layer 1: Primitives - Raw design values */
-@use 'styles/tokens/01-primitives' as *;
-
-/* Layer 2: Semantic - Theme mappings (light/dark/high-contrast) */
-@use 'styles/tokens/02-semantic' as *;
-
-/* Layer 2b: Density - Spacing density presets */
-@use 'styles/tokens/02-density' as *;
-
-/* Layer 3: Styles - Typography, shadows, utilities */
-@use 'styles/tokens/03-styles' as *;
-
-/* Layer 4: Components - SCSS component partials */
 @use 'styles/components/buttons' as *;
 @use 'styles/components/forms' as *;
 @use 'styles/components/cards' as *;
 @use 'styles/components/tables' as *;
 @use 'styles/components/sidebar' as *;
 @use 'styles/components/topbar' as *;
+
+/* -----------------------------------------------------------------------------
+   Token System - 4 Layer Architecture (CSS custom properties)
+   ----------------------------------------------------------------------------- */
+
+/* Layer 1: Primitives - Raw design values */
+@import 'styles/tokens/01-primitives.css';
+
+/* Layer 2: Semantic - Theme mappings (light/dark/high-contrast) */
+@import 'styles/tokens/02-semantic.css';
+
+/* Layer 2b: Density - Spacing density presets */
+@import 'styles/tokens/02-density.css';
+
+/* Layer 3: Styles - Typography, shadows, utilities */
+@import 'styles/tokens/03-styles.css';
 
 /* Tailwind Base, Components, Utilities */
 @tailwind base;
@@ -71,3 +73,54 @@ html {
   background-color: var(--cs360-blue-200);
   color: var(--cs360-blue-900);
 }
+
+/* =============================================================================
+   CS360 Animation Keyframes
+   - slide-in-right: side flyouts (right-positioned panels), 400ms
+   - slide-in-left:  side flyouts (left-positioned panels), 400ms
+   - fade-in-up:     center modals/dialogs, 400ms
+   ============================================================================= */
+
+@keyframes cs360-slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes cs360-slide-in-left {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes cs360-slide-out-right {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes cs360-slide-out-left {
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes cs360-fade-in-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes cs360-fade-out-down {
+  from { transform: translateY(0);    opacity: 1; }
+  to   { transform: translateY(20px); opacity: 0; }
+}
+
+/* Utility classes for the animations */
+.cs360-slide-in-right { animation: cs360-slide-in-right 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.cs360-slide-in-left  { animation: cs360-slide-in-left  400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.cs360-slide-out-right{ animation: cs360-slide-out-right 400ms cubic-bezier(0.4, 0, 1, 1) both; }
+.cs360-slide-out-left { animation: cs360-slide-out-left  400ms cubic-bezier(0.4, 0, 1, 1) both; }
+.cs360-fade-in-up     { animation: cs360-fade-in-up   400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.cs360-fade-out-down  { animation: cs360-fade-out-down 300ms cubic-bezier(0.4, 0, 1, 1) both; }
+
+/* Backdrop fade */
+@keyframes cs360-backdrop-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cs360-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+.cs360-backdrop-in  { animation: cs360-backdrop-in  300ms ease both; }
+.cs360-backdrop-out { animation: cs360-backdrop-out 250ms ease both; }

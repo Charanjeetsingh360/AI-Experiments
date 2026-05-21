@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { CsCardTemplateDirective } from './cs-card-template.directive';
+import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
 
 export interface CsCardPageChangeEvent {
   page: number;
@@ -24,7 +25,7 @@ export interface CsCardPageChangeEvent {
 @Component({
   selector: 'cs-card-list',
   standalone: true,
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, CsSkeletonComponent],
   templateUrl: './cs-card-list.component.html',
   styleUrls: ['./cs-card-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +39,11 @@ export class CsCardListComponent implements OnChanges {
   @Input() pageSize = 10;
   @Input() currentPage = 1;
   @Input() pageSizeOptions: number[] = [10, 25, 50];
+  @Input() showPagination = true;
+  /** Show skeleton grid while data is loading */
+  @Input() isLoading = false;
+  /** Number of skeleton cards to show while loading */
+  @Input() skeletonCount = 6;
 
   @Output() itemClick = new EventEmitter<unknown>();
   @Output() pageChange = new EventEmitter<CsCardPageChangeEvent>();
@@ -51,6 +57,10 @@ export class CsCardListComponent implements OnChanges {
     2: 'grid grid-cols-1 sm:grid-cols-2 gap-3',
     3: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3',
   };
+
+  get skeletonArray(): number[] {
+    return Array.from({ length: this.skeletonCount }, (_, i) => i);
+  }
 
   totalPages = 1;
   pages: (number | '...')[] = [];

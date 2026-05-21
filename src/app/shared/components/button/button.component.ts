@@ -96,7 +96,7 @@ export class CsBtnComponent {
     // Sizes use density tokens so compact/default/comfortable all work
     const sizes: Record<ButtonSize, string> = {
       sm: 'h-[var(--density-control-height-sm,28px)] px-[var(--density-space-3)] text-[length:var(--density-text-sm)]',
-      md: 'h-[var(--density-control-height-md,36px)] px-[var(--density-space-4)] text-[length:var(--density-text-body)]',
+      md: 'h-[var(--density-control-height,40px)] px-[var(--density-space-4)] text-[length:var(--density-text-body)]',
       lg: 'h-[var(--density-control-height-lg,44px)] px-[var(--density-space-6)] text-[length:var(--density-text-body)]',
     };
 

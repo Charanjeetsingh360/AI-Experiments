@@ -3,11 +3,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "AI-Experiments: preview 4200",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: start",
+      "preLaunchTask": "AI-Experiments: start:4200",
       "url": "http://localhost:4200/"
+    },
+    {
+      "name": "Both apps: bootstrap",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "Start both apps",
+      "url": "http://localhost:4200/"
+    },
+    {
+      "name": "Claude-Caregiver-Code: preview 5200",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5200/"
     },
     {
       "name": "ng test",
@@ -15,6 +28,16 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Preview both apps",
+      "configurations": [
+        "Both apps: bootstrap",
+        "Claude-Caregiver-Code: preview 5200"
+      ],
+      "stopAll": true
     }
   ]
 }

@@ -1,38 +1,54 @@
 <div class="flex flex-col h-full overflow-hidden">
   <!-- Scrollable items grid -->
-  <div class="flex-1 overflow-y-auto px-[var(--density-space-page)] py-[var(--density-space-block)]">
-    <div [class]="gridClasses[columns] || gridClasses[3]">
-      @for (item of items; track trackItem($index, item)) {
-        <div
-          class="client-card p-4 bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)] rounded-lg cursor-pointer transition-all duration-150 outline-none min-h-[72px] hover:border-[var(--cs360-action-primary)] hover:shadow-md focus-visible:border-[var(--cs360-action-primary)] focus-visible:shadow-md"
-          role="button"
-          tabindex="0"
-          (click)="onItemClick(item)"
-          (keydown.enter)="onItemClick(item)"
-          (keydown.space)="onItemClick(item)"
-        >
-          <!-- Card body — provided via csCardTemplate -->
-          <div class="flex-1 min-w-0">
-            <ng-container
-              *ngTemplateOutlet="cardTemplate?.templateRef ?? null; context: { $implicit: item, index: $index }"
-            ></ng-container>
-          </div>
-        </div>
-      }
+  <div class="flex-1 overflow-y-auto px-[var(--density-space-block)] py-0">
 
-      @empty {
-        <div class="col-span-full flex items-center justify-center py-8">
-          <p class="text-base text-[var(--cs360-text-tertiary)]">{{ emptyMessage }}</p>
-        </div>
-      }
-    </div>
+    <!-- ── Skeleton grid (while loading) ── -->
+    @if (isLoading) {
+      <div [class]="gridClasses[columns] || gridClasses[3]">
+        @for (_ of skeletonArray; track $index) {
+          <cs-skeleton variant="card" />
+        }
+      </div>
+
+    <!-- ── Real data grid ── -->
+    } @else {
+      <div [class]="gridClasses[columns] || gridClasses[3]">
+        @for (item of items; track trackItem($index, item)) {
+          <div
+            class="client-card p-[var(--density-space-component)]
+                   bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)]
+                   rounded-[var(--cs360-radius-md)] cursor-pointer transition-all duration-150 outline-none
+                   hover:border-[var(--cs360-action-primary)] hover:shadow-md
+                   focus-visible:border-[var(--cs360-action-primary)] focus-visible:shadow-md"
+            role="button"
+            tabindex="0"
+            (click)="onItemClick(item)"
+            (keydown.enter)="onItemClick(item)"
+            (keydown.space)="onItemClick(item)"
+          >
+            <!-- Card body — provided via csCardTemplate -->
+            <div class="min-w-0 w-full">
+              <ng-container
+                *ngTemplateOutlet="cardTemplate?.templateRef ?? null; context: { $implicit: item, index: $index }"
+              ></ng-container>
+            </div>
+          </div>
+        }
+
+        @empty {
+          <div class="col-span-full flex items-center justify-center py-8">
+            <p class="text-base text-[var(--cs360-text-tertiary)]">{{ emptyMessage }}</p>
+          </div>
+        }
+      </div>
+    }
   </div>
 
   <!-- Sticky bottom bar: pagination -->
-  @if (totalItems > 0) {
+  @if (totalItems > 0 && showPagination) {
     <div class="flex-shrink-0 border-t border-[var(--cs360-border-subtle)]">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3
-                  px-[var(--density-space-page)] py-[var(--density-space-3)]">
+                  px-[var(--density-space-block)] py-[var(--density-space-3)]">
         <!-- Showing X–Y of Z -->
         <span class="text-sm text-[var(--cs360-text-secondary)] whitespace-nowrap">
           Showing {{ startItem }} to {{ endItem }} of {{ totalItems }} items

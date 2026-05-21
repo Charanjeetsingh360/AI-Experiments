@@ -1,15 +1,15 @@
-// =============================================================================
-// CS360 CAREGIVER WEB PORTAL - DESIGN TOKENS
-// Layer 3: Styles
-// File: tokens/03-styles.scss
-// Description: Reusable style classes -- text styles, elevation, focus, animations.
-//               These build on Layers 1 & 2. Consumed by Layer 4 (components).
-//               Mirrors Figma Styles (Text, Color, Effect definitions).
-// =============================================================================
+/* =============================================================================
+   CS360 CAREGIVER WEB PORTAL - DESIGN TOKENS
+   Layer 3: Styles
+   File: tokens/03-styles.css
+   Description: Reusable style classes -- text styles, elevation, focus, animations.
+                These build on Layers 1 & 2. Consumed by Layer 4 (components).
+                Mirrors Figma Styles (Text, Color, Effect definitions).
+   ============================================================================= */
 
-// -----------------------------------------------------------------------------
-// TEXT STYLES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   TEXT STYLES
+   ----------------------------------------------------------------------------- */
 /**
  * Text styles that mirror Figma text style definitions.
  * Map density-text-* variables to actual CSS classes.
@@ -66,9 +66,9 @@
   color:        var(--cs360-text-tertiary);
 }
 
-// -----------------------------------------------------------------------------
-// ELEVATION / SHADOW CLASSES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   ELEVATION / SHADOW CLASSES
+   ----------------------------------------------------------------------------- */
 .cs360-elevation-none {
   box-shadow: var(--cs360-shadow-none);
 }
@@ -101,9 +101,9 @@
   box-shadow: var(--cs360-shadow-inner);
 }
 
-// -----------------------------------------------------------------------------
-// BORDER CLASSES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   BORDER CLASSES
+   ----------------------------------------------------------------------------- */
 .cs360-border {
   border: 1px solid var(--cs360-border-subtle);
   border-radius: var(--cs360-radius-sm);
@@ -119,37 +119,33 @@
   border-radius: var(--cs360-radius-sm);
 }
 
-// -----------------------------------------------------------------------------
-// FOCUS STYLES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   FOCUS STYLES
+   ----------------------------------------------------------------------------- */
 /**
  * Focus ring on interactive elements.
  * Uses CSS custom property for easy theming overrides.
  */
-.cs360-focus-ring {
-  &:focus-visible {
-    outline: none;
-    box-shadow: var(--cs360-focus-ring);
-  }
+.cs360-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: var(--cs360-focus-ring);
 }
 
-// Apply focus to common interactive elements
-.cs360-focus-ring,
-.cs360-btn,
-.cs360-input,
-.cs360-select,
-.cs360-checkbox,
-.cs360-radio,
-.cs360-nav-item {
-  &:focus-visible {
-    outline: none;
-    box-shadow: var(--cs360-focus-ring);
-  }
+/* Apply focus to common interactive elements */
+.cs360-focus-ring:focus-visible,
+.cs360-btn:focus-visible,
+.cs360-input:focus-visible,
+.cs360-select:focus-visible,
+.cs360-checkbox:focus-visible,
+.cs360-radio:focus-visible,
+.cs360-nav-item:focus-visible {
+  outline: none;
+  box-shadow: var(--cs360-focus-ring);
 }
 
-// -----------------------------------------------------------------------------
-// SKELETON / LOADER STYLES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   SKELETON / LOADER STYLES
+   ----------------------------------------------------------------------------- */
 /**
  * Skeleton loading animation for cards, tables, and content areas.
  * Mirrors Figma skeleton/loading state definitions.
@@ -184,7 +180,7 @@
   100% { background-position: -200% 0; }
 }
 
-// Skeleton variants
+/* Skeleton variants */
 .cs360-skeleton-circle {
   border-radius: var(--cs360-radius-full);
   height: var(--density-control-height);
@@ -207,25 +203,15 @@
   width: 100%;
 }
 
-// -----------------------------------------------------------------------------
-// UTILITY CLASSES
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   UTILITY CLASSES
+   ----------------------------------------------------------------------------- */
 /**
  * Common utility helpers using semantic tokens.
  * These replace hardcoded utility classes and ensure theme consistency.
  */
 
-$semantic-utilities: (
-  "bg":        ("bg",        var(--cs360-bg)),
-  "bg-surface":("bg-surface",var(--cs360-bg-surface)),
-  "tx":        ("tx",        var(--cs360-text-primary)),
-  "tx-muted":  ("tx-muted",  var(--cs360-text-secondary)),
-  "tx-cap":    ("tx-cap",    var(--cs360-text-tertiary)),
-  "bd-subtle": ("bd-subtle", var(--cs360-border-subtle)),
-  "bd-default":("bd-default",var(--cs360-border-default)),
-);
-
-// Shorthand token utility helpers
+/* Shorthand token utility helpers */
 .s-bg { background-color: var(--cs360-bg); }
 .s-bg-surface { background-color: var(--cs360-bg-surface); }
 .s-bg-sidebar { background-color: var(--cs360-sidebar-bg); }
@@ -250,4 +236,3 @@ $semantic-utilities: (
 .s-space-comp     { padding:         var(--density-space-component); }
 .s-space-section  { margin-block:    var(--density-space-section); }
 .s-space-page     { padding:         var(--density-space-page); }
-

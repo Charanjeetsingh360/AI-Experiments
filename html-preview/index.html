@@ -5,230 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Caregiver Web App - Design Token Scaffold Preview</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../src/styles/tokens/01-primitives.css" />
+  <link rel="stylesheet" href="../src/styles/tokens/02-semantic.css" />
+  <link rel="stylesheet" href="../src/styles/tokens/02-density.css" />
+  <link rel="stylesheet" href="../src/styles/tokens/03-styles.css" />
   <style>
 /* ==========================================================================
-   LAYER 1: CSS Custom Properties - Raw, un-themed design values
-   (Primitives from tokens/_primitives.scss)
+   Tokens are loaded from src/styles/tokens/*.css
    ========================================================================== */
-  :root {
-    /* Colors - Raw values */
-    --cs360-white: #FFFFFF;
-    --cs360-black: #000000;
-    --cs360-neutral-50: #F9FAFB;
-    --cs360-neutral-100: #F3F4F6;
-    --cs360-neutral-200: #E5E7EB;
-    --cs360-neutral-300: #D1D5DB;
-    --cs360-neutral-400: #9CA3AF;
-    --cs360-neutral-500: #6B7280;
-    --cs360-neutral-600: #4B5563;
-    --cs360-neutral-700: #374151;
-    --cs360-neutral-800: #1F2937;
-    --cs360-neutral-900: #111827;
-    --cs360-blue-50: #EFF6FF;
-    --cs360-blue-400: #60A5FA;
-    --cs360-blue-500: #3B82F6;
-    --cs360-blue-600: #2563EB;
-    --cs360-blue-700: #1D4ED8;
-    --cs360-red-50: #FEF2F2;
-    --cs360-red-400: #F87171;
-    --cs360-red-500: #EF4444;
-    --cs360-red-600: #DC2626;
-    --cs360-green-50: #F0FDF4;
-    --cs360-green-400: #4ADE80;
-    --cs360-green-500: #22C55E;
-    --cs360-yellow-50: #FEFCE8;
-    --cs360-yellow-400: #FACC15;
-    --cs360-yellow-500: #EAB308;
-    --cs360-purple-50: #FAF5FF;
-    --cs360-purple-500: #A855F7;
-    --cs360-purple-600: #9333EA;
-    --cs360-teal-50: #F0FDFA;
-    /* Typography */
-    --cs360-font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --cs360-text-xs: 0.75rem;
-    --cs360-text-sm: 0.875rem;
-    --cs360-text-base: 1rem;
-    --cs360-text-lg: 1.125rem;
-    --cs360-text-xl: 1.25rem;
-    --cs360-text-2xl: 1.5rem;
-    --cs360-text-3xl: 1.875rem;
-    --cs360-text-4xl: 2.25rem;
-    --cs360-text-5xl: 3rem;
-    --cs360-text-6xl: 3.75rem;
-    /* Spacing - Density default */
-    --cs360-space-0: 0;
-    --cs360-space-0-5: 0.125rem;
-    --cs360-space-1: 0.25rem;
-    --cs360-space-1-5: 0.375rem;
-    --cs360-space-2: 0.5rem;
-    --cs360-space-2-5: 0.625rem;
-    --cs360-space-3: 0.75rem;
-    --cs360-space-4: 1rem;
-    --cs360-space-5: 1.25rem;
-    --cs360-space-6: 1.5rem;
-    --cs360-space-7: 1.75rem;
-    --cs360-space-8: 2rem;
-    --cs360-space-9: 2.25rem;
-    --cs360-space-10: 2.5rem;
-    --cs360-space-12: 3rem;
-    --cs360-space-14: 3.5rem;
-    --cs360-space-16: 4rem;
-    --cs360-space-20: 5rem;
-    --cs360-space-24: 6rem;
-    --cs360-space-28: 7rem;
-    --cs360-space-32: 8rem;
-    --cs360-space-40: 10rem;
-    --cs360-space-48: 12rem;
-    --cs360-space-56: 14rem;
-    --cs360-space-64: 16rem;
-    --cs360-space-80: 20rem;
-    --cs360-space-96: 24rem;
-    /* Sizes */
-    --cs360-size-input-sm: 32px;
-    --cs360-size-input-md: 40px;
-    --cs360-size-input-lg: 48px;
-    --cs360-size-icon-sm: 16px;
-    --cs360-size-icon-md: 20px;
-    --cs360-size-icon-lg: 24px;
-    --cs360-size-avatar-xs: 24px;
-    --cs360-size-avatar-sm: 32px;
-    --cs360-size-avatar-md: 40px;
-    --cs360-size-avatar-lg: 48px;
-    --cs360-size-form: 640px;
-    --cs360-size-sidebar: 256px;
-    /* Radii */
-    --cs360-radius-none: 0;
-    --cs360-radius-sm: 0.25rem;
-    --cs360-radius-md: 0.375rem;
-    --cs360-radius-lg: 0.5rem;
-    --cs360-radius-xl: 0.75rem;
-    --cs360-radius-none-lg: 0.375rem;
-    --cs360-radius-full: 9999px;
-    /* Shadows */
-    --cs360-shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-    --cs360-shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    --cs360-shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-    --cs360-shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-    --cs360-shadow-inset-sm: inset 0 1px 2px rgba(0,0,0,0.05);
-    --cs360-shadow-inset-md: inset 0 2px 4px rgba(0,0,0,0.06);
-    /* Transitions */
-    --cs360-transition-none: 0ms;
-    --cs360-transition-fast: 100ms;
-    --cs360-transition-normal: 200ms;
-    --cs360-transition-slow: 300ms;
-    --cs360-transition-slower: 500ms;
-    --cs360-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
-    --cs360-ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --cs360-ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --cs360-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    /* Motion */
-    --cs360-motion-none: 0ms;
-    --cs360-motion-fast: 150ms;
-    --cs360-motion-normal: 250ms;
-    --cs360-motion-slow: 400ms;
-  }
-
-/* ==========================================================================
-   LAYER 2: SEMANTIC -> Theme mappings per color theme
-   (Primitives from tokens/_semantic-light.scss, _semantic-dark.scss, _semantic-hc.scss)
-   ========================================================================== */
-  /* Light Theme (default) */
-  [data-theme="light"] {
-    --cs360-action-primary-default: var(--cs360-blue-600);
-    --cs360-action-primary-hover: var(--cs360-blue-700);
-    --cs360-action-primary-active: var(--cs360-blue-700);
-    --cs360-action-primary-subtle: var(--cs360-blue-50);
-    --cs360-action-secondary-default: var(--cs360-blue-500);
-    --cs360-action-secondary-hover: var(--cs360-blue-600);
-    --cs360-action-destructive-default: var(--cs360-red-600);
-    --cs360-action-destructive-hover: var(--cs360-red-500);
-    --cs360-action-destructive-active: var(--cs360-red-500);
-    --cs360-action-destructive-subtle: var(--cs360-red-50);
-    --cs360-action-ghost-hover: var(--cs360-neutral-100);
-    --cs360-action-ghost-active: var(--cs360-neutral-200);
-    --cs360-action-ghost-border: var(--cs360-neutral-200);
-    --cs360-status-success-default: var(--cs360-green-500);
-    --cs360-status-success-subtle: var(--cs360-green-50);
-    --cs360-status-warning-default: var(--cs360-yellow-500);
-    --cs360-status-warning-subtle: var(--cs360-yellow-50);
-    --cs360-status-error-default: var(--cs360-red-600);
-    --cs360-status-error-subtle: var(--cs360-red-50);
-    --cs360-status-info-default: var(--cs360-blue-500);
-    --cs360-status-info-subtle: var(--cs360-blue-50);
-    --cs360-bg-default: var(--cs360-neutral-50);
-    --cs360-bg-surface: var(--cs360-white);
-    --cs360-bg-surface-hover: var(--cs360-neutral-50);
-    --cs360-bg-surface-active: var(--cs360-neutral-100);
-    --cs360-bg-muted: var(--cs360-neutral-100);
-    --cs360-bg-elevated: var(--cs360-white);
-    --cs360-bg-overlay: rgba(0,0,0,0.5);
-    --cs360-bg-inverse: var(--cs360-neutral-900);
-    --cs360-bg-inverse-surface: var(--cs360-neutral-800);
-    --cs360-text-primary: var(--cs360-neutral-900);
-    --cs360-text-secondary: var(--cs360-neutral-600);
-    --cs360-text-muted: var(--cs360-neutral-500);
-    --cs360-text-inverse: var(--cs360-white);
-    --cs360-text-link: var(--cs360-blue-600);
-    --cs360-border-default: var(--cs360-neutral-200);
-    --cs360-border-subtle: var(--cs360-neutral-100);
-    --cs360-border-focus: var(--cs360-blue-400);
-  }
-  /* Dark Theme */
-  [data-theme="dark"] {
-    --cs360-action-primary-default: var(--cs360-blue-400);
-    --cs360-action-primary-hover: var(--cs360-blue-500);
-    --cs360-action-primary-active: var(--cs360-blue-600);
-    --cs360-action-destructive-default: var(--cs360-red-400);
-    --cs360-action-destructive-hover: var(--cs360-red-500);
-    --cs360-status-success-default: var(--cs360-green-400);
-    --cs360-status-warning-default: var(--cs360-yellow-400);
-    --cs360-status-error-default: var(--cs360-red-400);
-    --cs360-bg-default: var(--cs360-neutral-900);
-    --cs360-bg-surface: var(--cs360-neutral-800);
-    --cs360-bg-surface-hover: var(--cs360-neutral-700);
-    --cs360-bg-muted: var(--cs360-neutral-800);
-    --cs360-text-primary: var(--cs360-neutral-50);
-    --cs360-text-secondary: var(--cs360-neutral-300);
-    --cs360-text-muted: var(--cs360-neutral-400);
-    --cs360-text-link: var(--cs360-blue-400);
-    --cs360-border-default: var(--cs360-neutral-700);
-    --cs360-border-subtle: var(--cs360-neutral-800);
-  }
-  /* High Contrast Theme */
-  [data-theme="high-contrast"] {
-    --cs360-action-primary-default: #0000FF;
-    --cs360-action-destructive-default: #CC0000;
-    --cs360-status-success-default: #006600;
-    --cs360-status-warning-default: #995500;
-    --cs360-status-error-default: #990000;
-    --cs360-bg-default: #FFFFFF;
-    --cs360-bg-surface: #FFFFFF;
-    --cs360-text-primary: #000000;
-    --cs360-border-default: #000000;
-  }
 
 /* ==========================================================================
    LAYER 3: STYLES -> Base resets, typography, layout, app shell, component classes
-   (Primitives from styles/base.scss, styles/components/*.scss)
    ========================================================================== */
-  /* Font weight, line height */
-  :root {
-    --cs360-font-weight-normal: 400;
-    --cs360-font-weight-medium: 500;
-    --cs360-font-weight-semibold: 600;
-    --cs360-font-weight-bold: 700;
-    --cs360-line-height-tight: 1.25;
-    --cs360-line-height-normal: 1.5;
-    --cs360-line-height-relaxed: 1.75;
-  }
-
   /* Base resets */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: var(--cs360-font-sans);
     font-size: var(--cs360-text-base);
-    line-height: var(--cs360-line-height-normal);
+    line-height: var(--cs360-line-height-base);
     color: var(--cs360-text-primary);
     background-color: var(--cs360-bg-default);
     -webkit-font-smoothing: antialiased;
@@ -333,7 +128,7 @@
      ========================================================================== */
   /* Section headers */
   .section-header { padding: var(--cs360-space-4) var(--cs360-space-6); border-bottom: 1px solid var(--cs360-border-subtle); }
-  .section-title { font-size: var(--cs360-text-xl); font-weight: var(--cs360-font-weight-semibold); color: var(--cs360-text-primary); }
+  .section-title { font-size: var(--cs360-text-xl); font-weight: var(--cs360-font-semi); color: var(--cs360-text-primary); }
 
   /* Page title bar */
   .page-title-bar {
@@ -344,7 +139,7 @@
     margin-bottom: var(--cs360-space-4);
     border-bottom: 1px solid var(--cs360-border-subtle);
   }
-  .page-title { font-size: var(--cs360-text-2xl); font-weight: var(--cs360-font-weight-bold); color: var(--cs360-text-primary); }
+  .page-title { font-size: var(--cs360-text-2xl); font-weight: var(--cs360-font-bold); color: var(--cs360-text-primary); }
 
   /* Row between layout */
   .row-between { display: flex; justify-content: space-between; align-items: center; gap: var(--cs360-space-4); }
@@ -373,14 +168,14 @@
     padding: var(--cs360-space-4);
     box-shadow: var(--cs360-shadow-sm);
   }
-  .cs-card-title { font-size: var(--cs360-text-sm); font-weight: var(--cs360-font-weight-medium); color: var(--cs360-text-secondary); }
-  .cs-card-value { font-size: var(--cs360-text-3xl); font-weight: var(--cs360-font-weight-bold); color: var(--cs360-text-primary); }
+  .cs-card-title { font-size: var(--cs360-text-sm); font-weight: var(--cs360-font-medium); color: var(--cs360-text-secondary); }
+  .cs-card-value { font-size: var(--cs360-text-3xl); font-weight: var(--cs360-font-bold); color: var(--cs360-text-primary); }
   .cs-card-meta { font-size: var(--cs360-text-xs); color: var(--cs360-text-muted); margin-top: var(--cs360-space-1); }
   .cs-card-badge {
     font-size: var(--cs360-text-xs);
     padding: var(--cs360-space-0-5) var(--cs360-space-2);
     border-radius: var(--cs360-radius-full);
-    font-weight: var(--cs360-font-weight-medium);
+    font-weight: var(--cs360-font-medium);
     text-transform: uppercase;
   }
 
@@ -390,10 +185,10 @@
     flex-direction: column;
     gap: var(--cs360-space-1);
   }
-  .stat-badge-success { background: var(--cs360-status-success-subtle); color: var(--cs360-status-success-default); }
-  .stat-badge-warning { background: var(--cs360-status-warning-subtle); color: var(--cs360-status-warning-default); }
-  .stat-badge-error { background: var(--cs360-status-error-subtle); color: var(--cs360-status-error-default); }
-  .stat-badge-info { background: var(--cs360-status-info-subtle); color: var(--cs360-status-info-default); }
+  .stat-badge-success { background: var(--cs360-feedback-success-bg); color: var(--cs360-feedback-success); }
+  .stat-badge-warning { background: var(--cs360-feedback-warning-bg); color: var(--cs360-feedback-warning); }
+  .stat-badge-error { background: var(--cs360-feedback-error-bg); color: var(--cs360-feedback-error); }
+  .stat-badge-info { background: var(--cs360-feedback-info-bg); color: var(--cs360-feedback-info); }
 
   /* Profile header */
   .profile-header {
@@ -410,10 +205,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: var(--cs360-font-weight-bold);
+    font-weight: var(--cs360-font-bold);
     color: var(--cs360-text-secondary);
   }
-  .profile-name { font-size: var(--cs360-text-base); font-weight: var(--cs360-font-weight-medium); color: var(--cs360-text-primary); }
+  .profile-name { font-size: var(--cs360-text-base); font-weight: var(--cs360-font-medium); color: var(--cs360-text-primary); }
 
   /* Buttons */
   .btn {
@@ -423,20 +218,20 @@
     gap: var(--cs360-space-1);
     padding: var(--cs360-space-2) var(--cs360-space-4);
     font-size: var(--cs360-text-sm);
-    font-weight: var(--cs360-font-weight-medium);
+    font-weight: var(--cs360-font-medium);
     border-radius: var(--cs360-radius-md);
     border: 1px solid transparent;
     cursor: pointer;
     transition: all var(--cs360-transition-fast) var(--cs360-ease-default);
     text-decoration: none;
   }
-  .btn-primary { background: var(--cs360-action-primary-default); color: var(--cs360-white); }
+  .btn-primary { background: var(--cs360-action-primary-default); color: var(--cs360-text-inverse); }
   .btn-primary:hover { background: var(--cs360-action-primary-hover); }
   .btn-secondary { background: var(--cs360-bg-surface); color: var(--cs360-action-primary-default); border-color: var(--cs360-border-default); }
   .btn-secondary:hover { background: var(--cs360-bg-surface-hover); }
   .btn-tertiary { background: transparent; color: var(--cs360-text-secondary); }
   .btn-tertiary:hover { color: var(--cs360-text-primary); }
-  .btn-destructive { background: var(--cs360-action-destructive-default); color: var(--cs360-white); }
+  .btn-destructive { background: var(--cs360-action-destructive-default); color: var(--cs360-text-inverse); }
   .btn-destructive:hover { background: var(--cs360-action-destructive-hover); }
   .btn-sm { padding: var(--cs360-space-1) var(--cs360-space-2); font-size: var(--cs360-text-xs); }
   .btn-lg { padding: var(--cs360-space-3) var(--cs360-space-6); font-size: var(--cs360-text-base); }
@@ -454,14 +249,14 @@
     outline: none;
     transition: border-color var(--cs360-transition-fast) var(--cs360-ease-default), box-shadow var(--cs360-transition-fast) var(--cs360-ease-default);
   }
-  .input-base:focus { border-color: var(--cs360-border-focus); box-shadow: var(--cs360-shadow-inset-sm); }
+  .input-base:focus { border-color: var(--cs360-border-focus); box-shadow: var(--cs360-shadow-inner); }
   .input-base::placeholder { color: var(--cs360-text-muted); }
   select.input-base { cursor: pointer; }
   input[type="checkbox"].checkbox-base { width: 18px; height: 18px; accent-color: var(--cs360-action-primary-default); }
 
   /* Form field groups */
   .form-field { display: flex; flex-direction: column; gap: var(--cs360-space-1-5); }
-  .field-label { font-size: var(--cs360-text-sm); font-weight: var(--cs360-font-weight-medium); color: var(--cs360-text-secondary); }
+  .field-label { font-size: var(--cs360-text-sm); font-weight: var(--cs360-font-medium); color: var(--cs360-text-secondary); }
   .checkbox-label { display: flex; align-items: center; gap: var(--cs360-space-2); font-size: var(--cs360-text-sm); color: var(--cs360-text-primary); }
 
   /* Progress bar */
@@ -481,7 +276,7 @@
     text-align: left;
     padding: var(--cs360-space-3) var(--cs360-space-4);
     font-size: var(--cs360-text-xs);
-    font-weight: var(--cs360-font-weight-semibold);
+    font-weight: var(--cs360-font-semi);
     color: var(--cs360-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -498,9 +293,9 @@
   .table-cell:last-child { text-align: right; }
 
   /* Badges & chips */
-  .badge-success { background: var(--cs360-status-success-subtle); color: var(--cs360-status-success-default); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-weight-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
-  .badge-warning { background: var(--cs360-status-warning-subtle); color: var(--cs360-status-warning-default); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-weight-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
-  .badge-info { background: var(--cs360-status-info-subtle); color: var(--cs360-status-info-default); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-weight-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
+  .badge-success { background: var(--cs360-feedback-success-bg); color: var(--cs360-feedback-success); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
+  .badge-warning { background: var(--cs360-feedback-warning-bg); color: var(--cs360-feedback-warning); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
+  .badge-info { background: var(--cs360-feedback-info-bg); color: var(--cs360-feedback-info); font-size: var(--cs360-text-xs); font-weight: var(--cs360-font-medium); padding: var(--cs360-space-0-5) var(--cs360-space-2); border-radius: var(--cs360-radius-full); text-transform: uppercase; }
   .filter-chip { background: var(--cs360-bg-muted); color: var(--cs360-text-secondary); font-size: var(--cs360-text-xs); padding: var(--cs360-space-1) var(--cs360-space-2); border-radius: var(--cs360-radius-full); }
 
   /* Meta value display */
@@ -624,7 +419,7 @@
         </div>
         <div class="panel-body" style="max-width: var(--cs360-size-form);">
           <div class="form-field" style="margin-bottom: var(--cs360-space-4);">
-            <label class="field-label">Client Name <span style="color: var(--cs360-status-error-default);">*</span></label>
+            <label class="field-label">Client Name <span style="color: var(--cs360-feedback-error);">*</span></label>
             <input type="text" placeholder="Enter client name" class="input-base" />
           </div>
           <div class="form-field" style="margin-bottom: var(--cs360-space-4);">

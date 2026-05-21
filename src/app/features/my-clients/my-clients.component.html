@@ -13,6 +13,7 @@
       [totalItems]="totalClients()"
       [columns]="3"
       [pageSize]="9"
+      [showPagination]="false"
       emptyMessage="No clients found"
       (itemClick)="onClientClick($any($event))"
     >
@@ -22,12 +23,55 @@
     </cs-card-list>
   </div>
 
-  <!-- Client Detail Modal -->
-  @if (showFlyout() && selectedClient()) {
-    <app-client-detail-modal
-      [client]="selectedClient()!"
-      (close)="closeFlyout()"
-    />
-  }
+  <!-- ═══════ Client Detail Flyout ═══════ -->
+  <app-client-detail-flyout
+    [isOpen]="showDetailFlyout()"
+    [client]="selectedClient()"
+    [upcomingShift]="upcomingShift()"
+    [showMapDirections]="showMapDirections()"
+    (isOpenChange)="closeDetailFlyout()"
+    (closed)="closeDetailFlyout()"
+    (actionClicked)="onClientAction($event)"
+  />
+
+  <!-- ═══════ Client Contacts Flyout ═══════ -->
+  <app-client-contacts-flyout
+    [isOpen]="showContactsFlyout()"
+    [contacts]="clientContacts()"
+    (isOpenChange)="closeContactsFlyout()"
+    (closed)="closeContactsFlyout()"
+  />
+
+  <!-- ═══════ Client Documents Flyout ═══════ -->
+  <app-client-documents-flyout
+    [isOpen]="showDocumentsFlyout()"
+    [documents]="clientDocuments()"
+    (isOpenChange)="closeDocumentsFlyout()"
+    (closed)="closeDocumentsFlyout()"
+  />
+
+  <!-- ═══════ Client Care Plan Flyout ═══════ -->
+  <app-client-care-plan-flyout
+    [isOpen]="showCarePlanFlyout()"
+    [clientId]="selectedClient()?.id?.toString() || ''"
+    (isOpenChange)="closeCarePlanFlyout()"
+    (closed)="closeCarePlanFlyout()"
+  />
+
+  <!-- ═══════ Client Completed Forms Flyout ═══════ -->
+  <app-client-completed-forms-flyout
+    [isOpen]="showCompletedFormsFlyout()"
+    [clientId]="selectedClient()?.id?.toString() || ''"
+    (isOpenChange)="closeCompletedFormsFlyout()"
+    (closed)="closeCompletedFormsFlyout()"
+  />
+
+  <!-- ═══════ Client Open Shifts Flyout ═══════ -->
+  <app-client-open-shifts-flyout
+    [isOpen]="showOpenShiftsFlyout()"
+    [clientId]="selectedClient()?.id?.toString() || ''"
+    (isOpenChange)="closeOpenShiftsFlyout()"
+    (closed)="closeOpenShiftsFlyout()"
+  />
 </div>
 

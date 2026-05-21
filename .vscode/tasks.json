@@ -4,7 +4,8 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "start",
+      "script": "start:4200",
+      "label": "AI-Experiments: start:4200",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
@@ -19,6 +20,36 @@
           }
         }
       }
+    },
+    {
+      "label": "Claude-Caregiver-Code: start:5200",
+      "type": "shell",
+      "command": "npm run start:5200",
+      "options": {
+        "cwd": "/Users/charanjeetsingh/Work Drive/PROJECTS/Claude-Caregiver-Code"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    },
+    {
+      "label": "Start both apps",
+      "dependsOn": [
+        "AI-Experiments: start:4200",
+        "Claude-Caregiver-Code: start:5200"
+      ],
+      "dependsOrder": "parallel"
     },
     {
       "type": "npm",

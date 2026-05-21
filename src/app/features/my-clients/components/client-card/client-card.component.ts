@@ -27,30 +27,40 @@ export interface ClientInfo {
   imports: [CommonModule, CSIconComponent, CSAvatarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex items-center gap-[var(--density-space-3)] w-full min-w-0">
+    <!--
+      Figma: "Client card" — HORIZONTAL layout
+        primaryAxisSizingMode = FIXED (fills parent width)
+        counterAxisSizingMode = HUG  (height hugs content)
+        counterAxisAlignItems = MIN  → items-start (top-aligned)
+        itemSpacing = 8px            → gap-[var(--cs360-space-2)]
+        padding = 12px all sides     → handled by card wrapper in cs-card-list
+    -->
+    <div class="flex items-start gap-[var(--cs360-space-2)] w-full">
 
-      <!-- Circular avatar -->
+      <!-- [Figma layer: "Avatar"] FIXED 40×40, circular -->
       <cs-avatar
         [name]="clientName"
         [src]="client.avatar"
-        size="lg"
+        size="md"
         class="shrink-0"
       />
 
-      <!-- Name + address -->
-      <div class="flex-1 min-w-0">
-        <h3 class="font-semibold text-[length:var(--density-text-body)]
-                   text-[var(--cs360-text-primary)] truncate leading-snug">
+      <!-- [Figma layer: "info"] VERTICAL layout, sizH=FILL, sizV=HUG, gap=8px -->
+      <div class="flex-1 min-w-0 flex flex-col gap-[var(--cs360-space-2)]">
+        <!-- Name: fs=16, fw=500, lh=24, color=#0f172a → text-primary, sizH=HUG -->
+        <span class="font-medium text-[length:var(--density-text-body)]
+                     text-[var(--cs360-text-primary)] leading-[24px] truncate">
           {{ clientName }}
-        </h3>
-        <p class="text-[length:var(--density-text-body-muted)]
-                  text-[var(--cs360-text-secondary)] truncate mt-0.5">
+        </span>
+        <!-- Address: fs=14, fw=400, lh=20, color=#0f172a → text-primary, sizH=FILL, 2 lines -->
+        <span class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px]
+                     text-[var(--cs360-text-primary)] line-clamp-2">
           {{ clientAddress }}
-        </p>
+        </span>
       </div>
 
-      <!-- Chevron -->
-      <cs-icon name="chevron_right" [size]="20"
+      <!-- [Figma layer: "Header Icons"] FIXED 20×20, chevron_forward, color=#94a3b8 → text-tertiary -->
+      <cs-icon name="chevron_forward" [size]="20"
                class="shrink-0 text-[var(--cs360-text-tertiary)]" />
     </div>
   `,

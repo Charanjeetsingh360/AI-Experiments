@@ -1,26 +1,50 @@
 <div class="flex h-full flex-col overflow-hidden">
 
   <!-- Page Header -->
-  <cs-page-header title="Shift Calendar" description="View and manage your assigned, adhoc, and open shifts.">
-    <div header-actions class="flex items-center gap-[var(--density-space-3)]">
+  <cs-page-header
+    title="Shift Calendar"
+    description="You can view your assigned, adhoc, and open shifts.">
+    <div header-actions class="flex items-center gap-2">
+
+      <!-- Filters — variant=Filter icon (tune), r=8, py=4 pl=12 pr=8, gap=4 -->
       <button type="button"
-        class="inline-flex items-center gap-1.5 rounded-md border border-[var(--cs360-border-subtle)]
-               bg-transparent px-[var(--density-space-3)] py-[var(--density-space-2)]
-               text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]
-               shadow-sm transition-colors hover:bg-[var(--cs360-bg-alt)]
-               focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]">
-        <cs-icon name="grid_view" [size]="16" />
+        class="inline-flex items-center gap-1
+               rounded-lg border border-[var(--cs360-border-subtle)]
+               bg-[var(--cs360-bg-surface)]
+               py-1 pl-3 pr-2
+               text-[13px] font-medium text-[var(--cs360-text-primary)]
+               transition-colors hover:bg-[var(--cs360-bg-alt)]
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
+        Filters
+        <cs-icon name="tune" [size]="18" />
+      </button>
+
+      <!-- Shift Details — variant=App Drawer Menu icon (apps), same styling -->
+      <button type="button"
+        class="inline-flex items-center gap-1
+               rounded-lg border border-[var(--cs360-border-subtle)]
+               bg-[var(--cs360-bg-surface)]
+               py-1 pl-3 pr-2
+               text-sm font-medium text-[var(--cs360-text-primary)]
+               transition-colors hover:bg-[var(--cs360-bg-alt)]
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
         Shift Details
+        <cs-icon name="apps" [size]="18" />
       </button>
+
+      <!-- More Actions — variant=More icon (more_vert), same styling -->
       <button type="button"
-        class="inline-flex items-center gap-1 rounded-md border border-[var(--cs360-border-subtle)]
-               bg-transparent px-[var(--density-space-3)] py-[var(--density-space-2)]
-               text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]
-               shadow-sm transition-colors hover:bg-[var(--cs360-bg-alt)]
-               focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]">
+        class="inline-flex items-center gap-1
+               rounded-lg border border-[var(--cs360-border-subtle)]
+               bg-[var(--cs360-bg-surface)]
+               py-1 pl-3 pr-2
+               text-sm font-medium text-[var(--cs360-text-primary)]
+               transition-colors hover:bg-[var(--cs360-bg-alt)]
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
         More Actions
-        <cs-icon name="more_vert" [size]="16" />
+        <cs-icon name="more_vert" [size]="18" />
       </button>
+
     </div>
   </cs-page-header>
 

@@ -27,20 +27,28 @@ export interface CSTab {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="cs-tabs inline-flex border border-[var(--cs360-border-subtle)] rounded-lg overflow-hidden bg-[var(--cs360-bg-surface)]"
+      class="cs-tabs border border-[var(--cs360-border-subtle)]
+             rounded-[var(--cs360-radius-md)] overflow-hidden bg-[var(--cs360-bg-surface)]"
+      [class.inline-flex]="!fullWidth"
+      [class.flex]="fullWidth"
+      [class.w-full]="fullWidth"
       role="tablist"
       aria-label="Tabs"
       (keydown)="onKeydown($event)"
     >
       @for (tab of tabs; track tab.value; let i = $index) {
-        <button
-          type="button"
-          role="tab"
-          class="inline-flex items-center justify-center gap-1.5 min-w-[80px] h-11 px-4 border-none rounded-none text-sm font-medium leading-none text-center cursor-pointer outline-none transition-colors duration-150 whitespace-nowrap
-            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--cs360-action-primary)]"
-          [class.bg-transparent]="tab.value !== activeTab && !tab.disabled"
-          [class.text-\[var\(--cs360-text-primary\)\]]="tab.value !== activeTab"
-          [class.hover\:bg-\[var\(--cs360-bg-alt\)\]]="tab.value !== activeTab && !tab.disabled"
+          <button
+            type="button"
+            role="tab"
+            class="inline-flex items-center justify-center gap-[var(--density-space-1)]
+              h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+              border-none rounded-none text-[length:var(--density-text-body-muted)]
+              font-medium leading-[16.94px] text-center cursor-pointer outline-none transition-colors duration-150 whitespace-nowrap
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--cs360-action-primary)]"
+            [class.flex-1]="fullWidth"
+            [class.bg-transparent]="tab.value !== activeTab && !tab.disabled"
+            [class.text-\[var\(--cs360-text-primary\)\]]="tab.value !== activeTab"
+            [class.hover\:bg-\[var\(--cs360-bg-alt\)\]]="tab.value !== activeTab && !tab.disabled"
           [class.opacity-40]="tab.disabled"
           [class.cursor-not-allowed]="tab.disabled"
           [ngClass]="getTabClass(tab)"
@@ -61,11 +69,12 @@ export interface CSTab {
       }
     </div>
   `,
-  styles: [`:host { display: inline-flex; }`],
+  styles: [`:host { display: inline-flex; } :host(.full-width) { display: flex; width: 100%; }`],
 })
 export class CSTabsComponent implements OnChanges {
   @Input() tabs: CSTab[] = [];
   @Input() activeTab = '';
+  @Input() fullWidth = false;
   @Output() activeTabChange = new EventEmitter<string>();
 
   focusIndex = 0;

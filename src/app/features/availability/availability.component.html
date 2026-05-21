@@ -1,333 +1,419 @@
 <div class="flex flex-col h-full overflow-hidden">
+  <div class="flex flex-col flex-1 min-h-0">
 
-  <!-- ══════════════════════ PAGE HEADER ══════════════════════ -->
-  <cs-page-header
-    title="My Availability"
-    description="Manage when you are available or unavailable for shifts."
-  >
-    <div header-actions>
-      <cs-btn (click)="openAddFlyout()" variant="primary" size="md">
-        <cs-icon name="add" [size]="16" aria-hidden="true" />
-        Add Availability
-      </cs-btn>
-    </div>
-  </cs-page-header>
-
-  <!-- ══════════════════════ TAB BAR ══════════════════════ -->
-  <div class="px-[var(--density-space-page)] pt-[var(--density-space-3)] pb-0 flex-shrink-0">
-    <cs-tabs
-      [tabs]="tabs"
-      [activeTab]="activeTab()"
-      (activeTabChange)="onTabChange($event)"
-    ></cs-tabs>
-  </div>
-
-  <!-- ══════════════════════ CARD LIST ══════════════════════ -->
-  <div class="flex-1 min-h-0 bg-[var(--cs360-bg-canvas)]">
-    <cs-card-list
-      [items]="filteredItems()"
-      [totalItems]="totalItems()"
-      [pageSize]="pageSize()"
-      [currentPage]="currentPage()"
-      [pageSizeOptions]="pageSizeOptions"
-      [columns]="3"
-      [emptyMessage]="'No ' + activeTab() + ' records found'"
-      (itemClick)="onItemClick($event)"
-      (pageChange)="onPageChange($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
+    <!-- ══════════════════════ PAGE HEADER ══════════════════════ -->
+    <cs-page-header
+      title="Availability/Unavailability"
+      description="You can upload documents for this client."
+      (refresh)="onRefresh()"
     >
-      <ng-template csCardTemplate let-item>
-        <!-- Availability Card Content (Figma design: date, time, tags) -->
-        <div class="flex flex-col gap-1 min-w-0">
+      <div header-actions>
+        <cs-btn (click)="openAddModal()" variant="primary" size="md">
+          <cs-icon name="add" [size]="16" aria-hidden="true" />
+          Add {{ activeTab() === 'availability' ? 'Availability' : 'Unavailability' }}
+        </cs-btn>
+      </div>
+    </cs-page-header>
 
-          <!-- Date row with type badge -->
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex items-center gap-1.5 min-w-0">
-              <!-- Calendar icon -->
-              <cs-icon name="calendar_month" [size]="16" class="shrink-0 text-[var(--cs360-action-primary)]" />
-              <span class="text-sm font-semibold text-[var(--cs360-text-primary)] truncate">{{ item.date }}</span>
-            </div>
-
-            <!-- Full-day or time badge -->
-            @if (item.isFullDay) {
-              <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--cs360-action-primary)]/10 text-[var(--cs360-action-primary)]">
-                Full Day
-              </span>
-            } @else if (item.timeRange) {
-              <span class="shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--cs360-bg-alt)] text-[var(--cs360-text-secondary)]">
-                {{ item.timeRange }}
-              </span>
-            }
-          </div>
-
-          <!-- Health reason (unavailability) -->
-          @if (item.healthReason) {
-            <div class="flex items-center gap-1.5 text-xs text-[var(--cs360-text-secondary)]">
-              <cs-icon name="visibility_off" [size]="14" class="shrink-0 text-[var(--cs360-feedback-warning)]" />
-              <span class="truncate">{{ item.healthReason }}</span>
-            </div>
-          }
-
-          <!-- Repeat info -->
-          @if (item.repeatInfo) {
-            <div class="flex items-center gap-1.5 text-xs text-[var(--cs360-text-secondary)]">
-              <cs-icon name="repeat" [size]="14" class="shrink-0 text-[var(--cs360-feedback-success)]" />
-              <span class="truncate">{{ item.repeatInfo }}</span>
-            </div>
-          }
-
-          <!-- Description -->
-          @if (item.description) {
-            <p class="text-xs text-[var(--cs360-text-tertiary)] line-clamp-1">{{ item.description }}</p>
+    <!-- ══════════════════════ TAB BAR ══════════════════════ -->
+    <div class="px-[var(--density-space-4)]">
+      <div class="flex items-center justify-between pb-[var(--density-space-4)]">
+        <div
+          class="inline-flex items-center h-[34px] rounded-[var(--cs360-radius-md)]
+                 border border-[var(--cs360-border-subtle)] overflow-hidden -space-x-px"
+          role="tablist"
+          aria-label="Availability tabs"
+        >
+          @for (tab of tabs; track tab.value) {
+            <button
+              type="button"
+              role="tab"
+              class="inline-flex items-center justify-center h-[34px]
+                     px-[var(--density-space-2)] border border-[var(--cs360-border-subtle)]
+                     text-[length:var(--density-text-body-muted)] font-medium leading-[16.94px]"
+              [class.bg-\[var\(--cs360-action-primary\)\]]="activeTab() === tab.value"
+              [class.text-\[var\(--cs360-text-inverse\)\]]="activeTab() === tab.value"
+              [class.bg-transparent]="activeTab() !== tab.value"
+              [class.text-\[var\(--cs360-text-primary\)\]]="activeTab() !== tab.value"
+              [attr.aria-selected]="activeTab() === tab.value"
+              (click)="onTabChange(tab.value)"
+            >
+              {{ tab.label }}
+            </button>
           }
         </div>
-      </ng-template>
-    </cs-card-list>
+
+        <div class="w-[68px] h-[34px]" aria-hidden="true"></div>
   </div>
 </div>
 
-
-<!-- ══════════════════════ DETAIL FLYOUT ══════════════════════ -->
+<!-- ══════════════════════ ADD MODAL ══════════════════════ -->
 <cs-flyout
-  [isOpen]="showDetailFlyout()"
-  (isOpenChange)="showDetailFlyout.set($event)"
-  position="right"
-  width="400px"
-  (closed)="closeDetailFlyout()"
+  [isOpen]="showAddModal()"
+  (isOpenChange)="showAddModal.set($event)"
+  position="center"
+  width="500px"
+  [zIndex]="1009"
+  headerPadding="none"
+  bodyPadding="none"
+  footerPadding="none"
+  headerPaddingClass="px-[var(--density-space-3)] pt-[var(--density-space-3)] pb-[var(--density-space-4)]"
+  (closed)="closeAddModal()"
 >
-  <div flyout-header class="flex items-center justify-between w-full">
-    <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">
-      {{ activeTab() === 'availability' ? 'Availability Details' : 'Unavailability Details' }}
-    </h2>
-    <button
-      (click)="closeDetailFlyout()"
-      class="p-1.5 rounded-lg text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)] hover:text-[var(--cs360-text-primary)] transition-colors"
-      aria-label="Close"
-    >
-      <cs-icon name="close" [size]="18" />
-    </button>
+  <div flyout-header class="w-full">
+    <div class="flex items-start justify-between w-full">
+      <h2 class="text-[length:var(--density-text-heading)] font-medium leading-[24px] text-[var(--cs360-text-primary)]">
+        Add {{ activeTab() === 'availability' ? 'Availability' : 'Unavailability' }}
+      </h2>
+      <button
+        (click)="closeAddModal()"
+        class="p-[var(--density-space-1)] rounded-[var(--cs360-radius-sm)]
+               text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)]
+               hover:text-[var(--cs360-text-primary)] transition-colors"
+        aria-label="Close"
+      >
+        <cs-icon name="close" [size]="18" />
+      </button>
+    </div>
   </div>
 
   <div flyout-body>
-    @if (selectedItem(); as item) {
-      <div class="space-y-5">
-
-        <!-- Type badge -->
-        <div class="flex items-center gap-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
-            [class]="item.type === 'availability'
-              ? 'bg-[var(--cs360-feedback-success-bg)] text-[var(--cs360-feedback-success)]'
-              : 'bg-[var(--cs360-feedback-error-bg)] text-[var(--cs360-feedback-error)]'">
-            <span class="w-1.5 h-1.5 rounded-full"
-              [class]="item.type === 'availability' ? 'bg-[var(--cs360-feedback-success)]' : 'bg-[var(--cs360-feedback-error)]'">
-            </span>
-            {{ item.type === 'availability' ? 'Available' : 'Unavailable' }}
-          </span>
-        </div>
-
-        <!-- Date & Time -->
-        <div>
-          <p class="text-[10px] font-semibold text-[var(--cs360-text-tertiary)] uppercase tracking-wider mb-1.5">Date & Time</p>
-          <div class="flex items-center gap-2 p-3 rounded-lg bg-[var(--cs360-bg-alt)]">
-            <cs-icon name="calendar_month" [size]="20" class="text-[var(--cs360-action-primary)] shrink-0" />
-            <div>
-              <p class="text-sm font-semibold text-[var(--cs360-text-primary)]">{{ item.date }}</p>
-              @if (item.isFullDay) {
-                <p class="text-xs text-[var(--cs360-text-secondary)]">Full day</p>
-              } @else if (item.timeRange) {
-                <p class="text-xs text-[var(--cs360-text-secondary)]">{{ item.timeRange }}</p>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Health Reason -->
-        @if (item.healthReason) {
-          <div>
-            <p class="text-[10px] font-semibold text-[var(--cs360-text-tertiary)] uppercase tracking-wider mb-1.5">Reason</p>
-            <p class="text-sm text-[var(--cs360-text-primary)] p-3 rounded-lg bg-[var(--cs360-bg-alt)]">{{ item.healthReason }}</p>
-          </div>
-        }
-
-        <!-- Repeat Info -->
-        @if (item.repeatInfo) {
-          <div>
-            <p class="text-[10px] font-semibold text-[var(--cs360-text-tertiary)] uppercase tracking-wider mb-1.5">Repeat</p>
-            <div class="flex items-center gap-2 p-3 rounded-lg bg-[var(--cs360-bg-alt)]">
-              <cs-icon name="repeat" [size]="16" class="text-[var(--cs360-text-secondary)] shrink-0" />
-              <span class="text-sm text-[var(--cs360-text-primary)]">{{ item.repeatInfo }}</span>
-            </div>
-          </div>
-        }
-
-        <!-- Description -->
-        @if (item.description) {
-          <div>
-            <p class="text-[10px] font-semibold text-[var(--cs360-text-tertiary)] uppercase tracking-wider mb-1.5">Notes</p>
-            <p class="text-sm text-[var(--cs360-text-secondary)] leading-relaxed p-3 rounded-lg bg-[var(--cs360-bg-alt)]">{{ item.description }}</p>
-          </div>
-        }
-      </div>
-    }
-  </div>
-
-  <div flyout-footer>
-    <cs-btn (click)="closeDetailFlyout()" variant="secondary" size="md" [fullWidth]="true">Close</cs-btn>
-  </div>
-</cs-flyout>
-
-
-<!-- ══════════════════════ ADD FLYOUT ══════════════════════ -->
-<cs-flyout
-  [isOpen]="showAddFlyout()"
-  (isOpenChange)="showAddFlyout.set($event)"
-  position="right"
-  width="440px"
-  (closed)="closeAddFlyout()"
->
-  <div flyout-header class="flex items-center justify-between w-full">
-    <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">
-      Add {{ activeTab() === 'availability' ? 'Availability' : 'Unavailability' }}
-    </h2>
-    <button
-      (click)="closeAddFlyout()"
-      class="p-1.5 rounded-lg text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)] hover:text-[var(--cs360-text-primary)] transition-colors"
-      aria-label="Close"
-    >
-      <cs-icon name="close" [size]="18" />
-    </button>
-  </div>
-
-  <div flyout-body>
-    <form [formGroup]="addForm" class="space-y-4">
-
-      <!-- Type toggle (if opened from header, not tab) -->
-      <div>
-        <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5">Type</label>
-        <cs-tabs
-          [tabs]="tabs"
-          [activeTab]="addForm.get('type')?.value"
-          (activeTabChange)="addForm.patchValue({ type: $event })"
-        ></cs-tabs>
-      </div>
-
-      <!-- Date -->
-      <div>
-        <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-date">
-          Date <span class="text-[var(--cs360-feedback-error)]">*</span>
-        </label>
-        <input
-          id="add-date"
-          type="date"
-          formControlName="date"
-          class="w-full h-9 px-3 rounded-lg border text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none transition-colors
-            placeholder:text-[var(--cs360-text-tertiary)]
-            focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
-          [class.border-[var(--cs360-feedback-error)]]="hasError('date')"
-          [class.border-[var(--cs360-border-subtle)]]="!hasError('date')"
-        />
-        @if (hasError('date')) {
-          <p class="mt-1 text-xs text-[var(--cs360-feedback-error)]">Date is required</p>
-        }
-      </div>
-
-      <!-- Full Day toggle -->
-      <div class="flex items-center justify-between p-3 rounded-lg bg-[var(--cs360-bg-alt)]">
-        <div>
-          <p class="text-sm font-medium text-[var(--cs360-text-primary)]">Full Day</p>
-          <p class="text-xs text-[var(--cs360-text-tertiary)]">Toggle to mark entire day</p>
-        </div>
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" formControlName="isFullDay" class="sr-only peer" />
-          <div class="w-10 h-5 rounded-full bg-[var(--cs360-border-default)] peer peer-checked:bg-[var(--cs360-action-primary)] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
-        </label>
-      </div>
-
-      <!-- Time range (hidden when full day) -->
-      @if (!isFullDay) {
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-start">Start Time</label>
-            <input
-              id="add-start"
-              type="time"
-              formControlName="startTime"
-              class="w-full h-9 px-3 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors"
-            />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-end">End Time</label>
-            <input
-              id="add-end"
-              type="time"
-              formControlName="endTime"
-              class="w-full h-9 px-3 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors"
-            />
-          </div>
-        </div>
-      }
-
-      <!-- Repeat -->
-      <div>
-        <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-repeat">Repeat</label>
-        <select
-          id="add-repeat"
-          formControlName="repeatType"
-          class="w-full h-9 px-3 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] transition-colors cursor-pointer"
-        >
-          <option value="none">Does not repeat</option>
-          <option value="daily">Every day</option>
-          <option value="weekly">Every week</option>
-          <option value="biweekly">Every 2 weeks</option>
-          <option value="monthly">Every month</option>
-        </select>
-      </div>
-
-      <!-- Repeat end date -->
-      @if (addForm.get('repeatType')?.value !== 'none') {
-        <div>
-          <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-repeat-end">Repeat Until (optional)</label>
-          <input
-            id="add-repeat-end"
-            type="date"
-            formControlName="repeatEndDate"
-            class="w-full h-9 px-3 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors"
-          />
-        </div>
-      }
-
-      <!-- Health Reason (unavailability only) -->
-      @if (addForm.get('type')?.value === 'unavailability') {
-        <div>
-          <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-reason">Health / Reason (optional)</label>
+    <form [formGroup]="addForm" class="flex flex-col gap-[10px] p-[10px]">
+      @if (activeTab() === 'unavailability') {
+        <div class="flex flex-col gap-[10px]">
+          <label class="text-sm font-medium leading-5 text-[var(--cs360-text-primary)]" for="add-reason">
+            Reason
+          </label>
           <input
             id="add-reason"
             type="text"
             formControlName="healthReason"
-            placeholder="e.g. Doctor appointment"
-            class="w-full h-9 px-3 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] placeholder:text-[var(--cs360-text-tertiary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors"
+            placeholder="e.g. Sick Day"
+            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+              rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+              text-[length:var(--density-text-body-muted)] placeholder-[var(--cs360-text-tertiary)]
+              outline-none focus:border-[var(--cs360-action-primary)]
+              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
           />
         </div>
+        <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
       }
 
-      <!-- Description -->
-      <div>
-        <label class="block text-xs font-semibold text-[var(--cs360-text-secondary)] uppercase tracking-wider mb-1.5" for="add-desc">Notes (optional)</label>
+      <div class="flex flex-col gap-[10px]">
+        <div>
+          <label class="sr-only" for="add-date">Date</label>
+          <input
+            id="add-date"
+            type="date"
+            formControlName="date"
+            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+              rounded-[var(--cs360-radius-md)] border text-[length:var(--density-text-body-muted)]
+              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none transition-colors
+              placeholder-[var(--cs360-text-tertiary)]
+              focus:border-[var(--cs360-action-primary)]
+              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
+            [class.border-[var(--cs360-feedback-error)]]="hasError(addForm, 'date')"
+            [class.border-[var(--cs360-border-subtle)]]="!hasError(addForm, 'date')"
+          />
+          @if (hasError(addForm, 'date')) {
+            <p class="mt-[var(--density-space-1)] text-[length:var(--density-text-caption)] text-[var(--cs360-feedback-error)]">
+              Date is required
+            </p>
+          }
+        </div>
+
+        <label class="sr-only" for="add-start">Start Time</label>
+        <input
+          id="add-start"
+          type="time"
+          formControlName="startTime"
+          [disabled]="addForm.get('isFullDay')?.value"
+          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            text-[length:var(--density-text-body-muted)] outline-none transition-colors
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
+            disabled:opacity-50 disabled:cursor-not-allowed"
+        />
+
+        <label class="sr-only" for="add-end">End Time</label>
+        <input
+          id="add-end"
+          type="time"
+          formControlName="endTime"
+          [disabled]="addForm.get('isFullDay')?.value"
+          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            text-[length:var(--density-text-body-muted)] outline-none transition-colors
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
+            disabled:opacity-50 disabled:cursor-not-allowed"
+        />
+
+        <div class="grid grid-cols-2 gap-[10px]">
+          <div class="flex items-center justify-between">
+            <span class="text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
+              All Day
+            </span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="isFullDay" class="sr-only peer" aria-label="All day" />
+              <div class="w-10 h-5 rounded-full bg-[var(--cs360-border-default)] peer peer-checked:bg-[var(--cs360-action-primary)] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+            </label>
+          </div>
+          <div class="flex items-center justify-end text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
+            Duration: {{ durationLabel(addForm) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
+
+      <div class="flex flex-col gap-[10px]">
+        <cs-tabs
+          [tabs]="repeatTabs"
+          [activeTab]="addForm.get('repeatType')?.value"
+          [fullWidth]="true"
+          (activeTabChange)="addForm.patchValue({ repeatType: $event })"
+        ></cs-tabs>
+      </div>
+
+      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
+
+      <div class="flex flex-col gap-[10px]">
+        <div class="flex items-center justify-between">
+          <label class="text-[length:var(--density-text-body)] font-medium leading-[24px] text-[var(--cs360-text-secondary)]" for="add-notes">
+            Notes
+          </label>
+          <span class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-secondary)]">
+            {{ notesRemaining(addForm) }} Characters left
+          </span>
+        </div>
         <textarea
-          id="add-desc"
-          formControlName="description"
+          id="add-notes"
+          formControlName="notes"
           rows="3"
+          maxlength="{{ notesLimit }}"
           placeholder="Add any additional notes..."
-          class="w-full px-3 py-2 rounded-lg border border-[var(--cs360-border-subtle)] text-sm bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] placeholder:text-[var(--cs360-text-tertiary)] outline-none focus:border-[var(--cs360-action-primary)] focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 transition-colors resize-none"
+          class="w-full px-[var(--density-space-2)] py-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            text-[length:var(--density-text-body-muted)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            placeholder-[var(--cs360-text-tertiary)] outline-none
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 resize-none"
         ></textarea>
       </div>
     </form>
   </div>
 
   <div flyout-footer>
-    <div class="flex gap-3">
-      <cs-btn (click)="closeAddFlyout()" variant="secondary" size="md" [fullWidth]="true">Cancel</cs-btn>
-      <cs-btn (click)="submitAdd()" variant="primary" size="md" [fullWidth]="true">Save</cs-btn>
+    <div class="p-[10px]">
+      <div class="grid grid-cols-2 gap-[10px]">
+        <cs-btn (click)="closeAddModal()" variant="secondary" size="md" [fullWidth]="true">Cancel</cs-btn>
+        <cs-btn (click)="submitAdd()" variant="primary" size="md" [fullWidth]="true">Save</cs-btn>
+      </div>
     </div>
   </div>
 </cs-flyout>
+
+<!-- ══════════════════════ UPDATE MODAL ══════════════════════ -->
+<cs-flyout
+  [isOpen]="showEditModal()"
+  (isOpenChange)="showEditModal.set($event)"
+  position="center"
+  width="500px"
+  [zIndex]="1009"
+  headerPadding="none"
+  bodyPadding="none"
+  footerPadding="none"
+  headerPaddingClass="px-[var(--density-space-3)] pt-[var(--density-space-3)] pb-[var(--density-space-2)]"
+  (closed)="closeEditModal()"
+>
+  <div flyout-header class="w-full">
+    <div class="flex items-start justify-between w-full">
+      <div class="flex flex-col gap-[var(--density-space-1)]">
+        <h2 class="text-[length:var(--density-text-heading)] font-medium leading-[24px] text-[var(--cs360-text-primary)]">
+          Update {{ selectedItem()?.type === 'availability' ? 'Availability' : 'Unavailability' }}
+        </h2>
+        @if (selectedItem(); as item) {
+          <p class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-primary)]">
+            {{ item.title }}
+          </p>
+        }
+      </div>
+      <button
+        (click)="closeEditModal()"
+        class="p-[var(--density-space-1)] rounded-[var(--cs360-radius-sm)]
+               text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)]
+               hover:text-[var(--cs360-text-primary)] transition-colors"
+        aria-label="Close"
+      >
+        <cs-icon name="close" [size]="18" />
+      </button>
+    </div>
+  </div>
+
+  <div flyout-body>
+    <form [formGroup]="editForm" class="flex flex-col gap-[10px] p-[10px]">
+      @if (editForm.get('type')?.value === 'unavailability') {
+        <div class="flex flex-col gap-[10px]">
+          <label class="text-sm font-medium leading-5 text-[var(--cs360-text-primary)]" for="edit-reason">
+            Reason
+          </label>
+          <input
+            id="edit-reason"
+            type="text"
+            formControlName="healthReason"
+            placeholder="e.g. Sick Day"
+            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+              rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+              text-[length:var(--density-text-body-muted)] placeholder-[var(--cs360-text-tertiary)]
+              outline-none focus:border-[var(--cs360-action-primary)]
+              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
+          />
+        </div>
+        <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
+      }
+
+      <div class="flex flex-col gap-[10px]">
+        <div>
+          <label class="sr-only" for="edit-date">Date</label>
+          <input
+            id="edit-date"
+            type="date"
+            formControlName="date"
+            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+              rounded-[var(--cs360-radius-md)] border text-[length:var(--density-text-body-muted)]
+              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none transition-colors
+              placeholder-[var(--cs360-text-tertiary)]
+              focus:border-[var(--cs360-action-primary)]
+              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
+            [class.border-[var(--cs360-feedback-error)]]="hasError(editForm, 'date')"
+            [class.border-[var(--cs360-border-subtle)]]="!hasError(editForm, 'date')"
+          />
+          @if (hasError(editForm, 'date')) {
+            <p class="mt-[var(--density-space-1)] text-[length:var(--density-text-caption)] text-[var(--cs360-feedback-error)]">
+              Date is required
+            </p>
+          }
+        </div>
+
+        <label class="sr-only" for="edit-start">Start Time</label>
+        <input
+          id="edit-start"
+          type="time"
+          formControlName="startTime"
+          [disabled]="editForm.get('isFullDay')?.value"
+          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            text-[length:var(--density-text-body-muted)] outline-none transition-colors
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
+            disabled:opacity-50 disabled:cursor-not-allowed"
+        />
+
+        <label class="sr-only" for="edit-end">End Time</label>
+        <input
+          id="edit-end"
+          type="time"
+          formControlName="endTime"
+          [disabled]="editForm.get('isFullDay')?.value"
+          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            text-[length:var(--density-text-body-muted)] outline-none transition-colors
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
+            disabled:opacity-50 disabled:cursor-not-allowed"
+        />
+
+        <div class="grid grid-cols-2 gap-[10px]">
+          <div class="flex items-center justify-between">
+            <span class="text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
+              All Day
+            </span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="isFullDay" class="sr-only peer" aria-label="All day" />
+              <div class="w-10 h-5 rounded-full bg-[var(--cs360-border-default)] peer peer-checked:bg-[var(--cs360-action-primary)] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
+            </label>
+          </div>
+          <div class="flex items-center justify-end text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
+            Duration: {{ durationLabel(editForm) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
+
+      <div class="flex flex-col gap-[10px]">
+        <cs-tabs
+          [tabs]="repeatTabs"
+          [activeTab]="editForm.get('repeatType')?.value"
+          [fullWidth]="true"
+          (activeTabChange)="editForm.patchValue({ repeatType: $event })"
+        ></cs-tabs>
+      </div>
+
+      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
+
+      <div class="flex flex-col gap-[10px]">
+        <div class="flex items-center justify-between">
+          <label class="text-[length:var(--density-text-body)] font-medium leading-[24px] text-[var(--cs360-text-secondary)]" for="edit-notes">
+            Notes
+          </label>
+          <span class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-secondary)]">
+            {{ notesRemaining(editForm) }} Characters left
+          </span>
+        </div>
+        <textarea
+          id="edit-notes"
+          formControlName="notes"
+          rows="3"
+          maxlength="{{ notesLimit }}"
+          placeholder="Add any additional notes..."
+          class="w-full px-[var(--density-space-2)] py-[var(--density-space-2)]
+            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
+            text-[length:var(--density-text-body-muted)]
+            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+            placeholder-[var(--cs360-text-tertiary)] outline-none
+            focus:border-[var(--cs360-action-primary)]
+            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 resize-none"
+        ></textarea>
+      </div>
+    </form>
+  </div>
+
+  <div flyout-footer>
+    <div class="p-[10px]">
+      <div class="flex items-center justify-between gap-[10px]">
+        <cs-btn (click)="deleteSelected()" variant="destructive" size="md">Delete</cs-btn>
+        <div class="flex items-center gap-[10px]">
+          <cs-btn (click)="closeEditModal()" variant="secondary" size="md">Cancel</cs-btn>
+          <cs-btn (click)="submitEdit()" variant="primary" size="md">Save</cs-btn>
+        </div>
+      </div>
+    </div>
+  </div>
+</cs-flyout>
+    <!-- ══════════════════════ CARD LIST ══════════════════════ -->
+    <div class="flex-1 min-h-0">
+      <cs-card-list
+        [items]="filteredItems()"
+        [totalItems]="totalItems()"
+        [columns]="3"
+        [showPagination]="false"
+        [emptyMessage]="'No ' + activeTab() + ' records found'"
+        (itemClick)="onItemClick($event)"
+      >
+        <ng-template csCardTemplate let-item>
+          <cs-availability-card [item]="item" />
+        </ng-template>
+      </cs-card-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{
+  "tokenSetOrder": [
+    "core",
+    "light",
+    "dark",
+    "theme",
+    "Color Theme/Light Mode (Default)",
+    "Color Theme/Stark Dark Mode - Testcase",
+    "Color Theme/High Contrast",
+    "Color Theme/Soothing Dark Mode",
+    "General/Mode 1",
+    "Density Modes/Default",
+    "Density Modes/Large",
+    "Density Modes/Small"
+  ]
+}
