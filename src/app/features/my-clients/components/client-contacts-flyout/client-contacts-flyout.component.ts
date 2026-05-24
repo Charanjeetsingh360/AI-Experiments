@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSFlyoutComponent } from '../../../../shared/components/cs-flyout/cs-flyout.component';
-import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
 
 export interface ClientContact {
@@ -20,14 +19,10 @@ export interface ClientContact {
   avatarUrl?: string;
 }
 
-/**
- * ClientContactsFlyoutComponent — Displays client emergency/regular contacts.
- * Card-based layout with avatar, name, relationship, and contact info.
- */
 @Component({
   selector: 'app-client-contacts-flyout',
   standalone: true,
-  imports: [CommonModule, CSFlyoutComponent, CSAvatarComponent, CSIconComponent],
+  imports: [CommonModule, CSFlyoutComponent, CSIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <cs-flyout
@@ -37,7 +32,7 @@ export interface ClientContact {
       width="min(640px, 90vw)"
       [zIndex]="1009"
     >
-      <!-- Header: title left-aligned + close right per Figma Popover Header 2025 -->
+      <!-- Header -->
       <div flyout-header class="flex items-center w-full">
         <h2 class="flex-1 text-base font-medium text-[var(--cs360-text-primary)] m-0 leading-[19px]">
           Client Contacts
@@ -55,46 +50,65 @@ export interface ClientContact {
       </div>
 
       <!-- Body -->
-      <div flyout-body class="h-full overflow-y-auto">
-        <div class="flex flex-col gap-4 px-2 py-2">
+      <div flyout-body>
+        <div class="flex flex-col gap-4 py-2">
+
           @for (contact of contacts; track contact.id) {
-            <div class="flex flex-col gap-3 p-4 rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)]">
-              <!-- Contact header: avatar + name + relationship -->
-              <div class="flex items-center gap-3">
-                <cs-avatar
-                  [src]="contact.avatarUrl || ''"
-                  [name]="contact.name"
-                  size="md"
-                />
-                <div class="flex flex-col">
-                  <span class="text-sm font-semibold text-[var(--cs360-text-primary)]">{{ contact.name }}</span>
-                  <span class="text-xs text-[var(--cs360-text-secondary)]">{{ contact.relationship }}</span>
+            <div class="flex flex-col rounded-[10px] overflow-hidden"
+                 style="background: #fff; border: 1px solid #d6d6d6;">
+
+              <!-- Avatar + Name + Relationship row -->
+              <div class="flex items-center" style="padding: 14px 14px 12px; gap: 12px;">
+                <!-- Avatar circle -->
+                <div class="flex items-center justify-center rounded-full shrink-0"
+                     style="width: 44px; height: 44px; background: #e8f0fe; font-size: 16px; font-weight: 600; color: #0077ff;">
+                  {{ getInitials(contact.name) }}
+                </div>
+                <div class="flex flex-col" style="gap: 2px;">
+                  <span style="font-size: 16px; font-weight: 600; color: #1a2332; line-height: 1.3;">
+                    {{ contact.name }}
+                  </span>
+                  <span style="font-size: 13px; color: #788899; line-height: 1.4;">
+                    {{ contact.relationship }}
+                  </span>
                 </div>
               </div>
 
-              <!-- Contact details -->
-              <div class="flex flex-col gap-2 pl-[52px]">
-                @if (contact.phone) {
-                  <a class="text-sm text-[var(--cs360-action-primary)] no-underline hover:underline"
-                     [href]="'tel:' + contact.phone">
-                    {{ contact.phone }}
-                  </a>
+              <!-- Divider -->
+              <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
+
+              <!-- Contact rows with dividers -->
+              @if (contact.phone) {
+                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
+                  <cs-icon name="call" [size]="18" style="color: #788899; flex-shrink: 0;" />
+                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4;">{{ contact.phone }}</span>
+                </div>
+                @if (contact.email || contact.address) {
+                  <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
                 }
-                @if (contact.email) {
-                  <a class="text-sm text-[var(--cs360-action-primary)] no-underline hover:underline"
-                     [href]="'mailto:' + contact.email">
-                    {{ contact.email }}
-                  </a>
-                }
+              }
+
+              @if (contact.email) {
+                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
+                  <cs-icon name="alternate_email" [size]="18" style="color: #788899; flex-shrink: 0;" />
+                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4; word-break: break-all;">{{ contact.email }}</span>
+                </div>
                 @if (contact.address) {
-                  <span class="text-sm text-[var(--cs360-text-secondary)]">{{ contact.address }}</span>
+                  <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
                 }
-              </div>
+              }
+
+              @if (contact.address) {
+                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
+                  <cs-icon name="home" [size]="18" style="color: #788899; flex-shrink: 0;" />
+                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4;">{{ contact.address }}</span>
+                </div>
+              }
             </div>
           }
 
           @if (contacts.length === 0) {
-            <p class="text-sm text-[var(--cs360-text-secondary)] text-center py-6">
+            <p class="text-sm text-[var(--cs360-text-secondary)] text-center py-6 m-0">
               No contacts available
             </p>
           }
@@ -114,5 +128,9 @@ export class ClientContactsFlyoutComponent {
   onClose(): void {
     this.isOpenChange.emit(false);
     this.closed.emit();
+  }
+
+  getInitials(name: string): string {
+    return name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
   }
 }

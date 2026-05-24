@@ -81,45 +81,44 @@ export interface ClientAction {
                  [style.width]="showMapDirections ? '500px' : '100%'"
                  [style.min-width]="showMapDirections ? '500px' : '0'">
 
-            <!-- Profile row: Care Plan pill + Avatar (with ring) + Directions pill -->
-            <div class="flex items-center" style="padding: 24px 0; gap: 6px;">
+            <!-- Profile row: Care Plan pill-LEFT | Avatar (centered) | Directions pill-RIGHT -->
+            <div class="flex items-center" style="padding: 24px 0; gap: 0;">
 
-              <!-- Care Plan pill: FILL, 10px padding, gap=6, r=8, bg=action-primary-subtle -->
+              <!-- Care Plan pill: curved LEFT side only (left half-pill shape) -->
               <button type="button"
-                class="flex flex-1 items-center justify-center rounded-md
-                       bg-[var(--cs360-action-primary-subtle)]
-                       text-[var(--cs360-action-primary)]
+                class="flex flex-1 items-center justify-center
                        hover:opacity-90 transition-opacity
-                       focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
-                       border-0 cursor-pointer"
-                style="padding: 10px; gap: 6px;"
+                       focus:outline-none border-0 cursor-pointer"
+                style="padding: 10px 14px 10px 18px; gap: 6px; height: 48px;
+                       background: #f0f7ff; color: #0077ff;
+                       border-radius: 56px 0 0 56px;"
                 (click)="onAction('care-plan')"
                 aria-label="View care plan">
-                <cs-icon name="assignment" [size]="24" />
-                <span class="whitespace-nowrap text-base font-medium leading-[19px]">Care Plan</span>
+                <cs-icon name="assignment" [size]="22" />
+                <span class="whitespace-nowrap text-sm font-medium leading-[19px]">Care Plan</span>
               </button>
 
-              <!-- Avatar: 70×70 with 13px ring in action-primary-subtle -->
-              <div class="shrink-0 flex items-center justify-center" style="padding: 0 6px;">
-                <div class="rounded-full overflow-hidden"
-                     style="box-shadow: 0 0 0 13px var(--cs360-action-primary-subtle);">
-                  <cs-avatar [name]="clientName" [src]="client.avatar" [sizePx]="70" />
+              <!-- Avatar: 70×70 with blue ring, sits between the two pills -->
+              <div class="shrink-0 flex items-center justify-center"
+                   style="z-index: 1; margin: 0 -2px;">
+                <div class="rounded-full overflow-hidden flex-shrink-0"
+                     style="box-shadow: 0 0 0 4px #fff, 0 0 0 8px #f0f7ff;">
+                  <cs-avatar [name]="clientName" [src]="client.avatar_url" [sizePx]="70" />
                 </div>
               </div>
 
-              <!-- Directions pill: same as Care Plan -->
+              <!-- Directions pill: curved RIGHT side only (right half-pill shape) -->
               <button type="button"
-                class="flex flex-1 items-center justify-center rounded-md
-                       bg-[var(--cs360-action-primary-subtle)]
-                       text-[var(--cs360-action-primary)]
+                class="flex flex-1 items-center justify-center
                        hover:opacity-90 transition-opacity
-                       focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
-                       border-0 cursor-pointer"
-                style="padding: 10px; gap: 6px;"
+                       focus:outline-none border-0 cursor-pointer"
+                style="padding: 10px 18px 10px 14px; gap: 6px; height: 48px;
+                       background: #f0f7ff; color: #0077ff;
+                       border-radius: 0 56px 56px 0;"
                 (click)="onAction('map-directions')"
                 aria-label="Get directions">
-                <cs-icon name="assistant_navigation" [size]="24" />
-                <span class="whitespace-nowrap text-base font-medium leading-[19px]">Directions</span>
+                <cs-icon name="assistant_navigation" [size]="22" />
+                <span class="whitespace-nowrap text-sm font-medium leading-[19px]">Directions</span>
               </button>
             </div>
 
@@ -129,7 +128,7 @@ export interface ClientAction {
                 {{ clientName }}
               </span>
               <span class="text-[var(--cs360-text-primary)] leading-[16px]" style="font-size: 13px;">
-                {{ client.phoneNumber }}
+                {{ client.phone }}
               </span>
               <span class="text-sm text-[var(--cs360-text-primary)] leading-6 text-center">
                 {{ clientAddress }}
@@ -284,12 +283,13 @@ export class ClientDetailFlyoutComponent {
 
   get clientName(): string {
     if (!this.client) return '';
-    return `${this.client.lastName}, ${this.client.firstName}`;
+    return this.client.full_name;
   }
 
   get clientAddress(): string {
     if (!this.client) return '';
-    return `${this.client.address}, ${this.client.city}, ${this.client.state}`;
+    const { street, city, state } = this.client.address;
+    return `${street}, ${city}, ${state}`;
   }
 
   onClose(): void {

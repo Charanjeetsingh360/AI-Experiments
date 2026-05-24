@@ -85,7 +85,8 @@ import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
         </div>
 
         <!-- Body slot — shows skeleton while isLoading -->
-        <div class="flex-1 overflow-y-auto" [class]="bodyPaddingClass">
+        <!-- flex-1 only for side panels (right/left); center modals use natural content height -->
+        <div [class]="bodyWrapperClass" [class]="bodyPaddingClass">
           @if (isLoading) {
             <cs-skeleton variant="flyout-body" />
           } @else {
@@ -131,7 +132,7 @@ export class CSFlyoutComponent implements OnChanges {
   get computedHeaderPaddingClass(): string {
     if (this.headerPadding === 'compact') return 'px-3 py-1';
     if (this.headerPadding === 'none') return 'px-3 py-0.5';
-    return 'px-4 py-3';
+    return 'px-3 pt-3 pb-4';
   }
 
   get resolvedHeaderPaddingClass(): string {
@@ -139,8 +140,14 @@ export class CSFlyoutComponent implements OnChanges {
   }
 
   get bodyPaddingClass(): string {
-    const map: Record<string, string> = { none: '', sm: 'p-3', md: 'p-4', lg: 'p-6' };
-    return map[this.bodyPadding] ?? 'p-4';
+    const map: Record<string, string> = { none: '', sm: 'p-3', md: 'p-3', lg: 'p-6' };
+    return map[this.bodyPadding] ?? 'p-3';
+  }
+
+  get bodyWrapperClass(): string {
+    // Side panels (right/left) need flex-1 to fill 100vh; center modals auto-size to content
+    if (this.position === 'center') return 'overflow-y-auto';
+    return 'flex-1 overflow-y-auto min-h-0';
   }
 
   get footerPaddingClass(): string {
@@ -179,7 +186,7 @@ export class CSFlyoutComponent implements OnChanges {
   }
 
   get panelHeight(): string {
-    if (this.position === 'center') return 'fit-content';
+    if (this.position === 'center') return 'auto';
     if (this.position === 'left' || this.position === 'right') return '100vh';
     return this.height;
   }

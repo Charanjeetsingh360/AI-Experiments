@@ -18,6 +18,7 @@ export interface Document {
   type: 'DOCUMENT' | 'COMPLIANCE';
   updatedOn: string;
   status?: string;
+  notes?: string;
 }
 
 @Component({
@@ -38,10 +39,9 @@ export interface Document {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentsComponent {
-
   readonly filterTabs: CSTab[] = [
-    { label: 'All', value: 'all' },
-    { label: 'Documents', value: 'DOCUMENT' },
+    { label: 'All Types', value: 'all' },
+    { label: 'Document', value: 'DOCUMENT' },
     { label: 'Compliance', value: 'COMPLIANCE' },
   ];
 
@@ -123,13 +123,15 @@ export class DocumentsComponent {
   }
 
   typeBadgeClass(type: string): string {
-    return type === 'COMPLIANCE'
-      ? 'bg-[var(--cs360-feedback-info-bg)] text-[var(--cs360-feedback-info)]'
-      : 'bg-[var(--cs360-bg-alt)] text-[var(--cs360-text-secondary)]';
+    return 'bg-[var(--cs360-bg-alt)] text-[var(--cs360-text-secondary)] border border-[var(--cs360-border-subtle)] uppercase';
   }
 
-  statusBadgeClass(status?: string): string {
-    if (!status) return '';
+  formatDate(dateStr: string): string {
+    const [y, m, d] = dateStr.split('-');
+    return `${m}/${d}/${y}`;
+  }
+
+  statusBadgeClass(status?: string): string {    if (!status) return '';
     if (status === 'Active') return 'bg-[var(--cs360-feedback-success-bg)] text-[var(--cs360-feedback-success)]';
     if (status === 'Expiring') return 'bg-[var(--cs360-feedback-warning-bg)] text-[var(--cs360-feedback-warning)]';
     return 'bg-[var(--cs360-feedback-error-bg)] text-[var(--cs360-feedback-error)]';

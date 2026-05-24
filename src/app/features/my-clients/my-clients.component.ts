@@ -11,20 +11,9 @@ import { ClientDocumentsFlyoutComponent, DocumentItem } from './components/clien
 import { ClientCarePlanFlyoutComponent } from './components/client-care-plan-flyout/client-care-plan-flyout.component';
 import { ClientCompletedFormsFlyoutComponent } from './components/client-completed-forms-flyout/client-completed-forms-flyout.component';
 import { ClientOpenShiftsFlyoutComponent } from './components/client-open-shifts-flyout/client-open-shifts-flyout.component';
+import type { IClient } from './models/client.model';
 
-export interface Client {
-  id: number;
-  firstName: string;
-  lastName: string;
-  avatar?: string;
-  phoneNumber: string;
-  address: string;
-  city: string;
-  state: string;
-  status: 'Active' | 'Inactive' | 'Pending';
-  lastVisit?: string;
-  nextVisit?: string;
-}
+export type { IClient as Client };
 
 @Component({
   selector: 'app-my-clients',
@@ -49,7 +38,7 @@ export interface Client {
 })
 export class MyClientsComponent {
   searchQuery = signal('');
-  selectedClient = signal<Client | null>(null);
+  selectedClient = signal<IClient | null>(null);
 
   /* ── Flyout states ── */
   showDetailFlyout = signal(false);
@@ -65,34 +54,85 @@ export class MyClientsComponent {
   clientContacts = signal<ClientContact[]>([]);
   clientDocuments = signal<DocumentItem[]>([]);
 
-  // Mock client data
-  private readonly allClients: Client[] = [
-    { id: 1, firstName: 'John', lastName: 'Smith', phoneNumber: '(555) 123-4567', address: '123 Oak Street', city: 'Springfield', state: 'IL', status: 'Active', lastVisit: '2024-01-15', nextVisit: '2024-01-22' },
-    { id: 2, firstName: 'Mary', lastName: 'Johnson', phoneNumber: '(555) 234-5678', address: '456 Maple Avenue', city: 'Chicago', state: 'IL', status: 'Active', lastVisit: '2024-01-14', nextVisit: '2024-01-21' },
-    { id: 3, firstName: 'Robert', lastName: 'Williams', phoneNumber: '(555) 345-6789', address: '789 Pine Road', city: 'Naperville', state: 'IL', status: 'Inactive', lastVisit: '2024-01-10' },
-    { id: 4, firstName: 'Patricia', lastName: 'Brown', phoneNumber: '(555) 456-7890', address: '321 Elm Court', city: 'Evanston', state: 'IL', status: 'Active', lastVisit: '2024-01-16', nextVisit: '2024-01-23' },
-    { id: 5, firstName: 'Michael', lastName: 'Davis', phoneNumber: '(555) 567-8901', address: '654 Cedar Lane', city: 'Oak Park', state: 'IL', status: 'Pending' },
-    { id: 6, firstName: 'Jennifer', lastName: 'Miller', phoneNumber: '(555) 678-9012', address: '987 Birch Drive', city: 'Skokie', state: 'IL', status: 'Active', lastVisit: '2024-01-13', nextVisit: '2024-01-20' },
-    { id: 7, firstName: 'William', lastName: 'Wilson', phoneNumber: '(555) 789-0123', address: '147 Walnut Street', city: 'Wilmette', state: 'IL', status: 'Active', lastVisit: '2024-01-12', nextVisit: '2024-01-19' },
-    { id: 8, firstName: 'Elizabeth', lastName: 'Moore', phoneNumber: '(555) 890-1234', address: '258 Chestnut Avenue', city: 'Winnetka', state: 'IL', status: 'Inactive', lastVisit: '2024-01-05' },
-    { id: 9, firstName: 'David', lastName: 'Taylor', phoneNumber: '(555) 901-2345', address: '369 Spruce Road', city: 'Highland Park', state: 'IL', status: 'Active', lastVisit: '2024-01-11', nextVisit: '2024-01-18' },
+  // Seed data from cs360_personas.json
+  private readonly allClients: IClient[] = [
+    {
+      id: 'CLT-001', full_name: 'Margaret Holloway', preferred_name: 'Maggie', age: 78,
+      dob: '1946-03-12', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=47',
+      address: { street: '142 Maple Grove Lane', city: 'Austin', state: 'TX', zip: '78701' },
+      phone: '+1 (512) 334-7821', email: 'm.holloway@email.com', status: 'Active',
+      care_type: 'Personal Care', payer_type: 'Medicaid',
+      diagnosis: ['Mild Dementia', 'Type 2 Diabetes', 'Hypertension'],
+      authorized_hours_per_week: 28, caregiver_assigned: 'Rosa Martinez',
+      next_visit: '2026-05-23T09:00:00', care_plan_status: 'Approved',
+      emergency_contact: { name: 'David Holloway', relation: 'Son', phone: '+1 (512) 887-4421' },
+      notes: 'Prefers morning visits. Requires assistance with bathing and medication reminders.',
+    },
+    {
+      id: 'CLT-002', full_name: 'Robert Chen', preferred_name: 'Bob', age: 83,
+      dob: '1942-11-05', gender: 'Male', avatar_url: 'https://i.pravatar.cc/150?img=67',
+      address: { street: '88 Sunset Blvd', city: 'Houston', state: 'TX', zip: '77002' },
+      phone: '+1 (713) 445-9023', email: 'robertchen42@gmail.com', status: 'Active',
+      care_type: 'Skilled Nursing', payer_type: 'VA Benefits',
+      diagnosis: ['COPD', 'Post-Stroke', 'Arthritis'],
+      authorized_hours_per_week: 35, caregiver_assigned: 'James Okafor',
+      next_visit: '2026-05-23T11:30:00', care_plan_status: 'Pending Review',
+      emergency_contact: { name: 'Linda Chen', relation: 'Daughter', phone: '+1 (713) 667-3310' },
+      notes: 'Veteran. Speaks Mandarin and English. Wheelchair user. Needs help with wound care.',
+    },
+    {
+      id: 'CLT-003', full_name: 'Eleanor Vasquez', preferred_name: 'Ellie', age: 71,
+      dob: '1954-07-22', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=44',
+      address: { street: '305 Birchwood Dr', city: 'San Antonio', state: 'TX', zip: '78205' },
+      phone: '+1 (210) 556-7401', email: 'evasquez71@outlook.com', status: 'Active',
+      care_type: 'Companion Care', payer_type: 'Private Pay',
+      diagnosis: ["Parkinson's Disease", 'Depression'],
+      authorized_hours_per_week: 20, caregiver_assigned: 'Angela Brooks',
+      next_visit: '2026-05-24T14:00:00', care_plan_status: 'Approved',
+      emergency_contact: { name: 'Carlos Vasquez', relation: 'Husband', phone: '+1 (210) 998-3411' },
+      notes: 'Lives with husband. Enjoys reading and TV. Benefits from social engagement.',
+    },
+    {
+      id: 'CLT-004', full_name: 'Harold Simmons', preferred_name: 'Harry', age: 89,
+      dob: '1936-09-01', gender: 'Male', avatar_url: 'https://i.pravatar.cc/150?img=70',
+      address: { street: '17 Oak Hill Road', city: 'Dallas', state: 'TX', zip: '75201' },
+      phone: '+1 (214) 773-6650', email: 'hsimmons1936@yahoo.com', status: 'On Hold',
+      care_type: 'Personal Care + Homemaking', payer_type: 'Long Term Care Insurance',
+      diagnosis: ['Congestive Heart Failure', 'Hearing Loss', 'Mild Cognitive Impairment'],
+      authorized_hours_per_week: 42, caregiver_assigned: 'Maria Patel',
+      next_visit: '2026-05-27T08:00:00', care_plan_status: 'Expiring Soon',
+      emergency_contact: { name: 'Susan Simmons-Clark', relation: 'Daughter', phone: '+1 (214) 882-4100' },
+      notes: 'On hold due to hospitalization. Hearing aids needed for all visits. Likes routine.',
+    },
+    {
+      id: 'CLT-005', full_name: 'Dorothy Nguyen', preferred_name: 'Dot', age: 75,
+      dob: '1950-02-18', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=56',
+      address: { street: '920 Lavender Court', city: 'Fort Worth', state: 'TX', zip: '76102' },
+      phone: '+1 (817) 662-5540', email: 'dot.nguyen50@gmail.com', status: 'Active',
+      care_type: 'Skilled Nursing + Physical Therapy', payer_type: 'Medicare',
+      diagnosis: ['Hip Replacement Recovery', 'Osteoporosis', 'Hypertension'],
+      authorized_hours_per_week: 30, caregiver_assigned: 'Kevin Walsh',
+      next_visit: '2026-05-22T10:00:00', care_plan_status: 'Approved',
+      emergency_contact: { name: 'Tran Nguyen', relation: 'Son', phone: '+1 (817) 445-7788' },
+      notes: 'Post-surgery recovery. Requires PT twice weekly. Vietnamese-speaking family.',
+    },
   ];
 
   filteredClients = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     if (!query) return this.allClients;
     return this.allClients.filter(client =>
-      `${client.firstName} ${client.lastName}`.toLowerCase().includes(query) ||
-      client.phoneNumber.includes(query) ||
-      client.address.toLowerCase().includes(query) ||
-      client.city.toLowerCase().includes(query)
+      client.full_name.toLowerCase().includes(query) ||
+      client.phone.includes(query) ||
+      client.address.street.toLowerCase().includes(query) ||
+      client.address.city.toLowerCase().includes(query)
     );
   });
 
   totalClients = computed(() => this.filteredClients().length);
 
   /* ── Client click → open detail flyout ── */
-  onClientClick(client: Client): void {
+  onClientClick(client: IClient): void {
     this.selectedClient.set(client);
     this.showMapDirections.set(false);
 
@@ -122,7 +162,6 @@ export class MyClientsComponent {
     this.selectedClient.set(null);
   }
 
-  /* ── Handle actions from detail flyout ── */
   onClientAction(action: string): void {
     switch (action) {
       case 'care-plan':

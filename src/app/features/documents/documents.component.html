@@ -3,25 +3,24 @@
   <!-- Page Header -->
   <cs-page-header
     title="My Documents"
-    description="Store and manage your compliance documents, certifications and attachments."
   >
     <div header-actions>
       <button type="button"
-        class="inline-flex items-center gap-1.5 rounded-md bg-[var(--cs360-action-primary)]
+        class="inline-flex items-center gap-1.5 rounded-lg border border-transparent
+               bg-[var(--cs360-action-primary-subtle)]
                px-[var(--density-space-4)] py-[var(--density-space-2)]
-               text-[length:var(--density-text-body-muted)] font-medium text-white
-               shadow-sm transition-opacity hover:opacity-90
+               text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-action-primary)]
+               transition-colors hover:bg-[var(--cs360-blue-50)]
                focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
         (click)="openAddFlyout()">
-        <cs-icon name="add" [size]="16" />
-        Add New
+        Add New Document
       </button>
     </div>
   </cs-page-header>
 
-  <!-- Filter Tabs -->
+  <!-- Filter Tabs (pills variant) -->
   <div class="shrink-0 px-[var(--density-space-page)] pt-[var(--density-space-3)]">
-    <cs-tabs [tabs]="filterTabs" [activeTab]="activeFilter()" (activeTabChange)="onFilterChange($event)" />
+    <cs-tabs [tabs]="filterTabs" [activeTab]="activeFilter()" (activeTabChange)="onFilterChange($event)" variant="pills" />
   </div>
 
   <!-- Document Card List -->
@@ -42,17 +41,12 @@
       <div class="flex flex-col gap-[var(--density-space-2)] min-w-0">
         <span class="font-medium text-[var(--cs360-text-primary)] truncate">{{ doc.name }}</span>
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase tracking-wide"
+          <span class="inline-block rounded px-2 py-0.5 text-xs font-medium"
             [class]="typeBadgeClass(doc.type)">
-            {{ doc.type === 'COMPLIANCE' ? 'Compliance' : 'Document' }}
+            {{ doc.type }}
           </span>
-          @if (doc.status) {
-            <span class="inline-block rounded px-2 py-0.5 text-xs font-medium" [class]="statusBadgeClass(doc.status)">
-              {{ doc.status }}
-            </span>
-          }
         </div>
-        <span class="text-sm text-[var(--cs360-text-secondary)]">Updated: {{ doc.updatedOn }}</span>
+        <span class="text-sm text-[var(--cs360-text-secondary)]">Updated on {{ formatDate(doc.updatedOn) }}</span>
       </div>
     </ng-template>
   </cs-card-list>
@@ -69,55 +63,70 @@
     </button>
   </div>
 
-  <div flyout-body class="flex flex-col gap-[var(--density-space-3)]">
-    <cs-tabs [tabs]="addDocTabs" [activeTab]="addDocActiveTab()" (activeTabChange)="addDocActiveTab.set($event)" />
+  <div flyout-body class="flex flex-col gap-[var(--density-space-4)]">
+    <!-- Tabs: segments (connected) -->
+    <cs-tabs [tabs]="addDocTabs" [activeTab]="addDocActiveTab()" (activeTabChange)="addDocActiveTab.set($event)" [fullWidth]="true" />
 
     @if (addDocActiveTab() === 'document') {
-      <div class="flex flex-col gap-[var(--density-space-3)] pt-2">
+      <div class="flex flex-col gap-[var(--density-space-4)]">
+
+        <!-- File Name -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
             File Name <span class="text-[var(--cs360-feedback-error)]">*</span>
           </label>
           <input type="text" [(ngModel)]="docFileName" maxlength="100"
-            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+            class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                   placeholder-[var(--cs360-text-disabled)] shadow-sm
-                   px-[var(--density-space-3)] py-[var(--density-space-2)]
-                   text-[length:var(--density-text-body)]
+                   placeholder-[var(--cs360-text-tertiary)]
+                   px-[var(--density-space-3)] min-h-[44px] text-sm
                    focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                    focus:border-[var(--cs360-action-primary)]"
             placeholder="Enter file name" />
         </div>
+
+        <!-- Notes -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
-          <textarea [(ngModel)]="docNotes" maxlength="200" rows="3"
-            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+          <textarea [(ngModel)]="docNotes" maxlength="200" rows="4"
+            class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                   placeholder-[var(--cs360-text-disabled)] shadow-sm resize-none
+                   placeholder-[var(--cs360-text-tertiary)] resize-none
                    px-[var(--density-space-3)] py-[var(--density-space-2)]
-                   text-[length:var(--density-text-body)]
+                   min-h-[100px] text-sm
                    focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                    focus:border-[var(--cs360-action-primary)]"
             placeholder="Add notes (optional)"></textarea>
+          <span class="text-xs text-[var(--cs360-text-secondary)] text-right">{{ 200 - docNotes.length }} Characters left</span>
         </div>
-        <div class="flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-[var(--cs360-border-subtle)] p-6 text-[var(--cs360-text-tertiary)]">
-          <cs-icon name="upload_file" [size]="32" />
-          <span class="text-sm">Drag & drop file here, or click to browse</span>
-          <span class="text-xs">Max 25 MB</span>
+
+        <!-- Divider -->
+        <div class="border-t border-[var(--cs360-border-subtle)]"></div>
+
+        <!-- Attachments -->
+        <div class="flex flex-col gap-[var(--density-space-2)]">
+          <span class="text-sm font-medium text-[var(--cs360-text-primary)]">Attachments</span>
+          <div class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]">
+            <cs-icon name="upload_file" [size]="32" class="text-[var(--cs360-text-tertiary)]" />
+            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">Click to Upload</span>
+            <span class="text-xs text-[var(--cs360-text-secondary)]">(Max. File size: 25 MB)</span>
+          </div>
         </div>
+
       </div>
     }
 
     @if (addDocActiveTab() === 'compliance') {
-      <div class="flex flex-col gap-[var(--density-space-3)] pt-2">
+      <div class="flex flex-col gap-[var(--density-space-4)]">
+
+        <!-- Compliance Type -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
             Compliance Type <span class="text-[var(--cs360-feedback-error)]">*</span>
           </label>
-          <select class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+          <select class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                          bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                         shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
-                         text-[length:var(--density-text-body)]
+                         px-[var(--density-space-3)] min-h-[44px] text-sm
                          focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                          focus:border-[var(--cs360-action-primary)]">
             <option value="">Select type...</option>
@@ -127,28 +136,30 @@
             <option value="TB">TB Test</option>
           </select>
         </div>
+
+        <!-- License No. -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">License No.</label>
           <input type="text"
-            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+            class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                   placeholder-[var(--cs360-text-disabled)] shadow-sm
-                   px-[var(--density-space-3)] py-[var(--density-space-2)]
-                   text-[length:var(--density-text-body)]
+                   placeholder-[var(--cs360-text-tertiary)]
+                   px-[var(--density-space-3)] min-h-[44px] text-sm
                    focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                    focus:border-[var(--cs360-action-primary)]"
             placeholder="Enter license number" />
         </div>
+
+        <!-- Origin + Expiration Dates -->
         <div class="flex gap-[var(--density-space-3)]">
           <div class="flex flex-1 flex-col gap-[var(--density-space-1)] min-w-0">
             <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
               Origin Date <span class="text-[var(--cs360-feedback-error)]">*</span>
             </label>
             <input type="date"
-              class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+              class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                      bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                     shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
-                     text-[length:var(--density-text-body)]
+                     px-[var(--density-space-3)] min-h-[44px] text-sm
                      focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                      focus:border-[var(--cs360-action-primary)]" />
           </div>
@@ -157,38 +168,53 @@
               Expiration Date <span class="text-[var(--cs360-feedback-error)]">*</span>
             </label>
             <input type="date"
-              class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+              class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                      bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                     shadow-sm px-[var(--density-space-3)] py-[var(--density-space-2)]
-                     text-[length:var(--density-text-body)]
+                     px-[var(--density-space-3)] min-h-[44px] text-sm
                      focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                      focus:border-[var(--cs360-action-primary)]" />
           </div>
         </div>
+
+        <!-- Notes -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
           <textarea rows="3"
-            class="block w-full rounded-md border border-[var(--cs360-border-subtle)]
+            class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                   placeholder-[var(--cs360-text-disabled)] shadow-sm resize-none
+                   placeholder-[var(--cs360-text-tertiary)] resize-none
                    px-[var(--density-space-3)] py-[var(--density-space-2)]
-                   text-[length:var(--density-text-body)]
+                   min-h-[100px] text-sm
                    focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                    focus:border-[var(--cs360-action-primary)]"
             placeholder="Add notes (optional)"></textarea>
         </div>
+
+        <!-- Divider -->
+        <div class="border-t border-[var(--cs360-border-subtle)]"></div>
+
+        <!-- Attachments -->
+        <div class="flex flex-col gap-[var(--density-space-2)]">
+          <span class="text-sm font-medium text-[var(--cs360-text-primary)]">Attachments</span>
+          <div class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]">
+            <cs-icon name="upload_file" [size]="32" class="text-[var(--cs360-text-tertiary)]" />
+            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">Click to Upload</span>
+            <span class="text-xs text-[var(--cs360-text-secondary)]">(Max. File size: 25 MB)</span>
+          </div>
+        </div>
+
       </div>
     }
   </div>
 
-  <div flyout-footer class="flex justify-end gap-3">
+  <div flyout-footer class="flex gap-3">
     <button type="button"
-      class="rounded-lg border border-[var(--cs360-border-subtle)] px-4 py-2 text-sm font-medium text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]"
+      class="flex-1 rounded-lg bg-[var(--cs360-action-primary-subtle)] text-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90"
       (click)="closeAddFlyout()">
       Cancel
     </button>
     <button type="button"
-      class="rounded-lg bg-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+      class="flex-1 rounded-lg bg-[var(--cs360-action-primary)] text-white px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90"
       (click)="closeAddFlyout()">
       Save
     </button>
@@ -196,9 +222,9 @@
 </cs-flyout>
 
 <!-- View Document Flyout -->
-<cs-flyout [(isOpen)]="showViewFlyout" position="right" width="420px">
+<cs-flyout [(isOpen)]="showViewFlyout" position="right" width="460px">
   <div flyout-header class="flex items-center justify-between w-full">
-    <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">Document Details</h2>
+    <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">View Document</h2>
     <button type="button"
       class="rounded p-1 text-[var(--cs360-text-tertiary)] transition-colors hover:text-[var(--cs360-text-primary)]"
       (click)="closeViewFlyout()">
@@ -206,47 +232,32 @@
     </button>
   </div>
 
-  <div flyout-body>
+  <div flyout-body class="p-0">
     @if (selectedDoc) {
-      <div class="flex flex-col gap-[var(--density-space-4)]">
-        <div class="flex items-center gap-3">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--cs360-bg-alt)]">
-            <cs-icon [name]="selectedDoc.type === 'COMPLIANCE' ? 'verified' : 'description'" [size]="24" />
-          </div>
-          <div>
-            <p class="font-semibold text-[var(--cs360-text-primary)]">{{ selectedDoc.name }}</p>
-            <span class="inline-block rounded px-2 py-0.5 text-xs font-medium uppercase" [class]="typeBadgeClass(selectedDoc.type)">
-              {{ selectedDoc.type === 'COMPLIANCE' ? 'Compliance' : 'Document' }}
-            </span>
-          </div>
-        </div>
-        <div class="flex flex-col gap-2">
-          <div class="flex justify-between text-sm">
-            <span class="text-[var(--cs360-text-secondary)]">Updated On</span>
-            <span class="font-medium text-[var(--cs360-text-primary)]">{{ selectedDoc.updatedOn }}</span>
-          </div>
-          @if (selectedDoc.status) {
-            <div class="flex justify-between text-sm">
-              <span class="text-[var(--cs360-text-secondary)]">Status</span>
-              <span class="font-medium rounded px-2 py-0.5 text-xs" [class]="statusBadgeClass(selectedDoc.status)">{{ selectedDoc.status }}</span>
-            </div>
-          }
-        </div>
+      <!-- Document preview area -->
+      <div class="flex h-[220px] w-full items-center justify-center bg-[var(--cs360-bg-alt)] overflow-hidden">
+        <cs-icon name="description" [size]="64" class="text-[var(--cs360-text-tertiary)]" />
+      </div>
+      <div class="flex flex-col gap-[var(--density-space-2)] p-[var(--density-space-4)]">
+        <p class="font-semibold text-[var(--cs360-text-primary)]">{{ selectedDoc.name }}</p>
+        <p class="text-sm text-[var(--cs360-text-secondary)]">Updated on {{ formatDate(selectedDoc.updatedOn) }}</p>
+        @if (selectedDoc.notes) {
+          <p class="text-sm text-[var(--cs360-text-primary)] leading-relaxed mt-2">{{ selectedDoc.notes }}</p>
+        }
       </div>
     }
   </div>
 
-  <div flyout-footer class="flex justify-end gap-3">
+  <div flyout-footer class="flex gap-3">
     <button type="button"
-      class="flex items-center gap-1.5 rounded-lg border border-[var(--cs360-border-subtle)] px-4 py-2 text-sm font-medium text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]"
+      class="flex-1 rounded-lg border border-[var(--cs360-border-subtle)] px-4 py-2 text-sm font-medium text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]"
       (click)="closeViewFlyout()">
-      <cs-icon name="download" [size]="16" />
-      Download
+      Update
     </button>
     <button type="button"
-      class="rounded-lg bg-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+      class="flex-1 rounded-lg bg-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
       (click)="closeViewFlyout()">
-      Close
+      Download
     </button>
   </div>
 </cs-flyout>

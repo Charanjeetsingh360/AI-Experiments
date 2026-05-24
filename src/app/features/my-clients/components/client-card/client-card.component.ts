@@ -2,20 +2,9 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
 import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
+import type { IClient } from '../../models/client.model';
 
-export interface ClientInfo {
-  id: number;
-  firstName: string;
-  lastName: string;
-  avatar?: string;
-  phoneNumber: string;
-  address: string;
-  city: string;
-  state: string;
-  status: 'Active' | 'Inactive' | 'Pending';
-  lastVisit?: string;
-  nextVisit?: string;
-}
+export type { IClient as ClientInfo };
 
 /**
  * ClientCardComponent — Figma client card layout.
@@ -40,7 +29,7 @@ export interface ClientInfo {
       <!-- [Figma layer: "Avatar"] FIXED 40×40, circular -->
       <cs-avatar
         [name]="clientName"
-        [src]="client.avatar"
+        [src]="client.avatar_url"
         size="md"
         class="shrink-0"
       />
@@ -67,15 +56,16 @@ export interface ClientInfo {
   styles: [`:host { display: block; }`],
 })
 export class ClientCardComponent {
-  @Input({ required: true }) client!: ClientInfo;
+  @Input({ required: true }) client!: IClient;
   @Input() index = 0;
 
   get clientName(): string {
-    return `${this.client.lastName}, ${this.client.firstName}`;
+    return this.client.full_name;
   }
 
   get clientAddress(): string {
-    return `${this.client.address}, ${this.client.city}, ${this.client.state}`;
+    const { street, city, state } = this.client.address;
+    return `${street}, ${city}, ${state}`;
   }
 }
 

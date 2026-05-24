@@ -332,6 +332,28 @@ Result:
 - Server reported local URL: `http://127.0.0.1:4200/`.
 - Automated localhost fetch was blocked by local connector permissions, so this is a compile/server-start smoke check, not a visual browser QA.
 
+## Second checkpoint review
+
+### Remaining changes classified
+
+Included in second checkpoint:
+
+- Documents feature UI refinements.
+- My Clients card and flyout refinements.
+- Shared `cs-flyout` and `cs-tabs` support changes.
+- New `src/app/features/my-clients/models/client.model.ts` model file.
+
+Excluded from second checkpoint:
+
+- `.vscode/tasks.json` local path change.
+- `README.md` local backup path change.
+- `src/index.html` external Figma capture script.
+- `package.json` and `package-lock.json` dependency noise for `json-schema-traverse` and `util-deprecate`.
+
+Reason:
+
+The excluded files are environment-specific, potentially production-sensitive, or unrelated to the UI checkpoint. They should be reviewed separately before commit.
+
 ## Next recommended process
 
 Before starting any new implementation step:
