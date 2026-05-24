@@ -1,0 +1,153 @@
+{
+  "color": {
+    "background": {
+      "surface": {
+        "default": {
+          "value": "{color.white}",
+          "type": "color",
+          "description": "Default app surface background"
+        },
+        "subtle": {
+          "value": "{color.gray.50}",
+          "type": "color",
+          "description": "Subtle background surface"
+        },
+        "raised": {
+          "value": "{color.white}",
+          "type": "color",
+          "description": "Raised card, popover, and modal surface"
+        }
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "{color.gray.900}",
+        "type": "color",
+        "description": "Primary readable text"
+      },
+      "secondary": {
+        "value": "{color.gray.700}",
+        "type": "color",
+        "description": "Secondary supporting text"
+      },
+      "disabled": {
+        "value": "{color.gray.500}",
+        "type": "color",
+        "description": "Disabled or unavailable text"
+      },
+      "on-action": {
+        "value": "{color.white}",
+        "type": "color",
+        "description": "Text on primary action backgrounds"
+      }
+    },
+    "border": {
+      "default": {
+        "value": "{color.gray.200}",
+        "type": "color",
+        "description": "Default divider and component border"
+      },
+      "strong": {
+        "value": "{color.gray.300}",
+        "type": "color",
+        "description": "Stronger border for emphasized boundaries"
+      },
+      "focus": {
+        "value": "{color.blue.500}",
+        "type": "color",
+        "description": "Accessible focus border color"
+      }
+    },
+    "action": {
+      "primary": {
+        "value": "{color.blue.500}",
+        "type": "color",
+        "description": "Primary action default state"
+      },
+      "primary-hover": {
+        "value": "{color.blue.600}",
+        "type": "color",
+        "description": "Primary action hover state"
+      },
+      "primary-active": {
+        "value": "{color.blue.700}",
+        "type": "color",
+        "description": "Primary action active state"
+      }
+    },
+    "feedback": {
+      "error": {
+        "value": "{color.red.600}",
+        "type": "color",
+        "description": "Error state and destructive feedback"
+      },
+      "success": {
+        "value": "{color.green.600}",
+        "type": "color",
+        "description": "Success state feedback"
+      },
+      "warning": {
+        "value": "{color.yellow.600}",
+        "type": "color",
+        "description": "Warning state feedback"
+      },
+      "info": {
+        "value": "{color.cyan.600}",
+        "type": "color",
+        "description": "Informational feedback"
+      }
+    }
+  },
+  "spacing": {
+    "component": {
+      "padding": {
+        "sm": {
+          "value": "{spacing.sm}",
+          "type": "dimension",
+          "description": "Small component padding"
+        },
+        "md": {
+          "value": "{spacing.md}",
+          "type": "dimension",
+          "description": "Default component padding"
+        },
+        "lg": {
+          "value": "{spacing.lg}",
+          "type": "dimension",
+          "description": "Large component padding"
+        }
+      },
+      "gap": {
+        "sm": {
+          "value": "{spacing.sm}",
+          "type": "dimension",
+          "description": "Small internal component gap"
+        },
+        "md": {
+          "value": "{spacing.md}",
+          "type": "dimension",
+          "description": "Default internal component gap"
+        }
+      }
+    }
+  },
+  "radius": {
+    "component": {
+      "sm": {
+        "value": "{radius.sm}",
+        "type": "borderRadius",
+        "description": "Small component radius"
+      },
+      "md": {
+        "value": "{radius.md}",
+        "type": "borderRadius",
+        "description": "Default component radius"
+      },
+      "lg": {
+        "value": "{radius.lg}",
+        "type": "borderRadius",
+        "description": "Large component radius"
+      }
+    }
+  }
+}

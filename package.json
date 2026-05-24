@@ -11,7 +11,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "tokens:generate": "node scripts/build-tokens.js",
-    "tokens:validate": "node scripts/validate-tokens.js"
+    "tokens:validate": "node scripts/validate-tokens.js",
+    "prebuild": "npm run tokens:generate",
+    "prestart": "npm run tokens:generate"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,52 @@
+# CS360 AI Experiments Cursor Rules
+
+You are working inside the CS360 design-to-code experimentation workspace. Treat this repository as a bridge between Figma design-system decisions and Angular/Tailwind implementation.
+
+## Core operating model
+
+- Follow the CS360 4-layer design-system model: primitives, semantic tokens, styles, and components.
+- Never hardcode reusable UI values in Angular templates, component styles, or Tailwind utilities when a token can represent the value.
+- Prefer semantic tokens for product UI decisions. Use primitive tokens only as raw source values.
+- Keep Tailwind mappings token-driven through CSS custom properties so color themes and density modes can switch without rebuilding.
+- Write implementation notes for designers and developers, not only code comments.
+
+## Angular expectations
+
+- Use Angular components with clear inputs, outputs, states, and accessibility behavior.
+- Keep component APIs explicit and predictable.
+- Avoid one-off styling inside templates unless it is truly page-specific.
+- Prefer reusable classes, token references, and component-level abstractions.
+
+## Tailwind expectations
+
+- Tailwind utility usage should reference token-backed theme extensions where possible.
+- Use CSS custom properties for color, spacing, radius, elevation, and focus-ring values.
+- Do not introduce arbitrary values such as `text-[13px]`, `p-[11px]`, or `bg-[#123456]` unless a token gap is documented.
+- If an arbitrary value is required temporarily, add a TODO with the recommended token name.
+
+## Accessibility baseline
+
+- Text contrast must meet at least 4.5:1 for normal text.
+- UI component contrast must meet at least 3:1.
+- Interactive targets should be at least 44px where practical.
+- Keyboard order, focus visibility, ARIA labels, form errors, and reduced-motion behavior must be considered.
+- Do not remove native semantics unless replacing them with equivalent accessible behavior.
+
+## Design handoff format
+
+Use this structure when explaining or documenting design-to-code decisions:
+
+1. Problem
+2. Why it matters
+3. Recommendation
+4. Implementation note
+
+## Token naming
+
+Use lowercase slash paths in Figma and dot notation in JSON:
+
+- Figma: `color/background/surface/default`
+- JSON: `color.background.surface.default`
+- CSS custom property: `--color-background-surface-default`
+
+Semantic tokens should alias primitives. Component tokens should alias semantic tokens.

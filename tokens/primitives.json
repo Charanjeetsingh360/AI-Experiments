@@ -1,0 +1,98 @@
+{
+  "color": {
+    "white": {
+      "value": "#FFFFFF",
+      "type": "color",
+      "description": "Base white primitive"
+    },
+    "black": {
+      "value": "#000000",
+      "type": "color",
+      "description": "Base black primitive"
+    },
+    "gray": {
+      "50": { "value": "#F9FAFB", "type": "color" },
+      "100": { "value": "#F3F4F6", "type": "color" },
+      "200": { "value": "#E5E7EB", "type": "color" },
+      "300": { "value": "#D1D5DB", "type": "color" },
+      "500": { "value": "#6B7280", "type": "color" },
+      "700": { "value": "#374151", "type": "color" },
+      "900": { "value": "#111827", "type": "color" }
+    },
+    "blue": {
+      "500": { "value": "#2563EB", "type": "color" },
+      "600": { "value": "#1D4ED8", "type": "color" },
+      "700": { "value": "#1E40AF", "type": "color" }
+    },
+    "red": {
+      "500": { "value": "#EF4444", "type": "color" },
+      "600": { "value": "#DC2626", "type": "color" }
+    },
+    "green": {
+      "500": { "value": "#22C55E", "type": "color" },
+      "600": { "value": "#16A34A", "type": "color" }
+    },
+    "yellow": {
+      "500": { "value": "#EAB308", "type": "color" },
+      "600": { "value": "#CA8A04", "type": "color" }
+    },
+    "cyan": {
+      "500": { "value": "#06B6D4", "type": "color" },
+      "600": { "value": "#0891B2", "type": "color" }
+    }
+  },
+  "spacing": {
+    "xs": { "value": "4px", "type": "dimension" },
+    "sm": { "value": "8px", "type": "dimension" },
+    "md": { "value": "16px", "type": "dimension" },
+    "lg": { "value": "24px", "type": "dimension" },
+    "xl": { "value": "32px", "type": "dimension" },
+    "2xl": { "value": "40px", "type": "dimension" }
+  },
+  "radius": {
+    "sm": { "value": "4px", "type": "borderRadius" },
+    "md": { "value": "8px", "type": "borderRadius" },
+    "lg": { "value": "12px", "type": "borderRadius" },
+    "xl": { "value": "16px", "type": "borderRadius" },
+    "full": { "value": "9999px", "type": "borderRadius" }
+  },
+  "font": {
+    "size": {
+      "xs": { "value": "12px", "type": "dimension" },
+      "sm": { "value": "14px", "type": "dimension" },
+      "base": { "value": "16px", "type": "dimension" },
+      "lg": { "value": "18px", "type": "dimension" },
+      "xl": { "value": "20px", "type": "dimension" },
+      "2xl": { "value": "24px", "type": "dimension" }
+    },
+    "weight": {
+      "regular": { "value": "400", "type": "fontWeight" },
+      "medium": { "value": "500", "type": "fontWeight" },
+      "semibold": { "value": "600", "type": "fontWeight" },
+      "bold": { "value": "700", "type": "fontWeight" }
+    }
+  },
+  "elevation": {
+    "sm": {
+      "value": "0 1px 2px rgba(17, 24, 39, 0.08)",
+      "type": "boxShadow"
+    },
+    "md": {
+      "value": "0 4px 8px rgba(17, 24, 39, 0.12)",
+      "type": "boxShadow"
+    },
+    "lg": {
+      "value": "0 12px 24px rgba(17, 24, 39, 0.16)",
+      "type": "boxShadow"
+    }
+  },
+  "focus": {
+    "ring": {
+      "default": {
+        "value": "0 0 0 3px rgba(37, 99, 235, 0.35)",
+        "type": "boxShadow",
+        "description": "Default accessible focus ring"
+      }
+    }
+  }
+}

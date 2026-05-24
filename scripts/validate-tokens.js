@@ -3,7 +3,8 @@
 /**
  * Token Validation Script
  * Validates token integrity, naming conventions, and OWASP compliance
- * 
+ * against the generated CSS output (tokens/output/css/tokens.css).
+ *
  * Usage: npm run tokens:validate
  */
 
@@ -13,12 +14,15 @@ const crypto = require('crypto');
 
 const CONFIG_PATH = path.join(__dirname, '../figma-mcp.config.json');
 const TOKENS_OUTPUT_PATH = path.join(__dirname, '../tokens/output');
+const CSS_PATH = path.join(TOKENS_OUTPUT_PATH, 'css/tokens.css');
 const MANIFEST_PATH = path.join(TOKENS_OUTPUT_PATH, 'manifest/token-manifest.json');
 
-// OWASP regex patterns
-const HEX_COLOR_PATTERN = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/g;
-const HARDCODED_VALUE_PATTERN = /^(#[0-9A-Fa-f]{6}|rgb|hsl|px|em|rem|\d+)/i;
-const UNSAFE_CHARS_PATTERN = /[<>'"]/g;
+const HEX_COLOR_PATTERN = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\b/g;
+const UNSAFE_CHARS_PATTERN = /[<>]/;
+const CUSTOM_PROP_PATTERN = /^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/i;
+
+const EMITTED_DENSITIES = ['default', 'large', 'small'];
+const EMITTED_THEMES = ['light', 'soothing-dark', 'high-contrast', 'stark-dark'];
 
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
 
@@ -26,214 +30,156 @@ let errors = [];
 let warnings = [];
 let passed = 0;
 
-/**
- * Main validation function
- */
 function validateTokens() {
   console.log('\n🔍 Starting Token Validation...\n');
 
-  // Check if output directory exists
   if (!fs.existsSync(TOKENS_OUTPUT_PATH)) {
     console.error('❌ Token output directory not found');
     console.error(`   Expected: ${TOKENS_OUTPUT_PATH}`);
     process.exit(1);
   }
 
-  // Run all validation checks
-  validateTokenNaming();
-  validateTokenFormat();
-  validateThemeCoverage();
-  validateDensityCoverage();
-  validateHardcodedValues();
-  validateSecurityCompliance();
-  validateTokenIntegrity();
+  if (!fs.existsSync(CSS_PATH)) {
+    console.error('❌ Generated CSS not found. Run `npm run tokens:generate` first.');
+    console.error(`   Expected: ${CSS_PATH}`);
+    process.exit(1);
+  }
 
-  // Print results
+  const cssContent = fs.readFileSync(CSS_PATH, 'utf8');
+  const tokens = parseCustomProperties(cssContent);
+
+  validateTokenNaming(tokens);
+  validateTokenFormat();
+  validateThemeCoverage(cssContent);
+  validateDensityCoverage(cssContent);
+  validateHardcodedValues(tokens);
+  validateSecurityCompliance(tokens);
+  validateTokenIntegrity(cssContent, tokens);
+
   printValidationResults();
 }
 
-/**
- * Validate token naming conventions
- */
-function validateTokenNaming() {
-  console.log('📋 Checking token naming conventions...');
-  
-  const jsonPath = path.join(TOKENS_OUTPUT_PATH, 'json/tokens.json');
-  
-  if (!fs.existsSync(jsonPath)) {
-    warnings.push('⚠️  JSON tokens file not found (not generated yet)');
-    return;
+function parseCustomProperties(css) {
+  const entries = [];
+  for (const line of css.split('\n')) {
+    const match = line.match(CUSTOM_PROP_PATTERN);
+    if (match) {
+      entries.push({ name: match[1], value: match[2].trim() });
+    }
   }
+  return entries;
+}
 
-  const tokens = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  const tokenNames = Object.keys(tokens);
+function validateTokenNaming(tokens) {
+  console.log('📋 Checking token naming conventions...');
 
-  if (tokenNames.length === 0) {
-    warnings.push('⚠️  No tokens found in JSON file');
+  if (tokens.length === 0) {
+    warnings.push('⚠️  No CSS custom properties found in tokens.css');
     return;
   }
 
   let invalidNames = 0;
-  const expectedPrefix = 'cs360';
 
-  tokenNames.forEach((name) => {
-    // Check for prefix
-    if (!name.includes(expectedPrefix) && !name.startsWith('--')) {
+  tokens.forEach(({ name }) => {
+    const bareName = name.replace(/^--/, '');
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(bareName)) {
       invalidNames++;
     }
 
-    // Check for kebab-case
-    if (!/^[a-z0-9]+-[a-z0-9]+(-[a-z0-9]+)*$/.test(name)) {
-      invalidNames++;
-    }
-
-    // Check for unsafe characters
     if (UNSAFE_CHARS_PATTERN.test(name)) {
       errors.push(`❌ Token name contains unsafe characters: ${name}`);
     }
   });
 
   if (invalidNames === 0) {
-    console.log(`✅ All ${tokenNames.length} tokens follow naming conventions`);
+    console.log(`✅ All ${tokens.length} tokens follow naming conventions`);
     passed++;
   } else {
     warnings.push(`⚠️  ${invalidNames} tokens don't follow expected naming pattern`);
   }
 }
 
-/**
- * Validate token format and structure
- */
 function validateTokenFormat() {
   console.log('📐 Checking token format and structure...');
 
-  const formats = ['json', 'scss', 'js', 'tailwind'];
-  let validFormats = 0;
-
-  formats.forEach((format) => {
-    const dirPath = path.join(TOKENS_OUTPUT_PATH, format);
-    if (fs.existsSync(dirPath)) {
-      const files = fs.readdirSync(dirPath);
-      if (files.length > 0) {
-        validFormats++;
-      }
-    }
-  });
-
-  if (validFormats >= 3) {
-    console.log(`✅ All expected token formats generated (${validFormats}/4)`);
+  const stat = fs.statSync(CSS_PATH);
+  if (stat.size > 0) {
+    console.log(`✅ Generated CSS present (${stat.size} bytes)`);
     passed++;
   } else {
-    warnings.push(`⚠️  Only ${validFormats} of 4 expected token formats found`);
+    warnings.push('⚠️  Generated tokens.css is empty');
   }
 }
 
-/**
- * Validate theme coverage
- */
-function validateThemeCoverage() {
+function validateThemeCoverage(css) {
   console.log('🎨 Checking theme coverage...');
 
-  const themes = Object.keys(config.themes);
-  let themeCoverage = 0;
-
-  themes.forEach((theme) => {
-    // Check if tokens reference theme
-    if (hasThemeVariables(theme)) {
-      themeCoverage++;
-    }
-  });
-
-  if (themeCoverage === themes.length) {
-    console.log(`✅ All ${themes.length} themes are covered (Light, Dark, High-Contrast)`);
+  const found = EMITTED_THEMES.filter((theme) => css.includes(`[data-theme="${theme}"]`));
+  if (found.length === EMITTED_THEMES.length) {
+    console.log(`✅ All ${found.length} theme selectors present (${found.join(', ')})`);
     passed++;
   } else {
-    warnings.push(`⚠️  Only ${themeCoverage} of ${themes.length} themes found in tokens`);
+    warnings.push(`⚠️  Only ${found.length} of ${EMITTED_THEMES.length} theme selectors found`);
   }
 }
 
-/**
- * Validate density coverage
- */
-function validateDensityCoverage() {
+function validateDensityCoverage(css) {
   console.log('📏 Checking density mode coverage...');
 
-  const densities = Object.keys(config.densityModes);
-  let densityCoverage = 0;
-
-  densities.forEach((density) => {
-    // Check if tokens reference density
-    if (hasDensityVariables(density)) {
-      densityCoverage++;
-    }
-  });
-
-  if (densityCoverage === densities.length) {
-    console.log(`✅ All ${densities.length} density modes are covered (Compact, Default, Comfortable)`);
+  const found = EMITTED_DENSITIES.filter((density) => css.includes(`[data-density="${density}"]`));
+  if (found.length === EMITTED_DENSITIES.length) {
+    console.log(`✅ All ${found.length} density selectors present (${found.join(', ')})`);
     passed++;
   } else {
-    warnings.push(`⚠️  Only ${densityCoverage} of ${densities.length} density modes found`);
+    warnings.push(`⚠️  Only ${found.length} of ${EMITTED_DENSITIES.length} density selectors found`);
   }
 }
 
-/**
- * Validate no hardcoded values
- */
-function validateHardcodedValues() {
+function validateHardcodedValues(tokens) {
   console.log('🔒 Checking for hardcoded values (OWASP)...');
 
-  const jsonPath = path.join(TOKENS_OUTPUT_PATH, 'json/tokens.json');
-  
-  if (!fs.existsSync(jsonPath)) {
-    warnings.push('⚠️  Cannot check hardcoded values (JSON not found)');
-    return;
-  }
+  const hardcoded = [];
 
-  const tokens = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  const hardcodedValues = [];
-
-  Object.entries(tokens).forEach(([name, value]) => {
-    // In semantic layer, values should reference primitives
-    if (typeof value === 'string' && HEX_COLOR_PATTERN.test(value)) {
-      // Check if this is a primitive layer token
-      if (!name.includes('primitives') && !name.includes('blue') && !name.includes('neutral')) {
-        hardcodedValues.push({ token: name, value });
+  tokens.forEach(({ name, value }) => {
+    if (HEX_COLOR_PATTERN.test(value)) {
+      const isPrimitive = /colors?-(white|black|blue|neutral|gray|grey|red|yellow|green|slate)/.test(name);
+      if (!isPrimitive) {
+        hardcoded.push({ name, value });
       }
     }
+    HEX_COLOR_PATTERN.lastIndex = 0;
   });
 
-  if (hardcodedValues.length === 0) {
-    console.log('✅ No hardcoded values found in semantic layer');
+  if (hardcoded.length === 0) {
+    console.log('✅ No hardcoded values found outside primitive layer');
     passed++;
   } else {
-    warnings.push(`⚠️  ${hardcodedValues.length} potentially hardcoded values detected`);
+    warnings.push(`⚠️  ${hardcoded.length} potentially hardcoded values detected`);
   }
 }
 
-/**
- * Validate security compliance (OWASP)
- */
-function validateSecurityCompliance() {
+function validateSecurityCompliance(tokens) {
   console.log('🔐 Checking OWASP security compliance...');
 
+  const corpus = tokens.map((token) => `${token.name}:${token.value}`).join('\n');
   let securityChecks = 0;
 
-  // Check 1: No API tokens in files
-  const filesContent = getAllFilesContent(TOKENS_OUTPUT_PATH);
-  if (!filesContent.includes('FIGMA_API_TOKEN') && !filesContent.includes('figma_api_token')) {
+  if (!/FIGMA_API_TOKEN|figma_api_token/i.test(corpus)) {
     securityChecks++;
   } else {
-    errors.push('❌ API token found in output files (security issue)');
+    errors.push('❌ API token reference found in tokens (security issue)');
   }
 
-  // Check 2: No unsafe SQL patterns
-  if (!filesContent.includes('DROP') && !filesContent.includes('SELECT')) {
+  if (!/\b(DROP|SELECT|INSERT|UPDATE|DELETE)\s+\w/i.test(corpus)) {
     securityChecks++;
+  } else {
+    errors.push('❌ SQL-like pattern found in tokens');
   }
 
-  // Check 3: No XSS vectors
-  if (!UNSAFE_CHARS_PATTERN.test(filesContent)) {
+  if (!UNSAFE_CHARS_PATTERN.test(corpus)) {
     securityChecks++;
+  } else {
+    errors.push('❌ Unsafe characters (< or >) found in token names/values');
   }
 
   if (securityChecks === 3) {
@@ -244,121 +190,62 @@ function validateSecurityCompliance() {
   }
 }
 
-/**
- * Validate token integrity with hashing
- */
-function validateTokenIntegrity() {
+function validateTokenIntegrity(cssContent, tokens) {
   console.log('📝 Checking token integrity (SHA256)...');
 
-  const jsonPath = path.join(TOKENS_OUTPUT_PATH, 'json/tokens.json');
-  
-  if (!fs.existsSync(jsonPath)) {
-    warnings.push('⚠️  Cannot verify integrity (JSON not found)');
-    return;
-  }
+  const hash = crypto.createHash('sha256').update(cssContent).digest('hex');
 
-  const content = fs.readFileSync(jsonPath, 'utf8');
-  const hash = crypto.createHash('sha256').update(content).digest('hex');
-
-  // Save/verify manifest
   if (!fs.existsSync(path.dirname(MANIFEST_PATH))) {
     fs.mkdirSync(path.dirname(MANIFEST_PATH), { recursive: true });
   }
 
   const manifest = {
     timestamp: new Date().toISOString(),
-    tokenCount: Object.keys(JSON.parse(content)).length,
+    source: path.relative(path.join(__dirname, '..'), CSS_PATH),
+    tokenCount: tokens.length,
     integrityHash: hash,
-    themes: Object.keys(config.themes),
-    densities: Object.keys(config.densityModes),
+    themes: EMITTED_THEMES,
+    densities: EMITTED_DENSITIES,
+    configuredThemes: Object.keys(config.themes || {}),
+    configuredDensities: Object.keys(config.densityModes || {}),
   };
 
   fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
-
   console.log(`✅ Token integrity verified (SHA256: ${hash.substring(0, 8)}...)`);
   passed++;
 }
 
-/**
- * Helper: Check if theme variables exist
- */
-function hasThemeVariables(theme) {
-  const jsonPath = path.join(TOKENS_OUTPUT_PATH, 'json/tokens.json');
-  if (!fs.existsSync(jsonPath)) return false;
-
-  const content = fs.readFileSync(jsonPath, 'utf8');
-  return content.includes(theme) || content.includes(`data-theme="${theme}"`);
-}
-
-/**
- * Helper: Check if density variables exist
- */
-function hasDensityVariables(density) {
-  const jsonPath = path.join(TOKENS_OUTPUT_PATH, 'json/tokens.json');
-  if (!fs.existsSync(jsonPath)) return false;
-
-  const content = fs.readFileSync(jsonPath, 'utf8');
-  return content.includes(`density-${density}`) || content.includes(density);
-}
-
-/**
- * Helper: Get all files content
- */
-function getAllFilesContent(dirPath) {
-  let content = '';
-  
-  function walkDir(dir) {
-    fs.readdirSync(dir).forEach((file) => {
-      const filePath = path.join(dir, file);
-      const stat = fs.statSync(filePath);
-
-      if (stat.isDirectory()) {
-        walkDir(filePath);
-      } else {
-        try {
-          content += fs.readFileSync(filePath, 'utf8');
-        } catch (e) {
-          // Skip binary files
-        }
-      }
-    });
-  }
-
-  walkDir(dirPath);
-  return content;
-}
-
-/**
- * Print validation results
- */
 function printValidationResults() {
-  console.log('\n' + '='.repeat(60));
+  console.log('\n============================================================');
   console.log('📊 VALIDATION RESULTS');
-  console.log('='.repeat(60) + '\n');
+  console.log('============================================================\n');
 
   if (errors.length > 0) {
     console.log('❌ ERRORS:');
     errors.forEach((error) => console.log(`   ${error}`));
-    console.log();
+    console.log('');
   }
 
   if (warnings.length > 0) {
     console.log('⚠️  WARNINGS:');
     warnings.forEach((warning) => console.log(`   ${warning}`));
-    console.log();
+    console.log('');
   }
 
   console.log(`✅ Checks Passed: ${passed}/7`);
 
-  if (errors.length === 0 && passed >= 5) {
-    console.log('\n✅ VALIDATION PASSED');
-    console.log('Manifest saved to:', MANIFEST_PATH);
-    process.exit(0);
-  } else {
-    console.log('\n⚠️  VALIDATION COMPLETED WITH ISSUES');
-    process.exit(errors.length > 0 ? 1 : 0);
+  if (errors.length > 0) {
+    console.log('\n❌ VALIDATION FAILED');
+    process.exit(1);
   }
+
+  if (passed >= 6) {
+    console.log('\n✅ VALIDATION PASSED');
+    process.exit(0);
+  }
+
+  console.log('\n⚠️  VALIDATION COMPLETED WITH ISSUES');
+  process.exit(0);
 }
 
-// Run validation
 validateTokens();

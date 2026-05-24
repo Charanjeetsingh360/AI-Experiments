@@ -17,6 +17,10 @@
    Token System - 4 Layer Architecture (CSS custom properties)
    ----------------------------------------------------------------------------- */
 
+/* Generated CS360 design tokens - Style Dictionary output */
+@import '../tokens/output/css/tokens.css';
+
+/* Runtime CS360 token layers consumed by Angular and Tailwind */
 /* Layer 1: Primitives - Raw design values */
 @import 'styles/tokens/01-primitives.css';
 

@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-05-24T12:20:41.583Z",
+  "source": "tokens/output/css/tokens.css",
+  "tokenCount": 2200,
+  "integrityHash": "45b08702b7dee506f466b77060ae1584510190e3941235f7bc2e1820b2b4236b",
+  "themes": [
+    "light",
+    "soothing-dark",
+    "high-contrast",
+    "stark-dark"
+  ],
+  "densities": [
+    "default",
+    "large",
+    "small"
+  ],
+  "configuredThemes": [
+    "light",
+    "dark",
+    "highContrast"
+  ],
+  "configuredDensities": [
+    "compact",
+    "default",
+    "comfortable"
+  ]
+}
