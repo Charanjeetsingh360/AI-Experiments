@@ -10,7 +10,7 @@
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "tokens:generate": "node scripts/build-tokens.js",
+    "tokens:generate": "node scripts/build-tokens.mjs",
     "tokens:validate": "node scripts/validate-tokens.js",
     "prebuild": "npm run tokens:generate",
     "prestart": "npm run tokens:generate"
@@ -48,5 +48,6 @@
     "style-dictionary": "^5.4.0",
     "tailwindcss": "^3.4.19",
     "typescript": "~5.7.2"
-  }
+  },
+  "type": "module"
 }

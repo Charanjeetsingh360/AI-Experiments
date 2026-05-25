@@ -1,153 +1,201 @@
 {
   "color": {
+
     "background": {
+      "canvas":  { "value": "{color.gray.50}",  "type": "color", "description": "App-level page background" },
       "surface": {
-        "default": {
-          "value": "{color.white}",
-          "type": "color",
-          "description": "Default app surface background"
-        },
-        "subtle": {
-          "value": "{color.gray.50}",
-          "type": "color",
-          "description": "Subtle background surface"
-        },
-        "raised": {
-          "value": "{color.white}",
-          "type": "color",
-          "description": "Raised card, popover, and modal surface"
-        }
-      }
+        "default": { "value": "{color.white}",     "type": "color", "description": "Default card and panel surface" },
+        "subtle":  { "value": "{color.gray.50}",   "type": "color", "description": "Subtle tinted surface" },
+        "raised":  { "value": "{color.white}",     "type": "color", "description": "Raised: modal, popover, dropdown" },
+        "hover":   { "value": "{color.gray.50}",   "type": "color", "description": "Surface hover state" }
+      },
+      "alt":     { "value": "{color.gray.100}",  "type": "color", "description": "Alternate zebra / offset surface" },
+      "overlay": { "value": "{color.gray.900}",  "type": "color", "description": "Scrim overlay — use at 40% opacity" }
     },
+
     "text": {
-      "primary": {
-        "value": "{color.gray.900}",
-        "type": "color",
-        "description": "Primary readable text"
-      },
-      "secondary": {
-        "value": "{color.gray.700}",
-        "type": "color",
-        "description": "Secondary supporting text"
-      },
-      "disabled": {
-        "value": "{color.gray.500}",
-        "type": "color",
-        "description": "Disabled or unavailable text"
-      },
-      "on-action": {
-        "value": "{color.white}",
-        "type": "color",
-        "description": "Text on primary action backgrounds"
-      }
+      "primary":   { "value": "{color.gray.900}", "type": "color", "description": "Primary readable text — body, headings" },
+      "secondary": { "value": "{color.gray.700}", "type": "color", "description": "Secondary supporting text — labels, captions" },
+      "tertiary":  { "value": "{color.gray.500}", "type": "color", "description": "Tertiary / placeholder text" },
+      "disabled":  { "value": "{color.gray.400}", "type": "color", "description": "Disabled text — meets 3:1 on white" },
+      "inverse":   { "value": "{color.white}",    "type": "color", "description": "Text on dark/colored backgrounds" },
+      "link":      { "value": "{color.blue.600}", "type": "color", "description": "Hyperlink and interactive text" },
+      "link-hover":{ "value": "{color.blue.700}", "type": "color", "description": "Hyperlink hover state" },
+      "on-action": { "value": "{color.white}",    "type": "color", "description": "Text on primary action buttons" }
     },
+
     "border": {
-      "default": {
-        "value": "{color.gray.200}",
-        "type": "color",
-        "description": "Default divider and component border"
-      },
-      "strong": {
-        "value": "{color.gray.300}",
-        "type": "color",
-        "description": "Stronger border for emphasized boundaries"
-      },
-      "focus": {
-        "value": "{color.blue.500}",
-        "type": "color",
-        "description": "Accessible focus border color"
-      }
+      "subtle":  { "value": "{color.gray.100}", "type": "color", "description": "Hairline divider — table rows, section separators" },
+      "default": { "value": "{color.gray.200}", "type": "color", "description": "Default component border — inputs, cards" },
+      "strong":  { "value": "{color.gray.300}", "type": "color", "description": "Emphasized border — active input, hover card" },
+      "focus":   { "value": "{color.blue.500}", "type": "color", "description": "Focus ring color — 2px solid, 2px offset" },
+      "error":   { "value": "{color.red.500}",  "type": "color", "description": "Error state border on inputs" }
     },
+
     "action": {
-      "primary": {
-        "value": "{color.blue.500}",
-        "type": "color",
-        "description": "Primary action default state"
-      },
-      "primary-hover": {
-        "value": "{color.blue.600}",
-        "type": "color",
-        "description": "Primary action hover state"
-      },
-      "primary-active": {
-        "value": "{color.blue.700}",
-        "type": "color",
-        "description": "Primary action active state"
+      "primary":        { "value": "{color.blue.500}", "type": "color", "description": "Primary CTA default" },
+      "primary-hover":  { "value": "{color.blue.600}", "type": "color", "description": "Primary CTA hover" },
+      "primary-active": { "value": "{color.blue.700}", "type": "color", "description": "Primary CTA pressed/active" },
+      "primary-text":   { "value": "{color.white}",    "type": "color", "description": "Text on primary CTA" },
+
+      "secondary":        { "value": "{color.white}",     "type": "color", "description": "Secondary button bg default" },
+      "secondary-hover":  { "value": "{color.gray.50}",   "type": "color", "description": "Secondary button bg hover" },
+      "secondary-active": { "value": "{color.gray.100}",  "type": "color", "description": "Secondary button bg pressed" },
+      "secondary-text":   { "value": "{color.blue.600}",  "type": "color", "description": "Secondary button text/border" },
+      "secondary-border": { "value": "{color.blue.500}",  "type": "color", "description": "Secondary button border" },
+
+      "ghost":        { "value": "transparent",         "type": "color", "description": "Ghost button bg default" },
+      "ghost-hover":  { "value": "{color.gray.50}",     "type": "color", "description": "Ghost button bg hover" },
+      "ghost-active": { "value": "{color.gray.100}",    "type": "color", "description": "Ghost button bg pressed" },
+      "ghost-text":   { "value": "{color.gray.700}",    "type": "color", "description": "Ghost button text" },
+
+      "destructive":        { "value": "{color.red.500}", "type": "color", "description": "Destructive action default" },
+      "destructive-hover":  { "value": "{color.red.600}", "type": "color", "description": "Destructive action hover" },
+      "destructive-active": { "value": "{color.red.700}", "type": "color", "description": "Destructive action pressed" },
+      "destructive-text":   { "value": "{color.white}",   "type": "color", "description": "Text on destructive button" },
+
+      "disabled":      { "value": "{color.gray.200}", "type": "color", "description": "Disabled button background" },
+      "disabled-text": { "value": "{color.gray.400}", "type": "color", "description": "Disabled button text" }
+    },
+
+    "feedback": {
+      "success":        { "value": "{color.green.600}",  "type": "color", "description": "Success text / icon" },
+      "success-bg":     { "value": "{color.green.50}",   "type": "color", "description": "Success alert / toast background" },
+      "success-border": { "value": "{color.green.400}",  "type": "color", "description": "Success border" },
+
+      "warning":        { "value": "{color.yellow.700}", "type": "color", "description": "Warning text / icon" },
+      "warning-bg":     { "value": "{color.yellow.50}",  "type": "color", "description": "Warning alert / toast background" },
+      "warning-border": { "value": "{color.yellow.400}", "type": "color", "description": "Warning border" },
+
+      "error":        { "value": "{color.red.600}",   "type": "color", "description": "Error text / icon" },
+      "error-bg":     { "value": "{color.red.50}",    "type": "color", "description": "Error alert / inline error background" },
+      "error-border": { "value": "{color.red.400}",   "type": "color", "description": "Error border" },
+
+      "info":        { "value": "{color.blue.600}",  "type": "color", "description": "Info text / icon" },
+      "info-bg":     { "value": "{color.blue.50}",   "type": "color", "description": "Info alert / toast background" },
+      "info-border": { "value": "{color.blue.300}",  "type": "color", "description": "Info border" }
+    },
+
+    "sidebar": {
+      "bg":          { "value": "{color.gray.900}", "type": "color", "description": "Sidebar background" },
+      "hover":       { "value": "{color.gray.800}", "type": "color", "description": "Sidebar nav item hover" },
+      "active":      { "value": "{color.blue.700}", "type": "color", "description": "Sidebar nav item active/selected" },
+      "active-indicator": { "value": "{color.blue.400}", "type": "color", "description": "Active nav item accent bar" },
+      "text":        { "value": "{color.gray.300}", "type": "color", "description": "Sidebar nav item text default" },
+      "text-active": { "value": "{color.white}",    "type": "color", "description": "Sidebar nav item text when active" },
+      "text-muted":  { "value": "{color.gray.500}", "type": "color", "description": "Sidebar section labels / badges" },
+      "border":      { "value": "{color.gray.700}", "type": "color", "description": "Sidebar divider and border" },
+      "icon":        { "value": "{color.gray.400}", "type": "color", "description": "Sidebar icon default" },
+      "icon-active": { "value": "{color.blue.300}", "type": "color", "description": "Sidebar icon when active" }
+    },
+
+    "data-viz": {
+      "1": { "value": "{color.blue.500}",   "type": "color", "description": "Chart series 1" },
+      "2": { "value": "{color.teal.500}",   "type": "color", "description": "Chart series 2" },
+      "3": { "value": "{color.purple.500}", "type": "color", "description": "Chart series 3" },
+      "4": { "value": "{color.orange.500}", "type": "color", "description": "Chart series 4" },
+      "5": { "value": "{color.rose.500}",   "type": "color", "description": "Chart series 5" },
+      "6": { "value": "{color.cyan.500}",   "type": "color", "description": "Chart series 6" }
+    }
+  },
+
+  "density": {
+    "default": {
+      "space": {
+        "component-xs":  { "value": "{spacing.1}",  "type": "dimension", "description": "4px — tight inline gaps" },
+        "component-sm":  { "value": "{spacing.2}",  "type": "dimension", "description": "8px — icon-label gap, badge padding" },
+        "component-md":  { "value": "{spacing.4}",  "type": "dimension", "description": "16px — button padding, form field gap" },
+        "component-lg":  { "value": "{spacing.6}",  "type": "dimension", "description": "24px — card padding" },
+        "layout-sm":     { "value": "{spacing.8}",  "type": "dimension", "description": "32px — section internal padding" },
+        "layout-md":     { "value": "{spacing.12}", "type": "dimension", "description": "48px — section vertical rhythm" },
+        "layout-lg":     { "value": "{spacing.16}", "type": "dimension", "description": "64px — page section gap" }
       }
     },
-    "feedback": {
-      "error": {
-        "value": "{color.red.600}",
-        "type": "color",
-        "description": "Error state and destructive feedback"
-      },
-      "success": {
-        "value": "{color.green.600}",
-        "type": "color",
-        "description": "Success state feedback"
-      },
-      "warning": {
-        "value": "{color.yellow.600}",
-        "type": "color",
-        "description": "Warning state feedback"
-      },
-      "info": {
-        "value": "{color.cyan.600}",
-        "type": "color",
-        "description": "Informational feedback"
+    "compact": {
+      "space": {
+        "component-xs":  { "value": "{spacing.0-5}", "type": "dimension", "description": "2px — tight compact mode" },
+        "component-sm":  { "value": "{spacing.1}",   "type": "dimension", "description": "4px — compact badge/icon gap" },
+        "component-md":  { "value": "{spacing.2}",   "type": "dimension", "description": "8px — compact button padding" },
+        "component-lg":  { "value": "{spacing.4}",   "type": "dimension", "description": "16px — compact card padding" },
+        "layout-sm":     { "value": "{spacing.6}",   "type": "dimension", "description": "24px — compact section padding" },
+        "layout-md":     { "value": "{spacing.8}",   "type": "dimension", "description": "32px — compact section rhythm" },
+        "layout-lg":     { "value": "{spacing.12}",  "type": "dimension", "description": "48px — compact page gap" }
+      }
+    },
+    "spacious": {
+      "space": {
+        "component-xs":  { "value": "{spacing.2}",  "type": "dimension", "description": "8px" },
+        "component-sm":  { "value": "{spacing.3}",  "type": "dimension", "description": "12px" },
+        "component-md":  { "value": "{spacing.6}",  "type": "dimension", "description": "24px" },
+        "component-lg":  { "value": "{spacing.8}",  "type": "dimension", "description": "32px" },
+        "layout-sm":     { "value": "{spacing.12}", "type": "dimension", "description": "48px" },
+        "layout-md":     { "value": "{spacing.16}", "type": "dimension", "description": "64px" },
+        "layout-lg":     { "value": "{spacing.24}", "type": "dimension", "description": "96px" }
       }
     }
   },
-  "spacing": {
-    "component": {
-      "padding": {
-        "sm": {
-          "value": "{spacing.sm}",
-          "type": "dimension",
-          "description": "Small component padding"
-        },
-        "md": {
-          "value": "{spacing.md}",
-          "type": "dimension",
-          "description": "Default component padding"
-        },
-        "lg": {
-          "value": "{spacing.lg}",
-          "type": "dimension",
-          "description": "Large component padding"
-        }
-      },
-      "gap": {
-        "sm": {
-          "value": "{spacing.sm}",
-          "type": "dimension",
-          "description": "Small internal component gap"
-        },
-        "md": {
-          "value": "{spacing.md}",
-          "type": "dimension",
-          "description": "Default internal component gap"
-        }
-      }
-    }
-  },
-  "radius": {
-    "component": {
-      "sm": {
-        "value": "{radius.sm}",
-        "type": "borderRadius",
-        "description": "Small component radius"
-      },
-      "md": {
-        "value": "{radius.md}",
-        "type": "borderRadius",
-        "description": "Default component radius"
-      },
-      "lg": {
-        "value": "{radius.lg}",
-        "type": "borderRadius",
-        "description": "Large component radius"
-      }
+
+  "component": {
+    "button": {
+      "height-sm":     { "value": "{size.input.sm}", "type": "dimension" },
+      "height-md":     { "value": "{size.input.md}", "type": "dimension" },
+      "height-lg":     { "value": "{size.input.lg}", "type": "dimension" },
+      "padding-x-sm":  { "value": "{spacing.3}",     "type": "dimension" },
+      "padding-x-md":  { "value": "{spacing.4}",     "type": "dimension" },
+      "padding-x-lg":  { "value": "{spacing.6}",     "type": "dimension" },
+      "radius":        { "value": "{radius.md}",     "type": "borderRadius" },
+      "font-size-sm":  { "value": "{font.size.xs}",  "type": "dimension" },
+      "font-size-md":  { "value": "{font.size.sm}",  "type": "dimension" },
+      "font-size-lg":  { "value": "{font.size.base}", "type": "dimension" },
+      "font-weight":   { "value": "{font.weight.medium}", "type": "fontWeight" }
+    },
+    "input": {
+      "height-sm":    { "value": "{size.input.sm}",    "type": "dimension" },
+      "height-md":    { "value": "{size.input.md}",    "type": "dimension" },
+      "height-lg":    { "value": "{size.input.lg}",    "type": "dimension" },
+      "padding-x":    { "value": "{spacing.3}",         "type": "dimension" },
+      "radius":       { "value": "{radius.md}",         "type": "borderRadius" },
+      "bg":           { "value": "{color.white}",       "type": "color" },
+      "bg-disabled":  { "value": "{color.gray.50}",     "type": "color" },
+      "border":       { "value": "{color.border.default}", "type": "color" },
+      "border-focus": { "value": "{color.border.focus}",   "type": "color" },
+      "border-error": { "value": "{color.border.error}",   "type": "color" }
+    },
+    "card": {
+      "bg":      { "value": "{color.background.surface.default}", "type": "color" },
+      "border":  { "value": "{color.border.default}",             "type": "color" },
+      "radius":  { "value": "{radius.lg}",                        "type": "borderRadius" },
+      "padding": { "value": "{spacing.6}",                        "type": "dimension" },
+      "shadow":  { "value": "{elevation.sm}",                     "type": "boxShadow" }
+    },
+    "badge": {
+      "radius":   { "value": "{radius.full}", "type": "borderRadius" },
+      "padding-x":{ "value": "{spacing.2}",   "type": "dimension" },
+      "padding-y":{ "value": "{spacing.0-5}", "type": "dimension" },
+      "font-size":{ "value": "{font.size.xs}", "type": "dimension" },
+      "font-weight":{ "value": "{font.weight.medium}", "type": "fontWeight" }
+    },
+    "avatar": {
+      "radius": { "value": "{radius.full}", "type": "borderRadius" }
+    },
+    "modal": {
+      "bg":      { "value": "{color.background.surface.raised}", "type": "color" },
+      "radius":  { "value": "{radius.xl}",                       "type": "borderRadius" },
+      "shadow":  { "value": "{elevation.xl}",                    "type": "boxShadow" },
+      "padding": { "value": "{spacing.6}",                       "type": "dimension" }
+    },
+    "toast": {
+      "radius":  { "value": "{radius.lg}",  "type": "borderRadius" },
+      "shadow":  { "value": "{elevation.lg}", "type": "boxShadow" },
+      "padding": { "value": "{spacing.4}",  "type": "dimension" }
+    },
+    "tooltip": {
+      "bg":       { "value": "{color.gray.900}", "type": "color" },
+      "text":     { "value": "{color.white}",    "type": "color" },
+      "radius":   { "value": "{radius.sm}",      "type": "borderRadius" },
+      "padding-x":{ "value": "{spacing.2}",      "type": "dimension" },
+      "padding-y":{ "value": "{spacing.1}",      "type": "dimension" },
+      "font-size":{ "value": "{font.size.xs}",   "type": "dimension" }
     }
   }
 }

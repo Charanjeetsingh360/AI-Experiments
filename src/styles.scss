@@ -23,9 +23,11 @@
 /* Runtime CS360 token layers consumed by Angular and Tailwind */
 /* Layer 1: Primitives - Raw design values */
 @import 'styles/tokens/01-primitives.css';
+@import 'styles/tokens/primitives.css'; /* SD v5 generated */
 
 /* Layer 2: Semantic - Theme mappings (light/dark/high-contrast) */
 @import 'styles/tokens/02-semantic.css';
+@import 'styles/tokens/semantic.css'; /* SD v5 generated */
 
 /* Layer 2b: Density - Spacing density presets */
 @import 'styles/tokens/02-density.css';
