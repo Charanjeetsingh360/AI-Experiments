@@ -1,0 +1,250 @@
+/**
+ * CS360 TOKEN ALIASES
+ * Maps all var(--cs360-*) and var(--density-space-*) references used in
+ * components to the actual generated token names from tokens/output/css/tokens.css
+ *
+ * DO NOT EDIT MANUALLY — update the source token files and re-run tokens:generate
+ * then update mappings here if token names change.
+ */
+
+:root,
+[data-theme="light"] {
+
+  /* ── BACKGROUNDS ─────────────────────────────────────────────── */
+  --cs360-bg-page:              var(--color-gray-50);           /* #f9fafb → Figma #F7F8F8 */
+  --cs360-bg:                   var(--color-gray-50);
+  --cs360-bg-default:           var(--surface-base);            /* #ffffff */
+  --cs360-bg-surface:           var(--surface-base);            /* #ffffff */
+  --cs360-bg-surface-hover:     var(--surface-tertiary);        /* #f3f4f6 */
+  --cs360-bg-surface-active:    var(--surface-brand-background);/* #eff6ff */
+  --cs360-bg-alt:               var(--surface-secondary);       /* #f9fafb */
+  --cs360-bg-muted:             var(--surface-tertiary);        /* #f3f4f6 */
+  --cs360-bg-subtle:            #EFF3F9;                        /* Figma chip surface */
+
+  /* ── TEXT ────────────────────────────────────────────────────── */
+  --cs360-text-primary:         var(--text-primary);            /* #111827 */
+  --cs360-text-secondary:       var(--text-secondary);          /* #4b5563 */
+  --cs360-text-tertiary:        var(--text-subtle);             /* #6b7280 */
+  --cs360-text-muted:           var(--text-subtle);             /* #6b7280 */
+  --cs360-text-inverse:         var(--text-inverse);            /* #ffffff */
+  --cs360-text-disabled:        var(--text-disabled);           /* #d1d5db */
+  --cs360-text-strong:          #1e3a5f;                        /* Figma navy */
+  --cs360-text-secondary-alt:   var(--text-subtle);
+  --cs360-text-link:            var(--text-link);               /* #1d4ed8 */
+  --cs360-text-link-hover:      var(--surface-brand-hover);     /* #1e40af */
+
+  /* ── TEXT SIZES ──────────────────────────────────────────────── */
+  --cs360-text-xs:              var(--font-size-xs);            /* 12px */
+  --cs360-text-sm:              var(--font-size-sm);            /* 14px */
+  --cs360-text-base:            var(--font-size-base);          /* 16px */
+  --cs360-text-lg:              var(--font-size-lg);            /* 18px */
+  --cs360-text-2xl:             var(--font-size-2xl);           /* 24px */
+  --cs360-text-4xl:             var(--font-size-4xl);           /* 36px */
+  --cs360-font-size-sm:         var(--font-size-sm);
+  --cs360-font-size-md:         var(--font-size-base);
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────────── */
+  --cs360-font-family:          var(--font-family-sans);
+  --cs360-font-sans:            var(--font-family-sans);
+  --cs360-font-medium:          var(--font-weight-medium);      /* 500 */
+  --cs360-font-semi:            var(--font-weight-semibold);    /* 600 */
+  --cs360-font-bold:            var(--font-weight-bold);        /* 700 */
+  --cs360-line-height-tight:    var(--font-line-height-tight);  /* 1.25 */
+  --cs360-line-height-base:     var(--font-line-height-normal); /* 1.5 */
+  --cs360-line-height-relaxed:  var(--font-line-height-relaxed);/* 1.625 */
+
+  /* ── BORDERS ─────────────────────────────────────────────────── */
+  --cs360-border-subtle:        var(--border-subtle);           /* #e5e7eb */
+  --cs360-border-default:       var(--fields-border-default);   /* #9ca3af */
+  --cs360-border-focus:         var(--fields-border-focus);     /* #1d4ed8 */
+
+  /* ── ACTIONS / BUTTONS ───────────────────────────────────────── */
+  --cs360-action-primary:               var(--actions-primary-bg);       /* #1d4ed8 */
+  --cs360-action-primary-default:       var(--actions-primary-bg);
+  --cs360-action-primary-hover:         var(--actions-primary-hover);     /* #1e40af */
+  --cs360-action-primary-active:        var(--actions-primary-pressed);   /* #1e3a8a */
+  --cs360-action-primary-text:          var(--actions-primary-text);      /* #ffffff */
+  --cs360-action-primary-subtle:        var(--actions-soft-bg);           /* #eff6ff */
+  --cs360-action-secondary:            var(--actions-secondary-bg);       /* #ffffff */
+  --cs360-action-secondary-hover:      var(--actions-secondary-hover);    /* #dbeafe */
+  --cs360-action-secondary-text:       var(--actions-secondary-text);     /* #111827 */
+  --cs360-action-ghost-hover:          var(--actions-ghost-hover);        /* #f3f4f6 */
+  --cs360-action-ghost-active:         var(--actions-ghost-pressed);      /* #e5e7eb */
+  --cs360-action-ghost-border:         var(--border-subtle);
+  --cs360-action-destructive-default:  var(--actions-destructive-bg);     /* #ef4444 */
+  --cs360-action-destructive-hover:    var(--actions-destructive-hover);  /* #dc2626 */
+  --cs360-action-destructive-active:   var(--actions-destructive-pressed);/* #b91c1c */
+  --cs360-action-destructive-subtle:   var(--surface-danger-background);  /* #fff1f2 */
+
+  /* ── FEEDBACK / STATUS ───────────────────────────────────────── */
+  --cs360-feedback-success:     var(--text-success);            /* #15803d */
+  --cs360-feedback-success-700: var(--color-green-700);         /* #15803d */
+  --cs360-feedback-success-bg:  var(--surface-success-background);/* #f0fdf4 */
+  --cs360-feedback-error:       var(--text-danger);             /* #dc2626 */
+  --cs360-feedback-error-bg:    var(--surface-danger-background);/* #fff1f2 */
+  --cs360-feedback-error-hover: var(--color-red-700);           /* #b91c1c */
+  --cs360-feedback-warning:     var(--text-warning);            /* #a16207 */
+  --cs360-feedback-warning-bg:  var(--surface-warning-background);/* #fefce8 */
+  --cs360-feedback-info:        var(--text-brand);              /* #1d4ed8 */
+  --cs360-feedback-info-bg:     var(--surface-brand-background);/* #eff6ff */
+
+  /* ── FOCUS ───────────────────────────────────────────────────── */
+  --cs360-focus-ring:           var(--focus-ring-default);      /* 0 0 0 3px rgba(37,99,235,0.35) */
+
+  /* ── SHADOWS / ELEVATION ─────────────────────────────────────── */
+  --cs360-shadow-sm:            var(--elevation-sm);
+  --cs360-shadow-md:            var(--elevation-md);
+  --cs360-shadow-lg:            var(--elevation-lg);
+
+  /* ── RADIUS ──────────────────────────────────────────────────── */
+  --cs360-radius-sm:            var(--radius-sm);               /* 4px */
+  --cs360-radius-md:            var(--radius-md);               /* 8px */
+  --cs360-radius-lg:            var(--radius-lg);               /* 12px */
+  --cs360-radius-full:          var(--radius-full);             /* 9999px */
+
+  /* ── SPACING ─────────────────────────────────────────────────── */
+  --cs360-space-0:              var(--spacing-0);               /* 0 */
+  --cs360-space-1:              var(--spacing-1);               /* 4px */
+  --cs360-space-2:              var(--spacing-2);               /* 8px */
+  --cs360-space-2-5:            var(--spacing-2-5);             /* 10px */
+  --cs360-space-3:              var(--spacing-3);               /* 12px */
+  --cs360-space-4:              var(--spacing-4);               /* 16px */
+  --cs360-space-5:              var(--spacing-5);               /* 20px */
+  --cs360-space-6:              var(--spacing-6);               /* 24px */
+
+  /* ── SIZES ───────────────────────────────────────────────────── */
+  --cs360-size-input-sm:        var(--size-input-sm);           /* 32px */
+  --cs360-size-input-md:        var(--size-input-md);           /* 40px */
+  --cs360-size-input-lg:        var(--size-input-lg);           /* 48px */
+  --cs360-size-form:            var(--size-form);               /* 480px */
+  --cs360-max-content-width:    1280px;
+
+  /* ── MOTION ──────────────────────────────────────────────────── */
+  --cs360-motion-fast:          var(--motion-duration-fast);    /* 100ms */
+  --cs360-motion-base:          var(--motion-duration-normal);  /* 200ms */
+  --cs360-motion-normal:        var(--motion-duration-normal);
+  --cs360-transition-fast:      var(--motion-duration-fast) var(--motion-easing-default);
+  --cs360-transition-base:      var(--motion-duration-normal) var(--motion-easing-default);
+
+  /* ── Z-INDEX ─────────────────────────────────────────────────── */
+  --cs360-z-sticky:             100;
+
+  /* ── COLOUR PRIMITIVES (used directly in components) ─────────── */
+  --cs360-neutral-0:            var(--color-white);
+  --cs360-neutral-100:          var(--color-gray-100);
+  --cs360-neutral-300:          var(--color-gray-300);
+  --cs360-neutral-400:          var(--color-gray-400);
+  --cs360-blue-50:              var(--color-blue-50);
+  --cs360-blue-200:             var(--color-blue-200);
+  --cs360-blue-900:             var(--color-blue-800);          /* blue max = 800 */
+  --cs360-info-0:               var(--color-blue-50);
+
+  /* ── SHIFT-SPECIFIC ──────────────────────────────────────────── */
+  --cs360-shift-card-bg:        var(--surface-base);
+  --cs360-shift-accent:         var(--actions-primary-bg);
+
+  /* ── PROMO ───────────────────────────────────────────────────── */
+  --cs360-promo-bg-start:       var(--color-blue-600);
+  --cs360-promo-bg-end:         var(--color-blue-800);
+  --cs360-promo-text:           var(--text-inverse);
+
+  /* ── SIDEBAR ─────────────────────────────────────────────────── */
+  --cs360-sidebar-width:            var(--size-sidebar);        /* 256px */
+  --cs360-sidebar-collapsed-width:  64px;
+  --cs360-sidebar-bg:               var(--sidebar-primary-bg);
+  --cs360-sidebar-border:           var(--sidebar-border);
+  --cs360-sidebar-text:             var(--sidebar-text);
+  --cs360-sidebar-text-active:      var(--sidebar-text-active);
+  --cs360-sidebar-icon:             var(--sidebar-icon);
+  --cs360-sidebar-icon-active:      var(--sidebar-icon-active);
+  --cs360-sidebar-hover:            var(--sidebar-accent-bg);
+  --cs360-sidebar-active:           var(--sidebar-primary-bg);
+  --cs360-sidebar-ring:             var(--sidebar-ring);
+  --cs360-sidebar-primary-bg:       var(--sidebar-primary-bg);
+  --cs360-sidebar-primary-fg:       var(--sidebar-primary-foreground);
+  --cs360-sidebar-secondary-bg:     var(--sidebar-secondary-bg);
+  --cs360-sidebar-secondary-fg:     var(--sidebar-secondary-foreground);
+  --cs360-sidebar-accent-bg:        var(--sidebar-accent-bg);
+  --cs360-sidebar-accent-fg:        var(--sidebar-accent-foreground);
+
+  /* ── TOPBAR ──────────────────────────────────────────────────── */
+  --cs360-topbar-bg:            var(--surface-base);
+  --cs360-topbar-border:        var(--border-subtle);
+  --cs360-topbar-height:        64px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DENSITY ALIASES
+   Maps var(--density-space-*) to spacing tokens per density mode
+   ══════════════════════════════════════════════════════════════════ */
+
+:root,
+[data-density="default"] {
+  --density-space-1:          var(--spacing-1);    /* 4px */
+  --density-space-2:          var(--spacing-2);    /* 8px */
+  --density-space-3:          var(--spacing-3);    /* 12px */
+  --density-space-4:          var(--spacing-4);    /* 16px */
+  --density-space-6:          var(--spacing-6);    /* 24px */
+  --density-space-inline:     var(--spacing-3);    /* 12px */
+  --density-space-block:      var(--spacing-2);    /* 8px */
+  --density-space-component:  var(--spacing-4);    /* 16px */
+  --density-space-page:       var(--spacing-6);    /* 24px */
+  --density-space-section:    var(--spacing-8);    /* 32px */
+}
+
+[data-density="large"] {
+  --density-space-1:          var(--spacing-2);    /* 8px */
+  --density-space-2:          var(--spacing-3);    /* 12px */
+  --density-space-3:          var(--spacing-4);    /* 16px */
+  --density-space-4:          var(--spacing-5);    /* 20px */
+  --density-space-6:          var(--spacing-8);    /* 32px */
+  --density-space-inline:     var(--spacing-4);    /* 16px */
+  --density-space-block:      var(--spacing-3);    /* 12px */
+  --density-space-component:  var(--spacing-5);    /* 20px */
+  --density-space-page:       var(--spacing-8);    /* 32px */
+  --density-space-section:    var(--spacing-10);   /* 40px */
+}
+
+[data-density="small"] {
+  --density-space-1:          2px;
+  --density-space-2:          var(--spacing-1);    /* 4px */
+  --density-space-3:          var(--spacing-2);    /* 8px */
+  --density-space-4:          var(--spacing-3);    /* 12px */
+  --density-space-6:          var(--spacing-4);    /* 16px */
+  --density-space-inline:     var(--spacing-2);    /* 8px */
+  --density-space-block:      var(--spacing-1);    /* 4px */
+  --density-space-component:  var(--spacing-3);    /* 12px */
+  --density-space-page:       var(--spacing-4);    /* 16px */
+  --density-space-section:    var(--spacing-6);    /* 24px */
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   ══════════════════════════════════════════════════════════════════ */
+
+[data-theme="soothing-dark"],
+[data-theme="stark-dark"],
+[data-theme="high-contrast"] {
+  --cs360-bg-page:              #111827;
+  --cs360-bg:                   #111827;
+  --cs360-bg-default:           #1f2937;
+  --cs360-bg-surface:           #1f2937;
+  --cs360-bg-surface-hover:     #374151;
+  --cs360-bg-surface-active:    #1e3a8a;
+  --cs360-bg-alt:               #111827;
+  --cs360-bg-muted:             #374151;
+  --cs360-bg-subtle:            #1e3a5f;
+
+  --cs360-text-primary:         var(--text-primary);
+  --cs360-text-secondary:       var(--text-secondary);
+  --cs360-text-muted:           var(--text-subtle);
+  --cs360-text-inverse:         #111827;
+  --cs360-text-strong:          #93c5fd;
+
+  --cs360-border-subtle:        var(--border-subtle);
+  --cs360-border-default:       var(--fields-border-default);
+
+  --cs360-sidebar-bg:           #111827;
+  --cs360-topbar-bg:            #1f2937;
+  --cs360-topbar-border:        var(--border-subtle);
+}

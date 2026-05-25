@@ -1,48 +1,38 @@
 <div class="flex h-full flex-col overflow-hidden">
 
   <!-- Page Header -->
-  <cs-page-header
-    title="Shift Calendar"
-    description="You can view your assigned, adhoc, and open shifts.">
-    <div header-actions class="flex items-center gap-2">
+  <!-- Fix 1: Title = "My Shift Calendar", no description, icon-only 32×32 buttons (Figma node 11:6381) -->
+  <cs-page-header title="My Shift Calendar">
+    <div header-actions class="flex items-center gap-1">
 
-      <!-- Filters — variant=Filter icon (tune), r=8, py=4 pl=12 pr=8, gap=4 -->
-      <button type="button"
-        class="inline-flex items-center gap-1
+      <!-- Filters — icon-only, 32×32, radius=8 -->
+      <button type="button" aria-label="Filters"
+        class="flex items-center justify-center w-8 h-8
                rounded-lg border border-[var(--cs360-border-subtle)]
-               bg-[var(--cs360-bg-surface)]
-               py-1 pl-3 pr-2
-               text-[13px] font-medium text-[var(--cs360-text-primary)]
+               bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                transition-colors hover:bg-[var(--cs360-bg-alt)]
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
-        Filters
-        <cs-icon name="tune" [size]="18" />
+        <cs-icon name="tune" [size]="18" aria-hidden="true" />
       </button>
 
-      <!-- Shift Details — variant=App Drawer Menu icon (apps), same styling -->
-      <button type="button"
-        class="inline-flex items-center gap-1
+      <!-- Shift Details — icon-only, 32×32, radius=8 -->
+      <button type="button" aria-label="Shift Details"
+        class="flex items-center justify-center w-8 h-8
                rounded-lg border border-[var(--cs360-border-subtle)]
-               bg-[var(--cs360-bg-surface)]
-               py-1 pl-3 pr-2
-               text-sm font-medium text-[var(--cs360-text-primary)]
+               bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                transition-colors hover:bg-[var(--cs360-bg-alt)]
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
-        Shift Details
-        <cs-icon name="apps" [size]="18" />
+        <cs-icon name="apps" [size]="18" aria-hidden="true" />
       </button>
 
-      <!-- More Actions — variant=More icon (more_vert), same styling -->
-      <button type="button"
-        class="inline-flex items-center gap-1
+      <!-- More Actions — icon-only, 32×32, radius=8 -->
+      <button type="button" aria-label="More Actions"
+        class="flex items-center justify-center w-8 h-8
                rounded-lg border border-[var(--cs360-border-subtle)]
-               bg-[var(--cs360-bg-surface)]
-               py-1 pl-3 pr-2
-               text-sm font-medium text-[var(--cs360-text-primary)]
+               bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                transition-colors hover:bg-[var(--cs360-bg-alt)]
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
-        More Actions
-        <cs-icon name="more_vert" [size]="18" />
+        <cs-icon name="more_vert" [size]="18" aria-hidden="true" />
       </button>
 
     </div>
@@ -90,7 +80,9 @@
           <!-- Shift Cards -->
           <div class="min-w-0 flex-1 flex flex-col gap-3">
             @for (shift of group.shifts; track shift.id) {
-              <div class="rounded-xl border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] p-[var(--density-space-4)]">
+              <!-- Fix 4: Figma node 34:10318 has drop_shadow effect — add shadow-sm -->
+              <div class="rounded-xl border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)]
+                          shadow-sm p-[var(--density-space-4)]">
 
                 <!-- Card Header -->
                 <div class="flex items-start justify-between gap-3 mb-2">
@@ -118,7 +110,8 @@
                   </span>
                   @if (shift.distance) {
                     <span class="flex items-center gap-1">
-                      <cs-icon name="directions_car" [size]="14" />
+                      <!-- Fix 2: Figma uses near_me (navigation arrow), not directions_car -->
+                      <cs-icon name="near_me" [size]="14" />
                       {{ shift.distance }}
                     </span>
                   }
@@ -139,7 +132,9 @@
                 <!-- Service Type -->
                 @if (shift.serviceType) {
                   <div class="mt-2 flex items-center gap-2">
-                    <span class="rounded bg-[var(--cs360-bg-alt)] px-2 py-0.5 text-xs text-[var(--cs360-text-secondary)]">
+                    <!-- Fix 3: rounded-md, bg=#EFF3F9 light blue-grey, dark navy text, font-medium (Figma service type chip) -->
+                    <span class="rounded-md bg-[var(--cs360-bg-subtle,#EFF3F9)] px-2 py-0.5 text-xs
+                                 text-[var(--cs360-text-strong,#1e3a5f)] font-medium">
                       {{ shift.serviceType }}
                     </span>
                   </div>

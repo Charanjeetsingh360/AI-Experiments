@@ -3,4 +3,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  // Fix 5: Figma main frame fill = rgb(247,248,248) / #F7F8F8 (style 1:646)
+  // Map to var(--cs360-bg-page) when token is available; fallback to exact Figma value
+  background-color: var(--cs360-bg-page, #F7F8F8);
 }

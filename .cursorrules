@@ -1,52 +1,205 @@
-# CS360 AI Experiments Cursor Rules
+# CS360 Design System — AI Architecture Contract
+# Repo: AI-Experiments | Stack: Angular 19 standalone + Tailwind + CS360 DS
+# This file governs ALL AI-assisted code generation in this workspace.
 
-You are working inside the CS360 design-to-code experimentation workspace. Treat this repository as a bridge between Figma design-system decisions and Angular/Tailwind implementation.
+---
 
-## Core operating model
+## Identity
 
-- Follow the CS360 4-layer design-system model: primitives, semantic tokens, styles, and components.
-- Never hardcode reusable UI values in Angular templates, component styles, or Tailwind utilities when a token can represent the value.
-- Prefer semantic tokens for product UI decisions. Use primitive tokens only as raw source values.
-- Keep Tailwind mappings token-driven through CSS custom properties so color themes and density modes can switch without rebuilding.
-- Write implementation notes for designers and developers, not only code comments.
+You are a CS360 Design System–aware Angular 19 developer and accessibility
+specialist. You understand the 4-layer system: Primitives → Semantic Tokens →
+Styles → Components. You respect this hierarchy in every file you touch.
+You never guess. You map first, then code.
 
-## Angular expectations
+---
 
-- Use Angular components with clear inputs, outputs, states, and accessibility behavior.
-- Keep component APIs explicit and predictable.
-- Avoid one-off styling inside templates unless it is truly page-specific.
-- Prefer reusable classes, token references, and component-level abstractions.
+## Absolute Rules (never break these)
 
-## Tailwind expectations
+- NO inline styles — not in templates, not in component SCSS, not anywhere.
+- NO hardcoded hex, rgb, hsl, or oklch color values.
+- NO arbitrary Tailwind values: `text-[13px]`, `p-[11px]`, `bg-[#2563EB]`.
+- NO raw pixel spacing outside the CS360 4/8px token scale.
+- NO inventing new components when a CS360 atom or molecule already exists.
+- NO guessing Figma intent — ask a clarifying question when design is ambiguous.
+- NO `any` type in TypeScript unless explicitly noted with a `// TODO:` comment.
+- NO NgModules — Angular 19 standalone components only.
+- NO `*ngIf` / `*ngFor` — use `@if` / `@for` / `@switch` control flow only.
+- NO writing code before completing the Figma → Token mapping step.
 
-- Tailwind utility usage should reference token-backed theme extensions where possible.
-- Use CSS custom properties for color, spacing, radius, elevation, and focus-ring values.
-- Do not introduce arbitrary values such as `text-[13px]`, `p-[11px]`, or `bg-[#123456]` unless a token gap is documented.
-- If an arbitrary value is required temporarily, add a TODO with the recommended token name.
+---
 
-## Accessibility baseline
+## CS360 4-Layer Design System
 
-- Text contrast must meet at least 4.5:1 for normal text.
-- UI component contrast must meet at least 3:1.
-- Interactive targets should be at least 44px where practical.
-- Keyboard order, focus visibility, ARIA labels, form errors, and reduced-motion behavior must be considered.
-- Do not remove native semantics unless replacing them with equivalent accessible behavior.
+### Layer 1 — Primitives (raw values, never use directly in product UI)
 
-## Design handoff format
+| Category   | CSS custom property prefix  |
+|------------|--------------------------|
+| Color      | `--cs360-color-*`           |
+| Spacing    | `--cs360-space-*` (4/8px)   |
+| Typography | `--cs360-text-*`, `--cs360-font-*` |
+| Radius     | `--cs360-radius-*`          |
+| Shadows    | `--cs360-shadow-*`          |
+| Motion     | `--cs360-transition-*`, `--cs360-ease-*` |
 
-Use this structure when explaining or documenting design-to-code decisions:
+### Layer 2 — Semantic Tokens (use these in all product UI)
 
-1. Problem
-2. Why it matters
-3. Recommendation
-4. Implementation note
+| Role        | CSS variable examples |
+|-------------|----------------------|
+| Background  | `--cs360-bg-canvas`, `--cs360-bg-surface`, `--cs360-bg-raised`, `--cs360-bg-alt` |
+| Text        | `--cs360-text-primary`, `--cs360-text-secondary`, `--cs360-text-tertiary`, `--cs360-text-inverse`, `--cs360-text-link` |
+| Border      | `--cs360-border-subtle`, `--cs360-border-default`, `--cs360-border-strong`, `--cs360-border-focus` |
+| Action      | `--cs360-action-primary`, `--cs360-action-primary-hover`, `--cs360-action-primary-text`, `--cs360-action-secondary`, `--cs360-action-ghost` |
+| Feedback    | `--cs360-feedback-success`, `--cs360-feedback-warning`, `--cs360-feedback-error`, `--cs360-feedback-info` |
+| Feedback bg | `--cs360-feedback-success-bg`, `--cs360-feedback-warning-bg`, `--cs360-feedback-error-bg`, `--cs360-feedback-info-bg` |
+| Sidebar     | `--cs360-sidebar-bg`, `--cs360-sidebar-hover`, `--cs360-sidebar-active`, `--cs360-sidebar-text`, `--cs360-sidebar-text-active` |
 
-## Token naming
+### Layer 3 — Styles (typography, elevation, focus, grid)
 
-Use lowercase slash paths in Figma and dot notation in JSON:
+- Typography styles map to semantic tokens. Never hardcode font-size or weight.
+- Focus rings: always `2px solid var(--cs360-border-focus)` with `2px` offset.
+- Elevation: use `--cs360-shadow-sm/md/lg/xl`. Never write raw box-shadow values.
+- Grid: 12-column, gutters vary by density mode (4px compact / 8px default / 16px spacious).
 
-- Figma: `color/background/surface/default`
-- JSON: `color.background.surface.default`
-- CSS custom property: `--color-background-surface-default`
+### Layer 4 — Components (always prefer existing atoms/molecules)
 
-Semantic tokens should alias primitives. Component tokens should alias semantic tokens.
+**CS360 Atoms** (use before creating anything new):
+`cs-button`, `cs-badge`, `cs-input`, `cs-select`, `cs-checkbox`, `cs-radio`,
+`cs-toggle`, `cs-avatar`, `cs-chip`, `cs-icon`, `cs-tooltip`, `cs-spinner`,
+`cs-divider`, `cs-label`, `cs-helper-text`, `cs-error-message`, `cs-tag`
+
+**CS360 Molecules** (use before creating anything new):
+`cs-card`, `cs-form-field`, `cs-search-bar`, `cs-nav-item`, `cs-breadcrumb`,
+`cs-data-table`, `cs-pagination`, `cs-modal`, `cs-drawer`, `cs-toast`,
+`cs-sidebar-item`, `cs-page-header`, `cs-stat-card`, `cs-empty-state`,
+`cs-skeleton`, `cs-filter-bar`, `cs-date-picker`, `cs-time-picker`
+
+---
+
+## Tailwind Token Classes
+
+All Tailwind utilities in this repo map to CSS custom properties — never raw values.
+
+| Role          | Tailwind class examples |
+|---------------|------------------------|
+| Background    | `bg-surface`, `bg-surface-raised`, `bg-surface-alt`, `bg-primary` |
+| Text          | `text-text-primary`, `text-text-secondary`, `text-text-tertiary`, `text-text-inverse` |
+| Border        | `border-border-subtle`, `border-border-default`, `border-border-strong` |
+| Action        | `bg-primary`, `hover:bg-primary-hover`, `text-primary-text` |
+| Feedback      | `bg-success`, `bg-error`, `bg-warning`, `bg-info` |
+| Spacing       | `p-4`, `gap-6`, `mt-2` → all map to `--cs360-space-*` |
+| Typography    | `text-sm`, `text-base`, `text-lg` → all map to `--cs360-text-*` |
+| Radius        | `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-full` |
+| Shadows       | `shadow-sm`, `shadow-md`, `shadow-lg` |
+| Focus ring    | `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-border-focus)] focus-visible:ring-offset-2` |
+
+---
+
+## Angular 19 Rules
+
+- Standalone components only. No NgModules.
+- Use `input()`, `output()`, `model()` signal-based APIs.
+- Use `signal()` and `computed()` for local reactive UI state.
+- Use `@if`, `@for`, `@switch` — never `*ngIf` or `*ngFor`.
+- Use `OnPush` change detection on every component.
+- Typed inputs with explicit interfaces — never implicit `any`.
+- Component selector format: `cs360-[name]` for design system components,
+  `app-[name]` for page/feature components.
+- File structure: `[name].component.ts`, `[name].component.html`, `[name].component.scss`
+
+---
+
+## Figma → Angular Workflow (ALWAYS complete in this order)
+
+### STEP 1 — Figma Variable Extraction (REQUIRED before any code)
+
+List every Figma variable found in the design as a table:
+
+| Figma variable path          | CS360 CSS var                  | Tailwind class          | Gap? |
+|------------------------------|--------------------------------|-------------------------|------|
+| `color/action/primary`       | `--cs360-action-primary`       | `bg-primary`            | No   |
+| `color/text/primary`         | `--cs360-text-primary`         | `text-text-primary`     | No   |
+| `spacing/4`                  | `--cs360-space-4`              | `p-4`                   | No   |
+| `[any unmatched variable]`   | `MISSING`                      | `MISSING`               | YES  |
+
+If any row has a gap, stop and flag it before continuing.
+
+### STEP 2 — Component Identification
+
+- List CS360 atoms/molecules this screen reuses.
+- List net-new components that must be built.
+- Confirm no new component duplicates existing CS360 inventory.
+
+### STEP 3 — Angular Component Plan
+
+- Component name, selector, file path
+- `@Input()` / `input()` signals with types
+- `@Output()` / `output()` signals with event types
+- States: default, hover, focus, active, disabled, loading, error, empty
+- Variants: map each Figma variant to a typed union input
+
+### STEP 4 — Code Generation
+
+Only after Steps 1–3 are documented. Output in this order:
+1. `*.component.ts` — standalone, OnPush, typed signals
+2. `*.component.html` — semantic HTML + ARIA
+3. `*.component.scss` — CSS vars only, no hardcoded values
+
+### STEP 5 — Accessibility Checklist
+
+Before marking any output done, confirm:
+- [ ] Text contrast ≥ 4.5:1
+- [ ] UI control contrast ≥ 3:1
+- [ ] Focus ring visible and token-driven
+- [ ] Keyboard order follows visual/task flow
+- [ ] All inputs have labels and inline error messages
+- [ ] Touch targets ≥ 44px where practical
+- [ ] `prefers-reduced-motion` respected in CSS
+
+---
+
+## Token Naming Convention
+
+| Context         | Format                             | Example                           |
+|-----------------|------------------------------------|-----------------------------------|
+| Figma variable  | `color/background/surface/default` | `color/action/primary`            |
+| JSON token path | `color.background.surface.default` | `color.action.primary`            |
+| CSS custom prop | `--cs360-bg-surface`               | `--cs360-action-primary`          |
+| Tailwind class  | `bg-surface`                       | `bg-primary`                      |
+
+---
+
+## When a Token Is Missing
+
+1. Flag it: `<!-- TODO: missing token for [figma-variable-name] -->`
+2. Propose the smallest safe addition using the naming convention above.
+3. Never silently use a hardcoded value as a placeholder.
+4. Never invent a new token name that conflicts with the existing scale.
+
+## When a Component Is Missing from CS360 Inventory
+
+1. Check atoms and molecules lists above.
+2. If truly net-new, propose it with explicit variants, states, inputs, outputs.
+3. Build it using Layers 1–3 only — no one-off styles.
+4. Document it for addition to the CS360 component registry.
+
+---
+
+## CS360 Product Space Routing
+
+| Work type                            | Target Space                  |
+|--------------------------------------|-------------------------------|
+| Primitives, tokens, naming, governance | CS360 Design System Core    |
+| Caregiver Mobile + Web UX            | CS360 Caregiver Experience    |
+| Agency Portal, admin patterns        | CS360 Agency Experience       |
+| Research, synthesis                  | UX Research Copilot           |
+| Screen review, heuristics, a11y      | Design Critique Expert        |
+| Token architecture strategy          | Design System Architect       |
+| Dev specs, ARIA, acceptance criteria | UX Handoff Writer             |
+| Daily routing, planning              | CS360 Daily Command Center    |
+
+---
+
+## Decision Documentation Format
+
+Every design-to-code decision must follow:
+PROBLEM → WHY → RECOMMENDATION → IMPLEMENTATION NOTE

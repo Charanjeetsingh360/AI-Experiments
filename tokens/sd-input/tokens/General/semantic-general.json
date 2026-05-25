@@ -8,7 +8,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "text",
-      "$value": "{fonts.family.font-family-sans}"
+      "$value": "{font.family.sans}"
     }
   },
   "font-weight": {
@@ -20,7 +20,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "text",
-      "$value": "{fonts.weight.medium-500}"
+      "$value": "{font.weight.semibold}"
     },
     "body-strong": {
       "$extensions": {
@@ -30,7 +30,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "text",
-      "$value": "{fonts.weight.medium-500}"
+      "$value": "{font.weight.semibold}"
     },
     "body-base": {
       "$extensions": {
@@ -40,7 +40,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "text",
-      "$value": "{fonts.weight.regular-400}"
+      "$value": "{font.weight.regular}"
     },
     "heading-bold": {
       "$extensions": {
@@ -50,7 +50,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "text",
-      "$value": "{fonts.weight.semibold-600}"
+      "$value": "{font.weight.semibold}"
     }
   },
   "radius": {
@@ -62,7 +62,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-0}"
+      "$value": "{radius.none}"
     },
     "rounded": {
       "$extensions": {
@@ -72,7 +72,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-4}"
+      "$value": "{radius.sm}"
     },
     "rounded-lg": {
       "$extensions": {
@@ -82,7 +82,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-8}"
+      "$value": "{radius.md}"
     },
     "rounded-xl": {
       "$extensions": {
@@ -92,7 +92,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-12}"
+      "$value": "{radius.lg}"
     },
     "rounded-full": {
       "$extensions": {
@@ -102,7 +102,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-999}"
+      "$value": "{radius.full}"
     },
     "rounded-2xl": {
       "$extensions": {
@@ -112,7 +112,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-16}"
+      "$value": "{radius.xl}"
     },
     "rounded-3xl": {
       "$extensions": {
@@ -122,7 +122,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-24}"
+      "$value": "{radius.2xl}"
     },
     "rounded-sm": {
       "$extensions": {
@@ -132,7 +132,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-2}"
+      "$value": "{radius.sm}"
     },
     "rounded-md": {
       "$extensions": {
@@ -142,7 +142,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{radius.radius-6}"
+      "$value": "{radius.md}"
     }
   }
 }

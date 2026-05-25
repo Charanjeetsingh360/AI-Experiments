@@ -8,7 +8,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.20}"
+      "$value": "{font.weight.semibold}"
     },
     "heading-3": {
       "$extensions": {
@@ -18,7 +18,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.18}"
+      "$value": "{font.weight.semibold}"
     },
     "heading-4": {
       "$extensions": {
@@ -28,7 +28,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.16}"
+      "$value": "{font.weight.semibold}"
     },
     "body-strong": {
       "$extensions": {
@@ -38,7 +38,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.14}"
+      "$value": "{font.weight.semibold}"
     },
     "body-base": {
       "$extensions": {
@@ -48,7 +48,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.12}"
+      "$value": "{font.weight.regular}"
     },
     "caption": {
       "$extensions": {
@@ -58,7 +58,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.10}"
+      "$value": "{font.size.base}"
     },
     "micro": {
       "$extensions": {
@@ -68,7 +68,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.9}"
+      "$value": "{font.size.base}"
     },
     "heading-1": {
       "$extensions": {
@@ -78,7 +78,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.24}"
+      "$value": "{font.weight.semibold}"
     },
     "heading-5": {
       "$extensions": {
@@ -88,7 +88,7 @@
         "com.figma.hiddenFromPublishing": false
       },
       "$type": "number",
-      "$value": "{fonts.size.14}"
+      "$value": "{font.weight.semibold}"
     }
   },
   "line-height": {

@@ -2,7 +2,7 @@
   "fg": {
     "default": {
       "$type": "color",
-      "$value": "{colors.black}"
+      "$value": "{color.black}"
     },
     "muted": {
       "$type": "color",
@@ -16,7 +16,7 @@
   "bg": {
     "default": {
       "$type": "color",
-      "$value": "{colors.white}"
+      "$value": "{color.white}"
     },
     "muted": {
       "$type": "color",
@@ -34,7 +34,7 @@
     },
     "onAccent": {
       "$type": "color",
-      "$value": "{colors.white}"
+      "$value": "{color.white}"
     },
     "bg": {
       "$type": "color",

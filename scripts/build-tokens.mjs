@@ -17,9 +17,11 @@
  *   tokens/output/css/tokens.css  → all modes as CSS custom property blocks
  */
 
-const { default: StyleDictionary } = require('style-dictionary');
-const fs   = require('fs');
-const path = require('path');
+import StyleDictionary from 'style-dictionary';
+import fs   from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const ROOT    = path.resolve(__dirname, '..');
 const SD_IN   = path.join(ROOT, 'tokens', 'sd-input');
