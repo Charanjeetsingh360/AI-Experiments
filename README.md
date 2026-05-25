@@ -149,7 +149,7 @@ Examples:
 
 The original HTML-only version is preserved in:
 ```
-/Users/charanjeetsingh/Work Drive/PROJECTS/AI-Experiments/_backup-html-only/
+/Users/netsmartz/Documents/PROJECTS/AI-Experiments/_backup-html-only/
 ```
 
 ---
