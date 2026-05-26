@@ -22,9 +22,9 @@
       }
     },
     {
-      "label": "Claude-Caregiver-Code: start:5200",
+      "label": "Claude-Caregiver-Code: start:6200",
       "type": "shell",
-      "command": "npm run start:5200",
+      "command": "npm run start:6200",
       "options": {
         "cwd": "/Users/netsmartz/Documents/PROJECTS/Claude-Caregiver-Code"
       },
@@ -47,7 +47,7 @@
       "label": "Start both apps",
       "dependsOn": [
         "AI-Experiments: start:4200",
-        "Claude-Caregiver-Code: start:5200"
+        "Claude-Caregiver-Code: start:6200"
       ],
       "dependsOrder": "parallel"
     },
