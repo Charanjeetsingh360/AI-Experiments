@@ -53,18 +53,18 @@ export interface DocumentItem {
         @for (doc of documents; track doc.id) {
           <button
             type="button"
-            class="flex flex-col gap-[8px] items-start p-[12px] rounded-[8px] w-full
-                   bg-white border border-[#e2e8f0] cursor-pointer text-left
-                   hover:bg-[var(--cs360-bg-alt)] transition-colors"
+             class="flex flex-col gap-[8px] items-start p-[12px] rounded-[8px] w-full
+                    bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)] cursor-pointer text-left
+                    hover:bg-[var(--cs360-bg-alt)] transition-colors"
           >
             <div class="flex gap-[10px] items-start w-full min-h-[20px]">
-              <span class="flex-1 text-[16px] font-medium leading-[1.2] tracking-[-0.24px] text-[#0f172a] min-w-0 break-words">
+              <span class="flex-1 min-w-0 break-words text-[16px] font-medium leading-[1.2] tracking-[-0.24px] text-[var(--cs360-text-primary)]">
                 {{ doc.name }}
               </span>
-              <cs-icon name="chevron_forward" [size]="24" class="shrink-0 text-[#0f172a]" />
+              <cs-icon name="chevron_forward" [size]="24" class="shrink-0 text-[var(--cs360-text-primary)]" />
             </div>
             @if (doc.description) {
-              <p class="text-[12px] font-normal leading-[1.4] text-[#475569] m-0 w-full">
+              <p class="m-0 w-full text-[12px] font-normal leading-[1.4] text-[var(--cs360-text-secondary)]">
                 {{ doc.description }}
               </p>
             }

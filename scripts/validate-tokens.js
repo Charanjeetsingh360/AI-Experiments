@@ -8,9 +8,12 @@
  * Usage: npm run tokens:validate
  */
 
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const CONFIG_PATH = path.join(__dirname, '../figma-mcp.config.json');
 const TOKENS_OUTPUT_PATH = path.join(__dirname, '../tokens/output');

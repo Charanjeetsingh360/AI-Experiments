@@ -11,6 +11,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { CsCardTemplateDirective } from './cs-card-template.directive';
 import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
+import { CSIconComponent } from '../cs-icon/cs-icon.component';
 
 export interface CsCardPageChangeEvent {
   page: number;
@@ -25,7 +26,7 @@ export interface CsCardPageChangeEvent {
 @Component({
   selector: 'cs-card-list',
   standalone: true,
-  imports: [NgTemplateOutlet, CsSkeletonComponent],
+  imports: [NgTemplateOutlet, CsSkeletonComponent, CSIconComponent],
   templateUrl: './cs-card-list.component.html',
   styleUrls: ['./cs-card-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

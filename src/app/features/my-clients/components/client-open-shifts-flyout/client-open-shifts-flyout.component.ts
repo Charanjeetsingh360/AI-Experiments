@@ -77,46 +77,40 @@ interface ShiftGroup {
       </div>
 
       <!-- Body -->
-      <div flyout-body class="h-full overflow-y-auto" style="margin:-16px; padding:0;">
+      <div flyout-body class="-m-[var(--density-space-4)] h-full overflow-y-auto p-0">
         <div class="flex flex-col">
 
           <!-- Month Navigation -->
           <div class="flex items-center justify-between px-6 pt-4 pb-2">
             <button type="button" (click)="prevMonth()"
               class="rounded-md p-1 transition-colors
-                     hover:bg-[var(--cs360-bg-alt)] border-none bg-transparent cursor-pointer"
-              style="color: #96a6b8;">
+                     hover:bg-[var(--cs360-bg-alt)] border-none bg-transparent cursor-pointer
+                     text-[var(--cs360-text-tertiary)]">
               <cs-icon name="chevron_left" [size]="18" />
             </button>
-            <span class="text-sm font-semibold" style="color: #334a65;">{{ monthLabel() }}</span>
+            <span class="text-sm font-semibold text-[var(--cs360-text-secondary-alt)]">{{ monthLabel() }}</span>
             <button type="button" (click)="nextMonth()"
               class="rounded-md p-1 transition-colors
-                     hover:bg-[var(--cs360-bg-alt)] border-none bg-transparent cursor-pointer"
-              style="color: #96a6b8;">
+                     hover:bg-[var(--cs360-bg-alt)] border-none bg-transparent cursor-pointer
+                     text-[var(--cs360-text-tertiary)]">
               <cs-icon name="chevron_right" [size]="18" />
             </button>
           </div>
 
           <!-- Horizontal Calendar Strip -->
           <div #calendarStrip
-               class="overflow-x-auto"
-               style="cursor:grab; scrollbar-width:none; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+               class="overflow-x-auto border-b border-[var(--cs360-border-subtle)] pb-[var(--density-space-3)] cursor-grab [scrollbar-width:none]">
             <div class="flex gap-0 min-w-max px-4">
               @for (calDate of calendarDates(); track calDate.day) {
                 <button
                   type="button"
-                  class="flex flex-col items-center justify-center border-none cursor-pointer
-                         transition-colors duration-150 shrink-0 rounded-[8px]"
-                  style="width: 40px; height: 52px;"
-                  [style.background]="calDate.isSelected ? '#0077ff' : 'transparent'"
+                  [class]="calendarDateClasses(calDate)"
                   (click)="selectDate(calDate)"
                 >
-                  <span class="text-[11px] font-medium leading-tight"
-                        [style.color]="calDate.isSelected ? 'rgba(255,255,255,0.8)' : '#96a6b8'">
+                  <span [class]="calendarDayNameClasses(calDate)">
                     {{ calDate.dayName }}
                   </span>
-                  <span class="text-sm font-bold leading-tight mt-1"
-                        [style.color]="calDate.isSelected ? '#fff' : '#334a65'">
+                  <span [class]="calendarDayNumberClasses(calDate)">
                     {{ calDate.day }}
                   </span>
                 </button>
@@ -125,18 +119,13 @@ interface ShiftGroup {
           </div>
 
           <!-- Filter Tabs — 4 tabs: Open / Offered / Applied / Declined -->
-          <div class="flex items-center px-4 pt-3 pb-3" style="gap: 6px;">
+          <div class="flex items-center gap-[6px] px-4 pt-3 pb-3">
             @for (filter of filters; track filter.value) {
               <button type="button"
-                class="flex items-center justify-center text-xs font-medium
-                       whitespace-nowrap transition-colors cursor-pointer border-none
-                       rounded-[20px]"
-                style="height: 32px; padding: 0 14px;"
-                [style.background]="activeFilter() === filter.value ? '#0077ff' : '#f0f4f8'"
-                [style.color]="activeFilter() === filter.value ? '#fff' : '#788899'"
+                [class]="filterClasses(filter.value)"
                 (click)="activeFilter.set(filter.value)">
                 @if (activeFilter() === filter.value) {
-                  <cs-icon name="check" [size]="13" style="margin-right: 4px;" />
+                  <cs-icon name="check" [size]="13" class="mr-[var(--density-space-1)]" />
                 }
                 {{ filter.label }}
               </button>
@@ -149,59 +138,58 @@ interface ShiftGroup {
             <!-- Date separator label -->
             <div class="px-6 pt-1 pb-2">
               <p class="text-[11px] font-semibold tracking-[0.5px] uppercase m-0"
-                 style="color: #788899;">
+                 class="text-[var(--cs360-text-helper)]">
                 {{ group.date }} · {{ group.dayName }}
               </p>
             </div>
 
             @for (shift of group.shifts; track shift.id) {
-              <div class="mx-4 mb-3 rounded-[10px] overflow-hidden flex"
-                   style="background: #fceced; border: 1px solid #f5c6ca;">
+              <div class="mx-4 mb-3 flex overflow-hidden rounded-[10px] border
+                          border-[var(--cs360-feedback-error-border)]
+                          bg-[var(--cs360-feedback-error-bg)]">
                 <!-- Left red accent bar -->
-                <div class="shrink-0" style="width: 5px; background: #ea1b27;"></div>
+                <div class="w-[5px] shrink-0 bg-[var(--cs360-feedback-error)]"></div>
 
                 <!-- Card content -->
-                <div class="flex flex-1 flex-col" style="padding: 12px 14px; gap: 10px;">
+                <div class="flex flex-1 flex-col gap-[10px] px-[14px] py-[var(--density-space-3)]">
 
                   <!-- Avatar + client info row -->
-                  <div class="flex items-center" style="gap: 10px;">
+                  <div class="flex items-center gap-[10px]">
                     <!-- Avatar -->
-                    <div class="flex items-center justify-center rounded-full shrink-0"
-                         style="width: 40px; height: 40px; background: #e8f0fe; font-size: 14px; font-weight: 600; color: #0077ff;">
+                    <div class="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full
+                                bg-[var(--cs360-action-primary-subtle)]
+                                text-sm font-semibold text-[var(--cs360-action-primary)]">
                       {{ getInitials(shift.clientName) }}
                     </div>
 
                     <!-- Name + address -->
-                    <div class="flex flex-col flex-1 min-w-0" style="gap: 2px;">
-                      <span style="font-size: 15px; font-weight: 600; color: #1a2332; line-height: 1.3;"
-                            class="truncate">
+                    <div class="flex flex-1 min-w-0 flex-col gap-[2px]">
+                      <span class="truncate text-[15px] font-semibold leading-[1.3] text-[var(--cs360-text-primary)]">
                         {{ shift.clientName }}
                       </span>
-                      <span style="font-size: 12px; color: #788899; line-height: 1.3;"
-                            class="truncate">
+                      <span class="truncate text-[12px] leading-[1.3] text-[var(--cs360-text-helper)]">
                         {{ shift.clientAddress }}
                       </span>
                     </div>
                   </div>
 
                   <!-- Time row with dotted lines -->
-                  <div class="flex items-center" style="gap: 6px;">
-                    <span style="font-size: 14px; font-weight: 700; color: #334a65; white-space: nowrap;">
+                  <div class="flex items-center gap-[6px]">
+                    <span class="whitespace-nowrap text-sm font-bold text-[var(--cs360-text-secondary-alt)]">
                       {{ shift.startTime }}
                     </span>
-                    <div class="flex-1 border-0 border-t border-dotted"
-                         style="border-color: #bdc5cc;"></div>
+                    <div class="flex-1 border-0 border-t border-dotted border-[var(--cs360-border-default)]"></div>
                     <!-- Duration pill -->
-                    <div class="flex items-center shrink-0 rounded-[20px] px-2"
-                         style="border: 1px dashed #96a6b8; gap: 4px; padding: 3px 8px; background: rgba(255,255,255,0.7);">
-                      <cs-icon name="schedule" [size]="14" style="color: #334a65;" />
-                      <span style="font-size: 11px; color: #334a65; white-space: nowrap;">
+                    <div class="flex shrink-0 items-center gap-[var(--density-space-1)] rounded-[20px]
+                                border border-dashed border-[var(--cs360-text-tertiary)]
+                                bg-[var(--cs360-bg-surface)]/70 px-[var(--density-space-2)] py-[3px]">
+                      <cs-icon name="schedule" [size]="14" class="text-[var(--cs360-text-secondary-alt)]" />
+                      <span class="whitespace-nowrap text-[11px] text-[var(--cs360-text-secondary-alt)]">
                         {{ shift.duration }}
                       </span>
                     </div>
-                    <div class="flex-1 border-0 border-t border-dotted"
-                         style="border-color: #bdc5cc;"></div>
-                    <span style="font-size: 14px; font-weight: 700; color: #334a65; white-space: nowrap;">
+                    <div class="flex-1 border-0 border-t border-dotted border-[var(--cs360-border-default)]"></div>
+                    <span class="whitespace-nowrap text-sm font-bold text-[var(--cs360-text-secondary-alt)]">
                       {{ shift.endTime }}
                     </span>
                   </div>
@@ -216,7 +204,7 @@ interface ShiftGroup {
             </p>
           }
 
-          <div style="height: 20px;"></div>
+          <div class="h-[20px]"></div>
         </div>
       </div>
     </cs-flyout>
@@ -269,6 +257,34 @@ export class ClientOpenShiftsFlyoutComponent implements AfterViewInit, OnDestroy
     }
     return dates;
   });
+
+  calendarDateClasses(calDate: CalendarDate): string {
+    const base = 'flex h-[52px] w-[40px] shrink-0 cursor-pointer flex-col items-center justify-center rounded-[8px] border-none transition-colors duration-150';
+    return calDate.isSelected
+      ? `${base} bg-[var(--cs360-action-primary)]`
+      : `${base} bg-transparent`;
+  }
+
+  calendarDayNameClasses(calDate: CalendarDate): string {
+    const base = 'text-[11px] font-medium leading-tight';
+    return calDate.isSelected
+      ? `${base} text-[var(--cs360-action-primary-text)]/80`
+      : `${base} text-[var(--cs360-text-tertiary)]`;
+  }
+
+  calendarDayNumberClasses(calDate: CalendarDate): string {
+    const base = 'mt-1 text-sm font-bold leading-tight';
+    return calDate.isSelected
+      ? `${base} text-[var(--cs360-action-primary-text)]`
+      : `${base} text-[var(--cs360-text-secondary-alt)]`;
+  }
+
+  filterClasses(value: string): string {
+    const base = 'flex h-[32px] cursor-pointer items-center justify-center whitespace-nowrap rounded-[20px] border-none px-[14px] text-xs font-medium transition-colors';
+    return this.activeFilter() === value
+      ? `${base} bg-[var(--cs360-action-primary)] text-[var(--cs360-action-primary-text)]`
+      : `${base} bg-[var(--cs360-bg-alt)] text-[var(--cs360-text-helper)]`;
+  }
 
   shiftGroups: ShiftGroup[] = [
     {

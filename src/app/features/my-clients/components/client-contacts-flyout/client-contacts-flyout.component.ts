@@ -54,54 +54,55 @@ export interface ClientContact {
         <div class="flex flex-col gap-4 py-2">
 
           @for (contact of contacts; track contact.id) {
-            <div class="flex flex-col rounded-[10px] overflow-hidden"
-                 style="background: #fff; border: 1px solid #d6d6d6;">
+            <div class="flex flex-col overflow-hidden rounded-[10px]
+                        bg-[var(--cs360-bg-surface)] border border-[var(--cs360-border-subtle)]">
 
               <!-- Avatar + Name + Relationship row -->
-              <div class="flex items-center" style="padding: 14px 14px 12px; gap: 12px;">
+              <div class="flex items-center gap-[var(--density-space-3)] px-[14px] pt-[14px] pb-[var(--density-space-3)]">
                 <!-- Avatar circle -->
-                <div class="flex items-center justify-center rounded-full shrink-0"
-                     style="width: 44px; height: 44px; background: #e8f0fe; font-size: 16px; font-weight: 600; color: #0077ff;">
+                <div class="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full
+                            bg-[var(--cs360-action-primary-subtle)]
+                            text-base font-semibold text-[var(--cs360-action-primary)]">
                   {{ getInitials(contact.name) }}
                 </div>
-                <div class="flex flex-col" style="gap: 2px;">
-                  <span style="font-size: 16px; font-weight: 600; color: #1a2332; line-height: 1.3;">
+                <div class="flex flex-col gap-[2px]">
+                  <span class="text-base font-semibold leading-[1.3] text-[var(--cs360-text-primary)]">
                     {{ contact.name }}
                   </span>
-                  <span style="font-size: 13px; color: #788899; line-height: 1.4;">
+                  <span class="text-[13px] leading-[1.4] text-[var(--cs360-text-helper)]">
                     {{ contact.relationship }}
                   </span>
                 </div>
               </div>
 
               <!-- Divider -->
-              <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
+              <hr class="m-0 border-0 border-t border-[var(--cs360-border-subtle)]" />
 
               <!-- Contact rows with dividers -->
               @if (contact.phone) {
-                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
-                  <cs-icon name="call" [size]="18" style="color: #788899; flex-shrink: 0;" />
-                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4;">{{ contact.phone }}</span>
+                <div class="flex items-center gap-[var(--density-space-3)] px-[14px] py-[11px]">
+                  <cs-icon name="call" [size]="18" class="shrink-0 text-[var(--cs360-text-helper)]" />
+                  <span class="text-sm leading-[1.4] text-[var(--cs360-text-link)]">{{ contact.phone }}</span>
                 </div>
                 @if (contact.email || contact.address) {
-                  <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
+                  <hr class="m-0 border-0 border-t border-[var(--cs360-border-subtle)]" />
                 }
               }
 
               @if (contact.email) {
-                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
-                  <cs-icon name="alternate_email" [size]="18" style="color: #788899; flex-shrink: 0;" />
-                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4; word-break: break-all;">{{ contact.email }}</span>
+                <div class="flex items-center gap-[var(--density-space-3)] px-[14px] py-[11px]">
+                  <cs-icon name="alternate_email" [size]="18" class="shrink-0 text-[var(--cs360-text-helper)]" />
+                  <span class="break-all text-sm leading-[1.4] text-[var(--cs360-text-link)]">{{ contact.email }}</span>
                 </div>
                 @if (contact.address) {
-                  <hr style="margin: 0; border: none; border-top: 1px solid #d6d6d6;" />
+                  <hr class="m-0 border-0 border-t border-[var(--cs360-border-subtle)]" />
                 }
               }
 
               @if (contact.address) {
-                <div class="flex items-center" style="padding: 11px 14px; gap: 12px;">
-                  <cs-icon name="home" [size]="18" style="color: #788899; flex-shrink: 0;" />
-                  <span style="font-size: 14px; color: #0077ff; line-height: 1.4;">{{ contact.address }}</span>
+                <div class="flex items-center gap-[var(--density-space-3)] px-[14px] py-[11px]">
+                  <cs-icon name="home" [size]="18" class="shrink-0 text-[var(--cs360-text-helper)]" />
+                  <span class="text-sm leading-[1.4] text-[var(--cs360-text-link)]">{{ contact.address }}</span>
                 </div>
               }
             </div>

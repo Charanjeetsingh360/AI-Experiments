@@ -55,26 +55,24 @@ export interface ClientFormItem {
         <div class="flex flex-col gap-3 py-2">
 
           <!-- Search row: full-width input + separate calendar button -->
-          <div class="flex items-center" style="gap: 8px;">
-            <div class="flex flex-1 items-center rounded-[8px] px-3"
-                 style="height: 40px; border: 1px solid #e0e2e8; gap: 6px;">
-              <cs-icon name="search" [size]="16" style="color: #96a6b8; flex-shrink: 0;" />
+          <div class="flex items-center gap-[var(--density-space-2)]">
+            <div class="flex h-[40px] flex-1 items-center gap-[6px] rounded-[8px] border
+                        border-[var(--cs360-border-subtle)] px-[var(--density-space-3)]">
+              <cs-icon name="search" [size]="16" class="shrink-0 text-[var(--cs360-text-tertiary)]" />
               <input
                 type="text"
                 placeholder="Search forms..."
-                class="flex-1 border-none outline-none bg-transparent"
-                style="font-size: 13px; color: #334a65;"
+                class="flex-1 border-none bg-transparent text-[13px] text-[var(--cs360-text-secondary-alt)] outline-none"
                 [ngModel]="searchText()"
                 (ngModelChange)="searchText.set($event)"
               />
             </div>
             <!-- 34×34 calendar icon button -->
             <button type="button"
-              class="flex items-center justify-center rounded-[8px] border-none cursor-pointer
-                     transition-colors hover:bg-[rgba(51,74,101,0.08)]"
-              style="width: 34px; height: 34px; background: #f4f6f8; flex-shrink: 0;"
+              class="flex h-[34px] w-[34px] shrink-0 cursor-pointer items-center justify-center rounded-[8px]
+                     border-none bg-[var(--cs360-bg-alt)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]"
               aria-label="Pick date range">
-              <cs-icon name="calendar_today" [size]="16" style="color: #334a65;" />
+              <cs-icon name="calendar_today" [size]="16" class="text-[var(--cs360-text-secondary-alt)]" />
             </button>
           </div>
 
@@ -82,21 +80,21 @@ export interface ClientFormItem {
           @for (form of filteredForms(); track form.id) {
             <button
               type="button"
-              class="flex items-center rounded-[10px] text-left w-full
-                     cursor-pointer transition-colors duration-150 hover:bg-[#f8fbff]"
-              style="background: #fff; border: 1px solid #e2e8f0; padding: 14px 16px; gap: 10px;"
+              class="flex w-full cursor-pointer items-center gap-[10px] rounded-[10px] border
+                     border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)]
+                     px-[var(--density-space-4)] py-[14px] text-left transition-colors duration-150
+                     hover:bg-[var(--cs360-bg-surface-active)]"
               (click)="openFormDetail(form)"
             >
-              <div class="flex flex-col flex-1 min-w-0" style="gap: 4px;">
-                <span class="truncate block"
-                      style="font-size: 16px; font-weight: 600; color: #1a2332; line-height: 1.3;">
+              <div class="flex flex-1 min-w-0 flex-col gap-[var(--density-space-1)]">
+                <span class="block truncate text-base font-semibold leading-[1.3] text-[var(--cs360-text-primary)]">
                   {{ form.name }}
                 </span>
-                <span style="font-size: 13px; color: #788899; line-height: 1.4;">
+                <span class="text-[13px] leading-[1.4] text-[var(--cs360-text-helper)]">
                   Completed by {{ form.modifier }} at {{ form.modifiedOn }}
                 </span>
               </div>
-              <cs-icon name="chevron_right" [size]="18" class="shrink-0" style="color: #96a6b8;" />
+              <cs-icon name="chevron_right" [size]="18" class="shrink-0 text-[var(--cs360-text-tertiary)]" />
             </button>
           }
 

@@ -10,6 +10,8 @@
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "ci": "npm run tokens:validate && npm run build:prod && npm run audit:prod",
     "tokens:generate": "node scripts/build-tokens.mjs",
     "tokens:validate": "node scripts/validate-tokens.js",
     "prebuild": "npm run tokens:generate",

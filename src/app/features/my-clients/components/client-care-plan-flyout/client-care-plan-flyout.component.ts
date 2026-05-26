@@ -46,7 +46,7 @@ interface CarePlanSection {
       </div>
 
       <!-- Body -->
-      <div flyout-body style="padding: 0; overflow-y: auto; max-height: 75vh;">
+      <div flyout-body class="max-h-[75vh] overflow-y-auto p-0">
         @if (loading()) {
           <div class="flex items-center justify-center py-8">
             <div class="w-6 h-6 border-2 border-[var(--cs360-text-tertiary)] border-t-transparent rounded-full animate-spin"></div>
@@ -55,40 +55,37 @@ interface CarePlanSection {
         } @else {
 
           <!-- FACESHEET header banner -->
-          <div class="flex flex-col items-center justify-center"
-               style="background: #334a65; padding: 18px 24px 14px;">
-            <span style="font-size: 11px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.6); text-transform: uppercase;">
+          <div class="flex flex-col items-center justify-center bg-[var(--cs360-text-secondary-alt)] px-[var(--density-space-6)] pb-[14px] pt-[18px]">
+            <span class="text-[11px] font-bold uppercase tracking-[2px] text-[var(--cs360-text-inverse)]/60">
               CLIENT CARE PLAN
             </span>
-            <span style="font-size: 20px; font-weight: 700; color: #fff; line-height: 1.3; margin-top: 4px;">
+            <span class="mt-[var(--density-space-1)] text-[20px] font-bold leading-[1.3] text-[var(--cs360-text-inverse)]">
               FACESHEET
             </span>
-            <span style="font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 4px;">
+            <span class="mt-[var(--density-space-1)] text-[12px] text-[var(--cs360-text-inverse)]/65">
               Authorization #AUTH-2024-123445 · Effective 01/01/2024 – 12/31/2024
             </span>
           </div>
 
           <!-- Document body -->
-          <div class="flex flex-col" style="padding: 0 0 24px;">
+          <div class="flex flex-col pb-[var(--density-space-6)]">
 
             @for (section of carePlanSections; track section.title) {
               <!-- Section heading -->
-              <div style="background: #f0f4f8; padding: 8px 24px; border-bottom: 1px solid #e2e8f0;">
-                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: #334a65; text-transform: uppercase;">
+              <div class="border-b border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-alt)] px-[var(--density-space-6)] py-[var(--density-space-2)]">
+                <span class="text-[11px] font-bold uppercase tracking-[0.8px] text-[var(--cs360-text-secondary-alt)]">
                   {{ section.title }}
                 </span>
               </div>
 
               <!-- Section rows -->
-              <div class="flex flex-col" style="padding: 0 24px;">
+              <div class="flex flex-col px-[var(--density-space-6)]">
                 @for (row of section.rows; track row.label; let last = $last) {
-                  <div class="flex"
-                       [style.border-bottom]="last ? 'none' : '1px solid #e8ecf0'"
-                       style="padding: 10px 0; gap: 16px;">
-                    <span style="font-size: 13px; color: #788899; min-width: 160px; flex-shrink: 0; line-height: 1.5;">
+                  <div [class]="careRowClasses(last)">
+                    <span class="min-w-[160px] shrink-0 text-[13px] leading-[1.5] text-[var(--cs360-text-helper)]">
                       {{ row.label }}
                     </span>
-                    <span style="font-size: 13px; color: #1a2332; font-weight: 500; line-height: 1.5; flex: 1;">
+                    <span class="flex-1 text-[13px] font-medium leading-[1.5] text-[var(--cs360-text-primary)]">
                       {{ row.value }}
                     </span>
                   </div>
@@ -97,34 +94,32 @@ interface CarePlanSection {
             }
 
             <!-- Tasks section -->
-            <div style="background: #f0f4f8; padding: 8px 24px; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0;">
-              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: #334a65; text-transform: uppercase;">
+            <div class="border-y border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-alt)] px-[var(--density-space-6)] py-[var(--density-space-2)]">
+              <span class="text-[11px] font-bold uppercase tracking-[0.8px] text-[var(--cs360-text-secondary-alt)]">
                 TASKS &amp; CARE INSTRUCTIONS
               </span>
             </div>
-            <div style="padding: 12px 24px;">
-              <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+            <div class="px-[var(--density-space-6)] py-[var(--density-space-3)]">
+              <ol class="m-0 flex flex-col gap-[var(--density-space-2)] pl-[20px]">
                 @for (task of careTasks; track task) {
-                  <li style="font-size: 13px; color: #1a2332; line-height: 1.5;">{{ task }}</li>
+                  <li class="text-[13px] leading-[1.5] text-[var(--cs360-text-primary)]">{{ task }}</li>
                 }
               </ol>
             </div>
 
             <!-- Medications section -->
-            <div style="background: #f0f4f8; padding: 8px 24px; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0;">
-              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: #334a65; text-transform: uppercase;">
+            <div class="border-y border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-alt)] px-[var(--density-space-6)] py-[var(--density-space-2)]">
+              <span class="text-[11px] font-bold uppercase tracking-[0.8px] text-[var(--cs360-text-secondary-alt)]">
                 MEDICATIONS
               </span>
             </div>
-            <div style="padding: 0 24px;">
+            <div class="px-[var(--density-space-6)]">
               @for (med of medications; track med.name; let last = $last) {
-                <div class="flex items-center"
-                     [style.border-bottom]="last ? 'none' : '1px solid #e8ecf0'"
-                     style="padding: 10px 0; gap: 16px;">
-                  <span style="font-size: 13px; color: #1a2332; font-weight: 500; flex: 1; line-height: 1.5;">
+                <div [class]="careRowClasses(last) + ' items-center'">
+                  <span class="flex-1 text-[13px] font-medium leading-[1.5] text-[var(--cs360-text-primary)]">
                     {{ med.name }}
                   </span>
-                  <span style="font-size: 12px; color: #788899; white-space: nowrap; line-height: 1.5;">
+                  <span class="whitespace-nowrap text-[12px] leading-[1.5] text-[var(--cs360-text-helper)]">
                     {{ med.dosage }}
                   </span>
                 </div>
@@ -132,13 +127,13 @@ interface CarePlanSection {
             </div>
 
             <!-- Additional considerations -->
-            <div style="background: #f0f4f8; padding: 8px 24px; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0;">
-              <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: #334a65; text-transform: uppercase;">
+            <div class="border-y border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-alt)] px-[var(--density-space-6)] py-[var(--density-space-2)]">
+              <span class="text-[11px] font-bold uppercase tracking-[0.8px] text-[var(--cs360-text-secondary-alt)]">
                 ADDITIONAL CONSIDERATIONS
               </span>
             </div>
-            <div style="padding: 14px 24px;">
-              <p style="font-size: 13px; color: #1a2332; margin: 0; line-height: 1.6;">
+            <div class="px-[var(--density-space-6)] py-[14px]">
+              <p class="m-0 text-[13px] leading-[1.6] text-[var(--cs360-text-primary)]">
                 Client requires assistance with mobility. Use walker when transitioning between rooms.
                 <strong>Allergic to penicillin.</strong> Diabetic — monitor blood sugar levels before meals.
                 Preferred language: English. Emergency contact: James Edison (Son) · (555) 321-0987.
@@ -210,6 +205,11 @@ export class ClientCarePlanFlyoutComponent {
     { name: 'Aspirin 81mg', dosage: 'Once daily — morning' },
     { name: 'Atorvastatin 20mg', dosage: 'Once daily — evening' },
   ];
+
+  careRowClasses(isLast: boolean): string {
+    const base = 'flex gap-[var(--density-space-4)] py-[10px]';
+    return isLast ? base : `${base} border-b border-[var(--cs360-border-subtle)]`;
+  }
 
   onClose(): void {
     this.isOpenChange.emit(false);

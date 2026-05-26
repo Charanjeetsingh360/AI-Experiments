@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-24T12:20:41.583Z",
+  "timestamp": "2026-05-26T15:33:46.325Z",
   "source": "tokens/output/css/tokens.css",
-  "tokenCount": 2200,
-  "integrityHash": "45b08702b7dee506f466b77060ae1584510190e3941235f7bc2e1820b2b4236b",
+  "tokenCount": 1829,
+  "integrityHash": "e4ad8c59c897a136258a12725b91324dea61522cafbc8ce2a7abfb16e7182298",
   "themes": [
     "light",
     "soothing-dark",

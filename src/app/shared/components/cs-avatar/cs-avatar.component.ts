@@ -73,7 +73,7 @@ import {
       justify-content: center;
       width: 100%;
       height: 100%;
-      color: #ffffff;
+      color: var(--cs360-text-inverse);
       font-weight: 600;
       font-family: var(--cs360-font-family);
       text-transform: uppercase;
@@ -99,23 +99,18 @@ export class CSAvatarComponent implements OnChanges {
   };
 
   private readonly COLOR_PALETTE = [
-    '#5B21B6', // violet
-    '#1D4ED8', // blue
-    '#0D9488', // teal
-    '#047857', // emerald
-    '#D97706', // amber
-    '#DC2626', // red
-    '#DB2777', // pink
-    '#0EA5E9', // sky
-    '#7C3AED', // purple
-    '#0369A1', // dark sky
-    '#065F46', // dark emerald
-    '#92400E', // dark amber
+    'var(--cs360-action-primary)',
+    'var(--cs360-feedback-info)',
+    'var(--cs360-feedback-success)',
+    'var(--cs360-feedback-warning)',
+    'var(--cs360-feedback-error)',
+    'var(--cs360-text-secondary-alt)',
+    'var(--cs360-text-link)',
   ];
 
   resolvedSize = 40;
   initials = '?';
-  avatarBg = '#1D4ED8';
+  avatarBg = 'var(--cs360-action-primary)';
   imgFailed = false;
 
   ngOnChanges(changes: SimpleChanges): void {
