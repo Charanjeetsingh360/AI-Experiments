@@ -2,26 +2,7 @@
 
   <!-- Page Header -->
   <cs-page-header title="Home">
-    <div header-actions class="flex items-center gap-3">
-      <!-- Caregiver Clock-In Status (Figma top bar) -->
-      <div class="flex items-center gap-2">
-        <cs-avatar name="Marry Edison" size="sm" />
-        <span class="text-sm font-medium" style="color:#1e293b">Marry, Edison</span>
-        <span class="text-sm" style="color:#64748b">Clock-In at 2:05 PM</span>
-      </div>
-      <button type="button"
-        class="rounded-lg px-3 py-1.5 text-sm font-bold text-white"
-        style="background:#22c55e">
-        Clock-Out
-      </button>
-      <button type="button"
-        class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium"
-        style="border-color:#e2e8f0;background:white;color:#1e293b">
-        <cs-icon name="add" [size]="16" />
-        Adhoc Shift
-      </button>
-    </div>
-  </cs-page-header>
+    cs-page-header>
 
   <!-- Two-column body -->
   <div class="flex flex-1 overflow-hidden gap-4 p-4">
