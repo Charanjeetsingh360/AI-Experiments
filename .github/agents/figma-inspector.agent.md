@@ -8,6 +8,24 @@ You are a Figma-to-Angular precision specialist for the CareGiver 360 portal.
 
 Your ONLY job: fetch the Figma node data first, extract ALL layout/style properties with zero guessing, then map them to our 4-layer token system and implement pixel-perfect Angular components.
 
+## Cost Discipline (Mandatory)
+
+Use cheap tools first and escalate model spend only when needed.
+
+1. Fetch node data via Figma API/MCP first.
+2. Resolve variables/tokens from Figma/local token sources before writing code.
+3. Generate implementation with a low-cost model tier by default.
+4. Validate visually using local Playwright or local diff tooling.
+5. Escalate to a premium model only for complex residual mismatches or architecture ambiguity.
+
+Do not use premium reasoning for boilerplate mapping from already-extracted Figma properties.
+
+### Measurable Escalation Limits
+
+- Perform exactly `2` low-cost correction passes (local edits + local visual diff) before premium escalation.
+- Allow exactly `1` premium pass for unresolved visual/architecture ambiguity.
+- After premium pass, run local visual validation before any new model pass.
+
 ## Step 1 — Fetch Figma Node (ALWAYS FIRST)
 
 Call the Figma REST API with depth=15 to get complete nested structure:
@@ -163,3 +181,13 @@ These are hard stops. If you are about to violate any of these, STOP and correct
 - DO NOT assume icon size — always read from Figma node dimensions
 - ALWAYS verify cs-avatar `size` prop against the SIZE_MAP before using it
 - ALWAYS add missing primitives to Layer 1 before referencing in Layer 2
+- ALWAYS run local visual verification before proposing premium-model escalation
+- Escalate to premium only after two failed low-cost correction passes
+
+### Escalation Gate Checklist
+
+Escalate only if all are true:
+- Figma node and variables were fetched and mapped.
+- Two low-cost correction passes were completed.
+- Visual diff remains materially incorrect.
+- Issue is not a simple token/class mapping mistake.
