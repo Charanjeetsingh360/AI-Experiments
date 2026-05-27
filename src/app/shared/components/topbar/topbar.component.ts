@@ -23,6 +23,28 @@ import { CSIconComponent } from '../cs-icon/cs-icon.component';
 
       <!-- Right: Actions -->
       <div class="topbar-right">
+                <!-- Caregiver Status Block — Figma topbar right section -->
+          <div style="display:flex;align-items:center;gap:8px;padding:0 12px;border-right:1px solid var(--cs360-border-subtle)">
+            <!-- Avatar -->
+            <div style="width:32px;height:32px;border-radius:50%;background:#e8e0f0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#6b48a0;overflow:hidden;border:2px solid var(--cs360-border-subtle)">
+              ME
+            </div>
+            <!-- Name + Clock-in -->
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font-size:13px;font-weight:600;color:var(--cs360-text-primary);line-height:1.2">Marry, Edison</span>
+              <span style="font-size:11px;color:var(--cs360-text-secondary);line-height:1.2">Clock-In at 2:05 PM</span>
+            </div>
+            <!-- Clock-Out button -->
+            <button type="button"
+              style="display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;border:none;background:#dc2626;color:#fff;font-size:12px;font-weight:500;cursor:pointer">
+              Clock-Out
+            </button>
+            <!-- Adhoc Shift button -->
+            <button type="button"
+              style="display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;border:1px solid var(--cs360-border-subtle);background:var(--cs360-bg-surface);color:var(--cs360-text-primary);font-size:12px;font-weight:500;cursor:pointer">
+              + Adhoc Shift
+            </button>
+          </div>
         <!-- Theme Switcher — light_mode / dark_mode / contrast -->
         <div class="theme-switcher">
           <button
