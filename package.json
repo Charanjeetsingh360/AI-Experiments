@@ -11,11 +11,13 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "audit:prod": "npm audit --omit=dev --audit-level=high",
-    "ci": "npm run tokens:validate && npm run build:prod && npm run audit:prod",
+    "ci": "npm run tokens:validate && npm run design:check:ci && npm run build:prod && npm run audit:prod",
     "tokens:generate": "node scripts/build-tokens.mjs",
     "tokens:validate": "node scripts/validate-tokens.js",
     "prebuild": "npm run tokens:generate",
     "prestart": "npm run tokens:generate"
+        "design:check": "node scripts/design-check.mjs",
+    "design:check:ci": "node scripts/design-check.mjs && echo 'Design parity: PASS'"
   },
   "private": true,
   "dependencies": {
