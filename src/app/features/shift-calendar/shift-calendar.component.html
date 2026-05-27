@@ -93,13 +93,13 @@
                       {{ shift.clientAddress }}
                     </p>
                   </div>
-                  <span class="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium" [class]="statusClass[shift.status]">
+                  <span class="shrink-0 rounded px-2.5 py-0.5 text-xs font-medium" [class]="statusClass[shift.status]">
                     {{ shift.status | titlecase }}
                   </span>
                 </div>
 
                 <!-- Time Info -->
-                <div class="flex items-center gap-4 text-sm text-[var(--cs360-text-secondary)]">
+                <div class="flex items-center gap-4 flex-nowrap text-sm text-[var(--cs360-text-secondary)]">
                   <span class="flex items-center gap-1">
                     <cs-icon name="schedule" [size]="14" />
                     {{ shift.startTime }} – {{ shift.endTime }} {{ shift.timezone }}
