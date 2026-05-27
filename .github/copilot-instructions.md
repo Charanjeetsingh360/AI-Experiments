@@ -113,3 +113,52 @@ src/app/
 - Modular, single-responsibility components
 - Production-ready: error handling, loading states, edge cases
 - No inline styles; all styling through Tailwind utilities or theme tokens
+
+## Agent Cost and Performance Policy (All Agents)
+
+Use a cheap-first execution strategy for every task. Spend premium model capacity only where it materially improves outcomes.
+
+### Hybrid Policy Model (Required)
+
+1. Central global policy for consistency across all tasks.
+2. Targeted stricter policies for high-cost workflows (Figma and CLI).
+3. Explicit and measurable escalation gates before premium usage.
+
+### Default Order (Caveman Technique)
+
+1. Pull raw design data first (Figma MCP/API, local files, local scripts).
+2. Resolve tokens and mappings locally.
+3. Use a small model tier for boilerplate implementation.
+4. Validate locally (Playwright diff, tests, lint, build).
+5. Escalate to a premium model only for ambiguous, high-impact decisions.
+
+### Guardrails
+
+- Do not use premium models for straightforward boilerplate.
+- Do not use chat/agent loops for tasks a local tool can validate deterministically.
+- Prefer one high-quality premium pass over repeated premium retries.
+- Keep premium escalation scoped to the hard part only; return to low-cost flow afterward.
+
+### Measurable Escalation Gates
+
+- Max `2` low-cost fix passes before premium escalation is allowed.
+- Max `1` premium pass per issue unless new evidence appears (new failing test, new diff class, or changed requirements).
+- Require at least `1` deterministic validation run (`build`, `test`, `lint`, or visual diff) before escalating.
+- After premium pass, require at least `1` local re-validation run before any additional model call.
+
+### Escalation Triggers (Premium Allowed)
+
+- Architecture tradeoffs across multiple components or domains.
+- Persistent visual mismatch after two local fix passes.
+- Accessibility, behavior, or state-model ambiguity with multiple valid interpretations.
+- Refactors where regression risk is high and reasoning depth is required.
+
+### Apply To CLI and Agent Modes
+
+This policy applies to Copilot Chat, Agent Mode, and CLI-style execution workflows in this repository.
+
+### Continuous Improvement Loop
+
+- Review workflow cost/performance monthly.
+- Tighten rules when repeated premium usage appears on boilerplate tasks.
+- Add new deterministic checks when recurring failure types are observed.
