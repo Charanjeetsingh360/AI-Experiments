@@ -2,7 +2,7 @@
 
   <!-- Page Header -->
   <!-- Fix 1: Title = "My Shift Calendar", no description, icon-only 32×32 buttons (Figma node 11:6381) -->
-  <cs-page-header title="My Shift Calendar">
+  <cs-page-header title="Shift Calendar">
     <div header-actions class="flex items-center gap-1">
 
       <!-- Filters — icon-only, 32×32, radius=8 -->
@@ -15,24 +15,26 @@
         <cs-icon name="tune" [size]="18" aria-hidden="true" />
       </button>
 
-      <!-- Shift Details — icon-only, 32×32, radius=8 -->
+      <!-- Shift Details — icon+text button, Figma match -->
       <button type="button" aria-label="Shift Details"
-        class="flex items-center justify-center w-8 h-8
+        class="flex items-center gap-2 px-3 h-8
                rounded-lg border border-[var(--cs360-border-subtle)]
                bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                transition-colors hover:bg-[var(--cs360-bg-alt)]
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
         <cs-icon name="apps" [size]="18" aria-hidden="true" />
+                        <span class="text-xs font-medium">Shift Details</span>
       </button>
 
       <!-- More Actions — icon-only, 32×32, radius=8 -->
       <button type="button" aria-label="More Actions"
-        class="flex items-center justify-center w-8 h-8
+        class="flex items-center gap-2 px-3 h-8
                rounded-lg border border-[var(--cs360-border-subtle)]
                bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                transition-colors hover:bg-[var(--cs360-bg-alt)]
                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--cs360-action-primary)]">
         <cs-icon name="more_vert" [size]="18" aria-hidden="true" />
+                        <span class="text-xs font-medium">More Actions</span>
       </button>
 
     </div>
