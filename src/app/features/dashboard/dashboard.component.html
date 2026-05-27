@@ -3,13 +3,20 @@
   <!-- Page Header -->
   <cs-page-header title="Home">
     <div header-actions class="flex items-center gap-3">
-      <span class="text-sm text-[var(--cs360-text-secondary)]">
-        {{ today | date:'EEEE, MMMM d, y' }}
-      </span>
+      <!-- Caregiver Clock-In Status (Figma top bar) -->
+      <div class="flex items-center gap-2">
+        <cs-avatar name="Marry Edison" size="sm" />
+        <span class="text-sm font-medium" style="color:#1e293b">Marry, Edison</span>
+        <span class="text-sm" style="color:#64748b">Clock-In at 2:05 PM</span>
+      </div>
       <button type="button"
-        class="flex items-center gap-1.5 rounded-lg border border-[var(--cs360-border-subtle)]
-               bg-white px-3 py-1.5 text-sm font-medium text-[var(--cs360-text-primary)]
-               hover:bg-[#F7F8F8] transition-colors">
+        class="rounded-lg px-3 py-1.5 text-sm font-bold text-white"
+        style="background:#22c55e">
+        Clock-Out
+      </button>
+      <button type="button"
+        class="flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium"
+        style="border-color:#e2e8f0;background:white;color:#1e293b">
         <cs-icon name="add" [size]="16" />
         Adhoc Shift
       </button>
@@ -23,15 +30,18 @@
     <div class="flex flex-1 flex-col gap-4 overflow-y-auto min-w-0">
 
       <!-- Promo Banner -->
-      <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#f5e6d0] to-[#ede0cc] flex items-center justify-between px-8 py-6">
-        <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-white/70 hover:bg-white">
+      <div class="relative overflow-hidden rounded-xl flex items-center justify-between px-8 py-6"
+           style="background:linear-gradient(135deg,#f5e6d0 0%,#ede0cc 100%);min-height:100px">
+        <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full"
+          style="background:rgba(255,255,255,0.7)">
           <cs-icon name="chevron_left" [size]="18" />
         </button>
         <div class="flex-1 text-center">
-          <p class="text-5xl font-black text-[#c8a882] opacity-80">25%</p>
-          <p class="text-base font-bold tracking-widest text-[#c8a882] opacity-80">EXTRA ON THIS WEEKEND</p>
+          <p class="font-black" style="font-size:3.5rem;color:#c8a882;opacity:0.85;line-height:1">25%</p>
+          <p class="font-bold tracking-widest" style="color:#c8a882;opacity:0.85;font-size:1rem">EXTRA ON THIS WEEKEND</p>
         </div>
-        <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-white/70 hover:bg-white">
+        <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full"
+          style="background:rgba(255,255,255,0.7)">
           <cs-icon name="chevron_right" [size]="18" />
         </button>
       </div>
@@ -39,96 +49,99 @@
       <!-- Ongoing Shift -->
       <div>
         <div class="mb-2 flex items-center justify-between">
-          <h2 class="text-base font-semibold text-[var(--cs360-text-primary)]">Ongoing Shift</h2>
+          <h2 class="text-base font-semibold" style="color:#1e293b">Ongoing Shift</h2>
           <button type="button"
-            class="flex items-center gap-1 rounded-lg bg-[var(--cs360-action-primary,#2563eb)] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90">
+            class="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-white"
+            style="background:#2563eb">
             <cs-icon name="add" [size]="14" />
             Adhoc Shift
           </button>
         </div>
-        <div class="rounded-xl border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white shadow-sm p-4">
+        <div class="rounded-xl p-4" style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-3">
               <cs-avatar name="Marry Edison" size="md" />
               <div>
-                <p class="font-semibold text-[var(--cs360-text-primary)]">Marry, Edison</p>
-                <p class="text-sm text-[var(--cs360-text-secondary)]">99 Marina bay Street, New York</p>
+                <p class="font-semibold" style="color:#1e293b">Marry, Edison</p>
+                <p class="text-sm" style="color:#64748b">99 Marina bay Street, New YorkApprox. Distance : 25 miles</p>
               </div>
             </div>
-            <button type="button" class="text-[var(--cs360-text-secondary)] hover:text-[var(--cs360-text-primary)]">
+            <button type="button" style="color:#64748b">
               <cs-icon name="description" [size]="18" />
             </button>
           </div>
-          <div class="flex items-center justify-between text-xs text-[var(--cs360-text-secondary)] mb-0.5">
+          <div class="flex items-center justify-between text-xs mb-0.5" style="color:#64748b">
             <span>MM/DD/YY</span><span>MM/DD/YY</span>
           </div>
           <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium text-[var(--cs360-text-primary)]">2:00 AM (AST)</span>
-            <div class="flex items-center gap-1 text-xs text-[var(--cs360-text-secondary)]">
+            <span class="text-sm font-medium" style="color:#1e293b">2:00 AM (AST)</span>
+            <div class="flex items-center gap-1 text-xs" style="color:#64748b">
               <cs-icon name="schedule" [size]="13" /><span>0h 30m</span>
             </div>
-            <span class="text-sm font-medium text-[var(--cs360-text-primary)]">2:30 AM (AST)</span>
+            <span class="text-sm font-medium" style="color:#1e293b">2:30 AM (AST)</span>
           </div>
           <div class="flex items-center gap-2">
             <button type="button"
-              class="flex-1 rounded-lg border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white py-2 text-sm font-medium text-[var(--cs360-text-primary)] hover:bg-[#F7F8F8]">
+              class="flex-1 rounded-lg py-2 text-sm font-medium"
+              style="border:1px solid #e2e8f0;background:white;color:#1e293b">
               Clocked-In 2:03 PM
             </button>
             <button type="button"
-              class="flex-1 rounded-lg bg-[#22c55e] py-2 text-sm font-bold text-white hover:bg-[#16a34a]">
+              class="flex-1 rounded-lg py-2 text-sm font-bold text-white"
+              style="background:#22c55e">
               Clock-Out
             </button>
           </div>
-          <div class="mt-2 flex justify-center">
-            <cs-icon name="expand_more" [size]="20" class="text-[var(--cs360-text-secondary)]" />
+          <div class="mt-2 flex justify-center" style="color:#64748b">
+            <cs-icon name="expand_more" [size]="20" />
           </div>
         </div>
       </div>
 
       <!-- Upcoming Shift -->
       <div>
-        <h2 class="mb-2 text-base font-semibold text-[var(--cs360-text-primary)]">Upcoming Shift</h2>
-        <div class="rounded-xl border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white shadow-sm p-4">
+        <h2 class="mb-2 text-base font-semibold" style="color:#1e293b">Upcoming Shift</h2>
+        <div class="rounded-xl p-4" style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center gap-3">
               <cs-avatar name="Marry Edison" size="md" />
               <div>
-                <p class="font-semibold text-[var(--cs360-text-primary)]">Marry, Edison</p>
-                <p class="text-sm text-[var(--cs360-text-secondary)]">99 Marina bay Street, New York
-                  <span class="ml-1">Approx. Distance : 25 miles</span>
-                </p>
+                <p class="font-semibold" style="color:#1e293b">Marry, Edison</p>
+                <p class="text-sm" style="color:#64748b">99 Marina bay Street, New YorkApprox. Distance : 25 miles</p>
               </div>
             </div>
-            <button type="button" class="text-[var(--cs360-text-secondary)] hover:text-[var(--cs360-text-primary)]">
+            <button type="button" style="color:#64748b">
               <cs-icon name="description" [size]="18" />
             </button>
           </div>
-          <div class="flex items-center justify-between text-xs text-[var(--cs360-text-secondary)] mb-0.5">
+          <div class="flex items-center justify-between text-xs mb-0.5" style="color:#64748b">
             <span>MM/DD/YY</span><span>MM/DD/YY</span>
           </div>
           <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium text-[var(--cs360-text-primary)]">2:00 AM (AST)</span>
-            <div class="flex items-center gap-1 text-xs text-[var(--cs360-text-secondary)]">
+            <span class="text-sm font-medium" style="color:#1e293b">2:00 AM (AST)</span>
+            <div class="flex items-center gap-1 text-xs" style="color:#64748b">
               <cs-icon name="schedule" [size]="13" /><span>0h 30m</span>
             </div>
-            <span class="text-sm font-medium text-[var(--cs360-text-primary)]">2:30 AM (AST)</span>
+            <span class="text-sm font-medium" style="color:#1e293b">2:30 AM (AST)</span>
           </div>
           <div class="flex items-center gap-2">
             <button type="button"
-              class="flex-1 rounded-lg bg-[#22c55e] py-2 text-sm font-bold text-white hover:bg-[#16a34a]">
+              class="flex-1 rounded-lg py-2 text-sm font-bold text-white"
+              style="background:#22c55e">
               Clock-In
             </button>
             <button type="button"
-              class="flex-1 rounded-lg border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white py-2 text-sm font-medium text-[var(--cs360-text-primary)] hover:bg-[#F7F8F8]">
+              class="flex-1 rounded-lg py-2 text-sm font-medium"
+              style="border:1px solid #e2e8f0;background:white;color:#1e293b">
               Clock-Out
             </button>
           </div>
-          <div class="mt-2 flex items-center justify-center gap-1 text-xs text-[var(--cs360-text-secondary)]">
+          <div class="mt-2 flex items-center justify-center gap-1 text-xs" style="color:#64748b">
             <cs-icon name="swap_horiz" [size]="14" />
             Back to Back Shift
           </div>
-          <div class="mt-2 flex justify-center">
-            <cs-icon name="expand_more" [size]="20" class="text-[var(--cs360-text-secondary)]" />
+          <div class="mt-2 flex justify-center" style="color:#64748b">
+            <cs-icon name="expand_more" [size]="20" />
           </div>
         </div>
       </div>
@@ -136,12 +149,14 @@
       <!-- Chart Dropdowns -->
       <div class="flex gap-3 pb-4">
         <button type="button"
-          class="flex flex-1 items-center justify-between rounded-lg border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white px-4 py-2.5 text-sm text-[var(--cs360-text-primary)] shadow-sm">
+          class="flex flex-1 items-center justify-between rounded-lg px-4 py-2.5 text-sm"
+          style="border:1px solid #e2e8f0;background:white;color:#1e293b;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
           Hours Serviced
           <cs-icon name="expand_more" [size]="18" />
         </button>
         <button type="button"
-          class="flex flex-1 items-center justify-between rounded-lg border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white px-4 py-2.5 text-sm text-[var(--cs360-text-primary)] shadow-sm">
+          class="flex flex-1 items-center justify-between rounded-lg px-4 py-2.5 text-sm"
+          style="border:1px solid #e2e8f0;background:white;color:#1e293b;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
           Scheduled vs Approved
           <cs-icon name="expand_more" [size]="18" />
         </button>
@@ -150,18 +165,19 @@
     </div>
 
     <!-- RIGHT COLUMN: Alerts Panel -->
-    <div class="flex w-[320px] shrink-0 flex-col rounded-xl border border-[var(--cs360-border-subtle,#e2e8f0)] bg-white shadow-sm overflow-hidden">
+    <div class="flex w-80 shrink-0 flex-col overflow-hidden rounded-xl"
+         style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
 
       <!-- Tabs -->
-      <div class="border-b border-[var(--cs360-border-subtle,#e2e8f0)] p-3">
+      <div class="p-3" style="border-bottom:1px solid #e2e8f0">
         <div class="flex flex-wrap gap-1.5">
           @for (tab of alertTabs; track tab) {
           <button type="button"
             (click)="activeAlertTab = tab"
             class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-            [class]="activeAlertTab === tab
-              ? 'bg-[var(--cs360-action-primary,#2563eb)] text-white'
-              : 'bg-[#F7F8F8] text-[var(--cs360-text-secondary)] hover:bg-[#e8edf5]'">
+            [style]="activeAlertTab === tab
+              ? 'background:#2563eb;color:white'
+              : 'background:#F7F8F8;color:#64748b'">
             {{ tab }}
           </button>
           }
@@ -169,23 +185,24 @@
       </div>
 
       <!-- Last 7 days -->
-      <div class="flex items-center justify-between px-4 py-2 border-b border-[var(--cs360-border-subtle,#e2e8f0)]">
-        <span class="text-xs font-medium text-[var(--cs360-text-secondary)]">Last 7 days</span>
-        <button type="button" class="text-xs font-medium text-[var(--cs360-action-primary,#2563eb)] hover:underline">
+      <div class="flex items-center justify-between px-4 py-2" style="border-bottom:1px solid #e2e8f0">
+        <span class="text-xs font-medium" style="color:#64748b">Last 7 days</span>
+        <button type="button" class="text-xs font-medium hover:underline" style="color:#2563eb">
           Mark All as Read
         </button>
       </div>
 
       <!-- Notifications -->
-      <div class="flex-1 overflow-y-auto divide-y divide-[var(--cs360-border-subtle,#e2e8f0)]">
+      <div class="flex-1 overflow-y-auto">
         @for (alert of alerts; track alert.id) {
-        <div class="flex items-start gap-3 px-4 py-3 hover:bg-[#F7F8F8] cursor-pointer transition-colors">
-          <cs-icon name="warning" [size]="18" class="mt-0.5 shrink-0 text-[#ef4444]" />
+        <div class="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors hover:bg-[#F7F8F8]"
+             style="border-bottom:1px solid #f1f5f9">
+          <cs-icon name="warning" [size]="18" class="mt-0.5 shrink-0" style="color:#ef4444" />
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-[var(--cs360-text-primary)]">{{ alert.title }}</p>
-            <p class="text-xs text-[var(--cs360-text-secondary)] mt-0.5 leading-snug">{{ alert.body }}</p>
+            <p class="text-sm font-semibold" style="color:#1e293b">{{ alert.title }}</p>
+            <p class="text-xs mt-0.5 leading-snug" style="color:#64748b">{{ alert.body }}</p>
           </div>
-          <cs-icon name="chevron_right" [size]="16" class="shrink-0 text-[var(--cs360-text-secondary)] mt-1" />
+          <cs-icon name="chevron_right" [size]="16" class="shrink-0 mt-1" style="color:#94a3b8" />
         </div>
         }
       </div>
