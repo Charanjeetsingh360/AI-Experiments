@@ -27,5 +27,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate tokens, build, and audit runtime dependencies
+      - name: Design parity check, token validation, build, and audit
         run: npm run ci
