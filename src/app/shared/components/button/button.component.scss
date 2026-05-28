@@ -1,0 +1,43 @@
+// CS360 Button — Generated from Figma API
+// File: TSOq0ugv6zfr6gFZh5zYrP | Node: 2767-61480
+
+.cs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  white-space: nowrap;
+  outline: none;
+  line-height: 1;
+
+  &:hover:not(:disabled) { filter: brightness(0.92); }
+  &:active:not(:disabled) { filter: brightness(0.85); }
+
+  // SIZES — exact from Figma
+  &--xs    { height: 25px; padding: 4px 8px;   font-size: 14px; border-radius: 4px; }
+  &--sm    { height: 32px; padding: 4px 12px;  font-size: 14px; border-radius: 8px; }
+  &--md    { height: 36px; padding: 8px 16px;  font-size: 14px; border-radius: 8px; }
+  &--large { height: 40px; padding: 8px 16px;  font-size: 14px; border-radius: 8px; }
+  &--xl    { height: 48px; padding: 12px 24px; font-size: 16px; border-radius: 8px; }
+
+  // VARIANTS — exact RGB from Figma
+  &--primary     { background: rgb(0,119,255);   color: rgb(255,255,255); }
+  &--secondary   { background: rgb(255,255,255); color: rgb(15,23,42);   border: 1px solid rgb(226,232,240); }
+  &--soft        { background: rgb(240,247,255); color: rgb(0,119,255);  }
+  &--attention   { background: rgb(22,163,74);   color: rgb(255,255,255); }
+  &--warning     { background: rgb(234,179,8);   color: rgb(113,63,18);  }
+  &--destructive { background: rgb(239,68,68);   color: rgb(255,255,255); }
+  &--ghost {
+    background: rgb(255,255,255); color: rgb(30,41,59); border: 1px solid transparent;
+    &:hover:not(:disabled) { background: rgb(241,245,249); filter: none; }
+  }
+  &--disabled, &:disabled {
+    background: rgb(241,245,249); color: rgb(100,116,139);
+    cursor: not-allowed; filter: none;
+    &:hover { filter: none; }
+  }
+}

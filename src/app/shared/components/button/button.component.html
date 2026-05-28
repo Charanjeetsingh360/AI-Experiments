@@ -1,0 +1,7 @@
+<button
+  [class]="classes.join(' ')"
+  [disabled]="disabled || type === 'disabled'"
+  type="button"
+>
+  <ng-content>{{ label }}</ng-content>
+</button>

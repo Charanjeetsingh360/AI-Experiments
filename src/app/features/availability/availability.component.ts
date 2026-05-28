@@ -11,7 +11,7 @@ import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.c
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
-import { CsBtnComponent } from '../../shared/components/button/button.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 import { CsAvailabilityCardComponent, AvailabilityCardType } from '../../shared/components/cs-availability-card/cs-availability-card.component';
 
@@ -45,7 +45,7 @@ export interface AvailabilityItem {
     CsCardTemplateDirective,
     CsAvailabilityCardComponent,
     CSIconComponent,
-    CsBtnComponent,
+    ButtonComponent,
     CsPageHeaderComponent,
   ],
   templateUrl: './availability.component.html',
