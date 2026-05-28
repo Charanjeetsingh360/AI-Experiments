@@ -137,8 +137,7 @@ interface ShiftGroup {
 
             <!-- Date separator label -->
             <div class="px-6 pt-1 pb-2">
-              <p class="text-[11px] font-semibold tracking-[0.5px] uppercase m-0"
-                 class="text-[var(--cs360-text-helper)]">
+              <p class="text-[11px] font-semibold tracking-[0.5px] uppercase m-0 text-[var(--cs360-text-helper)]">
                 {{ group.date }} · {{ group.dayName }}
               </p>
             </div>
@@ -321,6 +320,7 @@ export class ClientOpenShiftsFlyoutComponent implements AfterViewInit, OnDestroy
     this.scrollLeft = el.scrollLeft;
     el.style.cursor = 'grabbing';
   };
+
   private onMouseMove = (e: MouseEvent) => {
     if (!this.isDragging) return;
     e.preventDefault();
@@ -329,6 +329,7 @@ export class ClientOpenShiftsFlyoutComponent implements AfterViewInit, OnDestroy
     const x = e.pageX - el.offsetLeft;
     el.scrollLeft = this.scrollLeft - (x - this.startX);
   };
+
   private onMouseUp = () => {
     this.isDragging = false;
     const el = this.calendarStripRef?.nativeElement;
@@ -369,6 +370,6 @@ export class ClientOpenShiftsFlyoutComponent implements AfterViewInit, OnDestroy
   }
 
   getInitials(name: string): string {
-    return name.split(/[,\s]+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+    return name.split(/[,\s]+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase();
   }
 }

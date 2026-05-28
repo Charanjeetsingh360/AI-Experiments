@@ -15,7 +15,7 @@
     "tokens:generate": "node scripts/build-tokens.mjs",
     "tokens:validate": "node scripts/validate-tokens.js",
     "prebuild": "npm run tokens:generate",
-    "prestart": "npm run tokens:generate"
+    "prestart": "npm run tokens:generate",
         "design:check": "node scripts/design-check.mjs",
     "design:check:ci": "node scripts/design-check.mjs && echo 'Design parity: PASS'"
   },
