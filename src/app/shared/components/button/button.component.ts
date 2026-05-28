@@ -5,7 +5,7 @@ export type ButtonType = 'Primary' | 'secondary' | 'soft' | 'Attention' | 'Warni
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'large' | 'xl';
 
 @Component({
-  selector: 'app-button',
+  selector: 'cs-btn',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './button.component.html',

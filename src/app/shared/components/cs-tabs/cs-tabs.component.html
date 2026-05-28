@@ -1,0 +1,18 @@
+<div class="cs-tabs">
+  <div [class]="navClasses" role="tablist">
+    <button
+      *ngFor="let tab of tabs; let i = index"
+      [class]="'cs-tabs__tab' + (i === activeIndex ? ' cs-tabs__tab--active' : '') + (tab.disabled ? ' cs-tabs__tab--disabled' : '')"
+      role="tab"
+      [attr.aria-selected]="i === activeIndex"
+      [disabled]="tab.disabled || false"
+      (click)="select(i)">
+      <span *ngIf="tab.icon" class="cs-tabs__tab-icon" [innerHTML]="tab.icon"></span>
+      <span class="cs-tabs__tab-label">{{ tab.label }}</span>
+      <span *ngIf="tab.badge != null" class="cs-tabs__tab-badge">{{ tab.badge }}</span>
+    </button>
+  </div>
+  <div class="cs-tabs__panels">
+    <ng-content></ng-content>
+  </div>
+</div>

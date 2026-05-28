@@ -1,0 +1,127 @@
+.cs-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family: var(--font-family-base, "Inter", sans-serif);
+}
+
+.cs-tabs__nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  // SIZE modifiers
+  &--sm button { font-size: 12px; padding: 6px 12px; }
+  &--md button { font-size: 14px; padding: 8px 16px; }
+  &--lg button { font-size: 16px; padding: 10px 20px; }
+
+  // VARIANT: line (default — underline indicator)
+  &--line {
+    border-bottom: 1px solid var(--color-border-subtle, #E5E7EB);
+    .cs-tabs__tab {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      color: var(--color-text-secondary, #6B7280);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      font-weight: 500;
+      border-radius: 0;
+      &--active {
+        color: var(--color-primary, #0077FF);
+        border-bottom-color: var(--color-primary, #0077FF);
+      }
+      &:hover:not(.cs-tabs__tab--disabled):not(.cs-tabs__tab--active) {
+        color: var(--color-text-primary, #111827);
+      }
+    }
+  }
+
+  // VARIANT: pill
+  &--pill {
+    gap: 4px;
+    background: var(--color-surface-secondary, #F3F4F6);
+    border-radius: 8px;
+    padding: 4px;
+    .cs-tabs__tab {
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      color: var(--color-text-secondary, #6B7280);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+      &--active {
+        background: var(--color-surface-primary, #fff);
+        color: var(--color-text-primary, #111827);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      &:hover:not(.cs-tabs__tab--disabled):not(.cs-tabs__tab--active) {
+        background: rgba(0,0,0,0.04);
+      }
+    }
+  }
+
+  // VARIANT: boxed
+  &--boxed {
+    gap: 0;
+    border-bottom: 1px solid var(--color-border-subtle, #E5E7EB);
+    .cs-tabs__tab {
+      background: var(--color-surface-secondary, #F9FAFB);
+      border: 1px solid var(--color-border-subtle, #E5E7EB);
+      border-bottom: none;
+      color: var(--color-text-secondary, #6B7280);
+      cursor: pointer;
+      font-weight: 500;
+      border-radius: 6px 6px 0 0;
+      margin-right: 2px;
+      transition: background 0.15s, color 0.15s;
+      &--active {
+        background: var(--color-surface-primary, #fff);
+        color: var(--color-primary, #0077FF);
+        border-bottom-color: #fff;
+      }
+    }
+  }
+}
+
+.cs-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  outline: none;
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-focus-ring, #3B82F6);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.cs-tabs__tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--color-primary, #0077FF);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.cs-tabs__panels {
+  padding-top: 16px;
+}
+
+.cs-tab-panel {
+  width: 100%;
+}

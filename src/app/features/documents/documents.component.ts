@@ -6,7 +6,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
-import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.component';
+import { CsTabsComponent, CsTabPanelComponent } from '../../shared/components/cs-tabs/cs-tabs.component';
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
@@ -28,7 +28,7 @@ export interface Document {
     CommonModule,
     FormsModule,
     CSIconComponent,
-    CSTabsComponent,
+    CsTabsComponent,
     CsCardListComponent,
     CsCardTemplateDirective,
     CSFlyoutComponent,
@@ -39,7 +39,7 @@ export interface Document {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentsComponent {
-  readonly filterTabs: CSTab[] = [
+  readonly filterTabs: CsTabPanelComponent[] = [
     { label: 'All Types', value: 'all' },
     { label: 'Document', value: 'DOCUMENT' },
     { label: 'Compliance', value: 'COMPLIANCE' },
@@ -52,7 +52,7 @@ export class DocumentsComponent {
     this.currentPage = 1;
   }
 
-  readonly addDocTabs: CSTab[] = [
+  readonly addDocTabs: CsTabPanelComponent[] = [
     { label: 'Document', value: 'document' },
     { label: 'Compliance', value: 'compliance' },
   ];

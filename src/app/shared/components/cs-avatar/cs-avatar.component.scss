@@ -1,0 +1,48 @@
+.cs-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-secondary, #F3F4F6);
+  color: var(--color-text-secondary, #6B7280);
+  overflow: hidden;
+  flex-shrink: 0;
+  user-select: none;
+  font-family: var(--font-family-base, "Inter", sans-serif);
+
+  &--circle { border-radius: 50%; }
+  &--square  { border-radius: var(--radius-sm, 4px); }
+
+  // Sizes — from Figma avatar spec
+  &--xs { width: 24px;  height: 24px;  font-size: 10px; }
+  &--sm { width: 32px;  height: 32px;  font-size: 12px; }
+  &--md { width: 40px;  height: 40px;  font-size: 14px; }
+  &--lg { width: 48px;  height: 48px;  font-size: 16px; }
+  &--xl { width: 64px;  height: 64px;  font-size: 20px; }
+
+  &__img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+  }
+
+  &__initials {
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+  }
+
+  &__status {
+    position: absolute; bottom: 0; right: 0;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--color-surface-primary, #fff);
+    &--online  { background: #22C55E; }
+    &--offline { background: #9CA3AF; }
+    &--busy    { background: #EF4444; }
+    &--away    { background: #F59E0B; }
+  }
+}

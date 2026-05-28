@@ -1,150 +1,43 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-/**
- * CSAvatarComponent — Circular avatar with image or initials fallback
- * Renders a circular avatar image when `src` is provided; otherwise displays
- * the name initials on a deterministic background colour derived from the name.
- */
+export type AvatarSize   = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type AvatarShape  = 'circle' | 'square';
+export type AvatarStatus = 'online' | 'offline' | 'busy' | 'away' | 'none';
+
 @Component({
   selector: 'cs-avatar',
   standalone: true,
-  imports: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div
-      class="cs-avatar"
-      [style.width.px]="resolvedSize"
-      [style.height.px]="resolvedSize"
-      [style.border-radius.px]="resolvedSize"
-      [attr.aria-label]="alt || name || 'Avatar'"
-      role="img"
-    >
-      @if (src && !imgFailed) {
-        <img
-          [src]="src"
-          [alt]="alt || name"
-          class="cs-avatar__img"
-          (error)="onImgError()"
-        />
-      } @else {
-        <span
-          class="cs-avatar__initials"
-          [style.font-size.px]="resolvedSize * 0.38"
-          [style.background]="avatarBg"
-        >
-          {{ initials }}
-        </span>
-      }
-    </div>
-  `,
-  styles: [`
-    :host {
-      display: inline-flex;
-      flex-shrink: 0;
-    }
-
-    .cs-avatar {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 2px solid var(--cs360-border-subtle);
-    }
-
-    .cs-avatar__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-    }
-
-    .cs-avatar__initials {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      color: var(--cs360-text-inverse);
-      font-weight: 600;
-      font-family: var(--cs360-font-family);
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      user-select: none;
-      border-radius: 50%;
-    }
-  `],
+  imports: [CommonModule],
+  templateUrl: './cs-avatar.component.html',
+  styleUrls: ['./cs-avatar.component.scss']
 })
-export class CSAvatarComponent implements OnChanges {
+export class AvatarComponent implements OnInit {
   @Input() src?: string;
-  @Input() name = '';
-  @Input() alt?: string;
-  @Input() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
-  @Input() sizePx?: number;
+  @Input() alt = '';
+  @Input() initials?: string;
+  @Input() size: AvatarSize = 'md';
+  @Input() shape: AvatarShape = 'circle';
+  @Input() status: AvatarStatus = 'none';
+  @Input() color?: string;
+  imageError = false;
 
-  private readonly SIZE_MAP: Record<string, number> = {
-    xs: 24,
-    sm: 32,
-    md: 40,
-    lg: 48,
-    xl: 56,
-  };
-
-  private readonly COLOR_PALETTE = [
-    'var(--cs360-action-primary)',
-    'var(--cs360-feedback-info)',
-    'var(--cs360-feedback-success)',
-    'var(--cs360-feedback-warning)',
-    'var(--cs360-feedback-error)',
-    'var(--cs360-text-secondary-alt)',
-    'var(--cs360-text-link)',
-  ];
-
-  resolvedSize = 40;
-  initials = '?';
-  avatarBg = 'var(--cs360-action-primary)';
-  imgFailed = false;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['sizePx'] || changes['size']) {
-      this.resolvedSize = this.sizePx ?? this.SIZE_MAP[this.size] ?? 40;
-    }
-    if (changes['name']) {
-      this.initials = this.buildInitials(this.name);
-      this.avatarBg = this.pickColor(this.name);
-    }
-    if (changes['src']) {
-      this.imgFailed = false;
-    }
+  get hostClasses(): string {
+    return ['cs-avatar', 'cs-avatar--' + this.size, 'cs-avatar--' + this.shape].join(' ');
   }
 
-  onImgError(): void {
-    this.imgFailed = true;
+  get computedInitials(): string {
+    if (this.initials) return this.initials.substring(0, 2).toUpperCase();
+    if (this.alt) {
+      const parts = this.alt.trim().split(' ');
+      return parts.length >= 2
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : parts[0].substring(0, 2).toUpperCase();
+    }
+    return '';
   }
 
-  private buildInitials(name: string): string {
-    if (!name?.trim()) return '?';
-    const parts = name.trim().split(/[\s,]+/).filter(Boolean);
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return name.trim().slice(0, 2).toUpperCase();
-  }
-
-  private pickColor(name: string): string {
-    if (!name) return this.COLOR_PALETTE[0];
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = (hash * 31 + name.charCodeAt(i)) | 0;
-    }
-    return this.COLOR_PALETTE[Math.abs(hash) % this.COLOR_PALETTE.length];
-  }
+  get showImage(): boolean { return !!this.src && !this.imageError; }
+  ngOnInit(): void {}
+  onImageError(): void { this.imageError = true; }
 }

@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.component';
+import { CsTabsComponent, CsTabPanelComponent } from '../../shared/components/cs-tabs/cs-tabs.component';
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
@@ -39,7 +39,7 @@ export interface AvailabilityItem {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CSTabsComponent,
+    CsTabsComponent,
     CSFlyoutComponent,
     CsCardListComponent,
     CsCardTemplateDirective,
@@ -56,13 +56,13 @@ export class AvailabilityComponent {
   private fb = new FormBuilder();
 
   /* ── Tabs ── */
-  tabs: CSTab[] = [
+  tabs: CsTabPanelComponent[] = [
     { label: 'Availability', value: 'availability' },
     { label: 'Unavailability', value: 'unavailability' },
   ];
   activeTab = signal<'availability' | 'unavailability'>('availability');
 
-  repeatTabs: CSTab[] = [
+  repeatTabs: CsTabPanelComponent[] = [
     { label: 'Once', value: 'once' },
     { label: 'Daily', value: 'daily' },
     { label: 'Weekly', value: 'weekly' },

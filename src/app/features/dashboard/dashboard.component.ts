@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
-import { CSAvatarComponent } from '../../shared/components/cs-avatar/cs-avatar.component';
+import { AvatarComponent } from '../../shared/components/cs-avatar/cs-avatar.component';
 
 interface Alert {
   id: string;
@@ -29,7 +29,7 @@ interface UpcomingShift {
     DatePipe,
     CSIconComponent,
     CsPageHeaderComponent,
-    CSAvatarComponent,
+    AvatarComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],

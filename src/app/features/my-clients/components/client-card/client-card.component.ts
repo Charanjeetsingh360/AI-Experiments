@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
-import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
+import { AvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
 import type { IClient } from '../../models/client.model';
 
 export type { IClient as ClientInfo };
@@ -13,7 +13,7 @@ export type { IClient as ClientInfo };
 @Component({
   selector: 'app-client-card',
   standalone: true,
-  imports: [CommonModule, CSIconComponent, CSAvatarComponent],
+  imports: [CommonModule, CSIconComponent, AvatarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!--

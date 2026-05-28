@@ -1,0 +1,11 @@
+<div [class]="hostClasses" [attr.tabindex]="clickable ? 0 : null" [attr.role]="clickable ? 'button' : null">
+  <div class="cs-card__header" *ngIf="headerTpl">
+    <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+  </div>
+  <div class="cs-card__body">
+    <ng-content></ng-content>
+  </div>
+  <div class="cs-card__footer" *ngIf="footerTpl">
+    <ng-container *ngTemplateOutlet="footerTpl"></ng-container>
+  </div>
+</div>

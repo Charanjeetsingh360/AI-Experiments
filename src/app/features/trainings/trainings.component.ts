@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
-import { CSTabsComponent, CSTab } from '../../shared/components/cs-tabs/cs-tabs.component';
+import { CsTabsComponent, CsTabPanelComponent } from '../../shared/components/cs-tabs/cs-tabs.component';
 import { CsCardListComponent } from '../../shared/components/cs-card-list/cs-card-list.component';
 import { CsCardTemplateDirective } from '../../shared/components/cs-card-list/cs-card-template.directive';
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
@@ -32,7 +32,7 @@ interface TrainingReportItem {
   imports: [
     CommonModule,
     CSIconComponent,
-    CSTabsComponent,
+    CsTabsComponent,
     CsCardListComponent,
     CsCardTemplateDirective,
     CSFlyoutComponent,
@@ -44,7 +44,7 @@ interface TrainingReportItem {
 })
 export class TrainingsComponent {
 
-  readonly tabs: CSTab[] = [
+  readonly tabs: CsTabPanelComponent[] = [
     { label: 'Trainings', value: 'trainings' },
     { label: 'Training Report', value: 'report' },
   ];

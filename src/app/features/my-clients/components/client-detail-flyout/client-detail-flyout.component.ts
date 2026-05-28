@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CSFlyoutComponent } from '../../../../shared/components/cs-flyout/cs-flyout.component';
-import { CSAvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
+import { AvatarComponent } from '../../../../shared/components/cs-avatar/cs-avatar.component';
 import { CSIconComponent } from '../../../../shared/components/cs-icon/cs-icon.component';
 import type { Client } from '../../my-clients.component';
 
@@ -40,7 +40,7 @@ export interface ClientAction {
 @Component({
   selector: 'app-client-detail-flyout',
   standalone: true,
-  imports: [CommonModule, CSFlyoutComponent, CSAvatarComponent, CSIconComponent],
+  imports: [CommonModule, CSFlyoutComponent, AvatarComponent, CSIconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <cs-flyout
