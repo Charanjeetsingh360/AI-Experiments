@@ -1,5 +1,5 @@
-const axios = require('axios');
-const fs = require('fs');
+import axios from 'axios';
+import fs from 'fs';
 const config = JSON.parse(fs.readFileSync('./figma-mcp.config.json', 'utf8'));
 
 async function getDesign() {
