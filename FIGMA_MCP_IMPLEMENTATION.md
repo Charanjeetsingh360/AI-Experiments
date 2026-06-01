@@ -490,3 +490,70 @@ cat tokens/audit-logs/*.json
 - Setup Guide: `FIGMA_MCP_SETUP.md`
 - Phase 1 Summary: `PHASE_1_COMPLETE.md`
 - README: `README.md`
+
+
+---
+
+## Figma Annotation Architecture
+_Last updated: 2026-06-01 | See `.cursorrules` for full AI instruction contract_
+
+### What Annotations Are
+
+Annotations are **typed, categorised intent blocks** added to specific Figma layers in Dev Mode.
+They carry information that Figma's inspect panel and MCP cannot deliver automatically:
+behavioural rules, API contracts, transition specs, and business logic.
+
+The Figma MCP server delivers annotations inside `annotations[]` on each node.
+All AI agents MUST read them before generating code.
+
+### Annotation Categories
+
+| Category | Purpose |
+|---|---|
+| **Development** | Angular component selector, @Inputs/@Outputs, API endpoints, data models |
+| **Interaction** | State machine, hover/active/disabled/focus, animations, transitions, events |
+| **Accessibility** | ARIA roles/labels, keyboard navigation, screen reader behaviour |
+| **Content** | Text bindings, dynamic formats, fallback values, i18n notes |
+| **AI** | Direct code-gen instruction, MCP-specific edge case, override hint |
+
+### Core Rules
+
+- **One annotation = one category = one concern.** Never mix concerns in a single block.
+- **Write only what MCP cannot fetch.** Tokens, layout values, variant properties — skip these.
+- **Write when:** behaviour is invisible in the layer tree, API/transitions/business rules needed.
+- **If no annotation exists:** generate from inspect data, mark unknowns with `// TODO:`.
+
+### Annotated Frames — Caregiver Web Portal
+
+Figma File: `XCvAxa7G7QgiTfk08G2LGg` | Page: Caregiver Web App | Code: Angular
+
+| Frame | Annotations Present |
+|---|---|
+| V3 / home | Dev (sidenav, charts), Interaction (nav states, clock-out btn), Content (shift duration) |
+| V3 / My Schedule / Assigned | Dev (page spec, data model, API), Interaction (clock-out 4-step flow) |
+| Login | Dev (form contract), Interaction (validation states) |
+| Client Sign / Caregiver Sign | Dev (signature canvas), Interaction (submit flow) |
+| Goals / Goal Details | Dev (CRUD API, form fields), Content (field formats) |
+| Security & Privacy | Dev (form, validation), Content (field labels) |
+| Secret Question | Dev (dropdown + text, save API) |
+| Clock-Out / Add Expense | Dev (ExpenseCode model, API), Content (header, shift time format) |
+| All Notes popup | Dev (NoteItem model, pagination, search), Content (header binding) |
+
+### MCP Token Budget Guide
+
+| Token Range | Action |
+|---|---|
+| < 20k | Safe — select full frame |
+| 20k–40k | OK — verify annotations load completely |
+| 40k–47k | Caution — prefer sub-component selection |
+| 47k+ ⚠️ | Split — select individual sections or components |
+
+### Active Plugin Connections (verified 2026-06-01)
+
+- Figma Developer MCP (VS Code) ✓
+- Anima — Figma to Angular/React/HTML ✓
+- Jira ✓
+- Stark — Contrast & Accessibility ✓
+- Figma to Code (HTML/Tailwind/Flutter/SwiftUI) ✓
+
+---
