@@ -9,8 +9,9 @@ import { CommonModule } from '@angular/common';
 })
 export class CsTabPanelComponent {
   @Input() label = '';
+  @Input() value = '';
   @Input() icon?: string;
   @Input() badge?: string | number;
-  @Input() disabled = false;
-  @Input() active = false;
+  @Input() disabled?: boolean;
+  @Input() active?: boolean;
 }

@@ -40,4 +40,8 @@
     cursor: not-allowed; filter: none;
     &:hover { filter: none; }
   }
+
+  &--full-width {
+    width: 100%;
+  }
 }

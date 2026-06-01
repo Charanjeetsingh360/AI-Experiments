@@ -2,7 +2,8 @@
   <div [class]="navClasses" role="tablist">
     <button
       *ngFor="let tab of tabs; let i = index"
-      [class]="'cs-tabs__tab' + (i === activeIndex ? ' cs-tabs__tab--active' : '') + (tab.disabled ? ' cs-tabs__tab--disabled' : '')"
+      type="button"
+      [class]="'cs-tabs__tab' + (i === activeIndex ? ' cs-tabs__tab--active' : '') + (tab.disabled ? ' cs-tabs__tab--disabled' : '') + (fullWidth ? ' cs-tabs__tab--full-width' : '')"
       role="tab"
       [attr.aria-selected]="i === activeIndex"
       [disabled]="tab.disabled || false"

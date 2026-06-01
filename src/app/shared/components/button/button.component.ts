@@ -16,12 +16,14 @@ export class ButtonComponent {
   @Input() size: ButtonSize = 'sm';
   @Input() label: string = 'Button';
   @Input() disabled: boolean = false;
+  @Input() fullWidth: boolean = false;
 
   get classes(): string[] {
     return [
       'cs-btn',
       `cs-btn--${this.type.toLowerCase()}`,
       `cs-btn--${this.size}`,
+      this.fullWidth ? 'cs-btn--full-width' : '',
       this.disabled || this.type === 'disabled' ? 'cs-btn--disabled' : ''
     ].filter(Boolean);
   }
