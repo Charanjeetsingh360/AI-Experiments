@@ -203,3 +203,144 @@ Before marking any output done, confirm:
 
 Every design-to-code decision must follow:
 PROBLEM → WHY → RECOMMENDATION → IMPLEMENTATION NOTE
+
+
+---
+
+## Figma Annotation System — AI Instruction Contract
+# Updated: 2026-06-01 | Caregiver Web Portal (XCvAxa7G7QgiTfk08G2LGg)
+# This section governs how ALL AI tools must READ and USE Figma annotations.
+
+---
+
+### What Figma Annotations Are (in this project)
+
+Annotations are typed, categorised text blocks attached to specific Figma layers in Dev Mode.
+They provide INTENT and BEHAVIOUR that Figma's inspect data alone cannot carry.
+Every AI tool (Cursor, Claude, Copilot, Perplexity/Comet, Antigravity) MUST read annotations
+before generating any code from a Figma design.
+
+Figma MCP server (`figma-developer-mcp`) delivers annotations as part of the node context.
+They appear under `annotations[]` on each node returned by `get_figma_data` or `get_code`.
+
+---
+
+### Annotation Categories — What Each Means
+
+| Category      | Read it for                                                      |
+|---------------|------------------------------------------------------------------|
+| Development   | Component selector, API endpoints, data model, Angular @Inputs   |
+| Interaction   | State machine, hover/focus/active/disabled, transitions, events  |
+| Accessibility | ARIA roles, labels, keyboard nav, screen reader behaviour        |
+| Content       | Dynamic text binding, format rules, fallback values, i18n notes  |
+| AI            | Direct code-gen prompt, MCP-specific instructions, edge cases    |
+
+---
+
+### Annotation Reading Rules (MANDATORY for all AI tools)
+
+1. ALWAYS read `Development` annotation before writing any component code.
+   It overrides anything you infer from the layer tree alone.
+
+2. ALWAYS read `Interaction` annotation before writing event handlers, animations, or state logic.
+   Do not invent interaction patterns — if it is not in the annotation, ask.
+
+3. Only write ARIA if an `Accessibility` annotation is present AND explicit.
+   Do not auto-generate ARIA from guesses.
+
+4. Use `Content` annotation for exact text bindings, format patterns, and fallback strings.
+   Do not hardcode any visible string unless the Content annotation confirms it is static.
+
+5. An `AI` category annotation is a direct prompt fragment — treat it as an addendum
+   to your current system instruction for that component.
+
+6. If NO annotation exists on a node, fetch data from Figma inspect (tokens, layout, variants)
+   and flag any behavioural uncertainty in a `// TODO:` comment in the generated code.
+
+---
+
+### What Annotations DO NOT Replace (DO NOT re-fetch)
+
+Do NOT ask for or re-describe these — Figma MCP fetches them automatically:
+- Token names (color, spacing, radius, typography variables)
+- Auto Layout values (gap, padding, direction, alignment)
+- Component variant properties (Type=Default, Size=M, State=Hover)
+- Layer dimensions, fill colors bound to variables
+- Child component names and hierarchy
+
+Annotations ONLY carry what MCP cannot: intent, transitions, API endpoints, business rules.
+
+---
+
+### Annotation Architecture — Caregiver Web Portal
+
+File: Caregiver Web Portal (Figma ID: XCvAxa7G7QgiTfk08G2LGg)
+Page: Caregiver Web App
+Code Language in Dev Mode: Angular
+Comment Generation: Enabled
+MCP Client: VS Code + Figma Developer MCP
+
+Annotated Frames (as of 2026-06-01):
+- V3 / home              — sidenav (Dev + Interaction), Clock-Out btn, Adhoc btn, Charts
+- V3 / My Schedule       — Shift Calendar page (Dev + Interaction), Clock-Out flow (4 steps)
+- Login                  — form validation, error states, API contract
+- Client Sign            — signature canvas component, submit flow
+- Caregiver Sign         — signature canvas, clock-out integration
+- Goals / Goal Details   — data model, CRUD API, form fields
+- Security & Privacy     — form, validation rules
+- Secret Question        — dropdown + text input, save API
+- Clock-Out / Add Expense — ExpenseCode data model, rate formatting, row interaction
+- All Notes (popup)      — NoteItem data model, pagination, search, file attachments
+
+---
+
+### Annotation Decision Rule — Write vs Skip
+
+WRITE an annotation when:
+- A behaviour or rule is NOT visible in the Figma layer tree
+- A transition timing, animation, or collapsed state needs specifying
+- An API endpoint, HTTP method, or payload shape must be used
+- A business rule governs display (e.g. "only show Clock-Out when isOngoing=true")
+- A fallback/empty/error state needs defining
+- ARIA that is non-obvious must be specified
+
+SKIP an annotation when:
+- The information is already in Figma variables, tokens, or variant properties
+- The information is derivable from the layer name + Auto Layout values
+- It would duplicate what Figma MCP already returns in inspect data
+
+---
+
+### MCP Prompt Usage
+
+When implementing a Figma frame via MCP:
+1. Select the frame in Figma Dev Mode
+2. Check Estimated tokens (keep under 40k for best results; split large frames)
+3. Click "Copy example prompt" in the MCP panel
+4. Paste into your AI agent (Claude / Cursor / Copilot)
+5. The agent MUST read all annotations on that frame before generating code
+6. Token budget warning at 47k+ — select sub-components individually
+
+Active MCP connections (verified 2026-06-01):
+- Figma Developer MCP (VS Code)      ✓ Active
+- Anima (Figma → Angular/React/HTML) ✓ Active
+- Jira integration                   ✓ Active
+- Stark (Accessibility checker)      ✓ Saved
+- Figma to Code (HTML/Tailwind/Flutter/SwiftUI) ✓ Running
+
+---
+
+### One-Annotation-Per-Concern Rule
+
+Each annotation = one typed concern = one category.
+Never write a prose blob across multiple concerns in one annotation.
+Bad:  "This is the sidenav. Height is fill. It has expanded and collapsed states.
+       Follow the component. Add localStorage."
+Good: [Development] Collapsed width: 48px. Collapse trigger: nav-footer-collapse-btn.
+      [Interaction]  Width transition: ease-in-out 200ms on container only.
+                     State persists in localStorage key: cs360_nav_expanded.
+
+The rule: every annotation is a pre-written typed prompt fragment for the AI
+agent that will implement this component.
+
+---
