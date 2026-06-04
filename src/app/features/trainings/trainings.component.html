@@ -30,35 +30,36 @@
         <div class="flex items-center gap-[var(--density-space-3)] min-w-0">
 
           <!-- Circular Progress -->
-          <div class="shrink-0 relative" style="width:48px;height:48px">
-            <svg width="48" height="48" viewBox="0 0 48 48" class="rotate-[-90deg]">
-              <circle cx="24" cy="24" r="20"
+          <div class="shrink-0 relative" style="width:56px;height:56px">
+            <svg width="56" height="56" viewBox="0 0 56 56" class="rotate-[-90deg]">
+              <circle cx="28" cy="28" r="24"
                 fill="none"
                 stroke="var(--cs360-border-subtle)"
                 stroke-width="4" />
-              <circle cx="24" cy="24" r="20"
+              <circle cx="28" cy="28" r="24"
                 fill="none"
                 stroke="var(--cs360-action-primary)"
                 stroke-width="4"
-                [attr.stroke-dasharray]="progressCircumference(48, 4)"
-                [attr.stroke-dashoffset]="progressOffset(item.progress, 48, 4)"
+                [attr.stroke-dasharray]="progressCircumference(56, 4)"
+                [attr.stroke-dashoffset]="progressOffset(item.progress, 56, 4)"
                 stroke-linecap="round" />
             </svg>
-            <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-[var(--cs360-text-primary)]">
+            <span class="absolute inset-0 flex items-center justify-center text-[length:var(--density-text-caption)] font-bold text-[var(--cs360-text-primary)]">
               {{ item.progress }}%
             </span>
           </div>
 
           <!-- Course Info -->
-          <div class="flex flex-col gap-1 min-w-0">
+          <div class="flex flex-1 flex-col gap-[var(--density-space-1)] min-w-0">
             <span class="font-medium text-[var(--cs360-text-primary)] line-clamp-2">{{ item.courseName }}</span>
             @if (item.completedOn) {
-              <span class="text-xs text-[var(--cs360-text-secondary)]">Completed: {{ item.completedOn }}</span>
+              <span class="text-[length:var(--density-text-caption)] text-[var(--cs360-text-secondary)]">Completed on {{ item.completedOn }}</span>
             }
             @if (item.validTill) {
-              <span class="text-xs text-[var(--cs360-text-secondary)]">Valid till: {{ item.validTill }}</span>
+              <span class="text-[length:var(--density-text-caption)] text-[var(--cs360-text-secondary)]">Valid Till {{ item.validTill }}</span>
             }
           </div>
+          <cs-icon name="chevron_right" [size]="20" class="shrink-0 text-[var(--cs360-text-tertiary)]" aria-hidden="true" />
         </div>
       </ng-template>
     </cs-card-list>
@@ -110,6 +111,11 @@
   </div>
 
   <div flyout-body class="flex flex-col gap-[var(--density-space-4)]">
+    @if (statusMessage()) {
+      <p class="rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-feedback-success-bg)] p-[var(--density-space-3)] text-[length:var(--density-text-body-muted)] text-[var(--cs360-feedback-success)]" role="status" aria-live="polite">
+        {{ statusMessage() }}
+      </p>
+    }
 
     <!-- Training Detail -->
     @if (selectedTraining) {
@@ -160,6 +166,33 @@
           </span>
         </div>
       </div>
+    }
+  </div>
+
+  <div flyout-footer class="flex justify-end gap-[var(--density-space-3)]">
+    <button type="button"
+      class="rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-primary)]"
+      (click)="closeDetailFlyout()">
+      Close
+    </button>
+    @if (selectedTraining) {
+      <button type="button"
+        class="rounded-lg bg-[var(--cs360-action-primary)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-inverse)]"
+        (click)="runTrainingAction()">
+        {{ trainingActionLabel(selectedTraining) }}
+      </button>
+    }
+    @if (selectedReport) {
+      <button type="button"
+        class="rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-primary)]"
+        (click)="toggleReportStatus()">
+        {{ selectedReport.status === 'ACTIVE' ? 'Mark Inactive' : 'Mark Active' }}
+      </button>
+      <button type="button"
+        class="rounded-lg bg-[var(--cs360-action-primary)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-inverse)]"
+        (click)="exportReport()">
+        Export Report
+      </button>
     }
   </div>
 </cs-flyout>

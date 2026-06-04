@@ -1,9 +1,189 @@
-<div class="flex h-full flex-col overflow-hidden">
-  <cs-page-header title="Messages" description="View and respond to messages from clients and coordinators." />
-  <div class="flex flex-1 flex-col items-center justify-center gap-[var(--density-space-4)] text-[var(--cs360-text-secondary)]">
-    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--cs360-bg-alt)]">
-      <cs-icon name="mail" [size]="40" />
-    </div>
-    <p class="text-sm">Messaging feature coming soon.</p>
+<section class="messages-page" aria-label="Messages">
+  <cs-page-header
+    title="Messages"
+    description="View and respond to messages from clients, coordinators and agency teams."
+  />
+
+  <div class="messages-shell">
+    <aside class="messages-rail" aria-label="Conversation list">
+      <div class="messages-rail__tabs">
+        <cs-tabs
+          [tabs]="tabs"
+          [activeTab]="activeTab()"
+          [fullWidth]="true"
+          (activeTabChange)="onTabChange($event)"
+        />
+      </div>
+
+      <div class="messages-rail__search">
+        <cs-icon name="search" [size]="18" aria-hidden="true" />
+        <input
+          type="search"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search messages"
+          aria-label="Search messages"
+        />
+      </div>
+
+      <article class="messages-agency-card">
+        <div>
+          <p>Contact Agency</p>
+          <span>Need schedule, payroll or care-plan help?</span>
+        </div>
+        <button type="button" aria-label="Send a message to agency" (click)="contactAgency()">
+          <cs-icon name="edit_square" [size]="18" aria-hidden="true" />
+          Send a Message
+        </button>
+      </article>
+
+      <div class="messages-conversations">
+        @for (conversation of filteredConversations(); track conversation.id) {
+          <button
+            type="button"
+            class="messages-conversation"
+            [class.messages-conversation--active]="selectedConversation().id === conversation.id"
+            (click)="selectConversation(conversation)"
+          >
+            <span class="messages-avatar" [class.messages-avatar--agency]="conversation.isAgency">
+              {{ conversation.avatarInitials }}
+            </span>
+            <span class="messages-conversation__content">
+              <span class="messages-conversation__topline">
+                <strong>{{ conversation.title }}</strong>
+                <time>{{ conversation.timestamp }}</time>
+              </span>
+              <span class="messages-conversation__subtitle">{{ conversation.subtitle }}</span>
+            </span>
+            @if (conversation.unreadCount) {
+              <span class="messages-badge" [attr.aria-label]="conversation.unreadCount + ' unread messages'">
+                {{ conversation.unreadCount }}
+              </span>
+            }
+          </button>
+        } @empty {
+          <p class="messages-empty">No conversations found.</p>
+        }
+      </div>
+    </aside>
+
+    <section class="messages-chat" aria-label="Selected conversation">
+      @if (selectedConversation(); as conversation) {
+        <header class="messages-chat__header">
+          <div class="messages-chat__identity">
+            <span class="messages-avatar messages-avatar--large" [class.messages-avatar--agency]="conversation.isAgency">
+              {{ conversation.avatarInitials }}
+            </span>
+            <div>
+              <h2>{{ conversation.title }}</h2>
+              <p>{{ conversation.subtitle }}</p>
+            </div>
+          </div>
+          <div class="messages-chat__actions">
+            <button type="button" aria-label="Add participant" (click)="addParticipant()">
+              <cs-icon name="person_add" [size]="20" aria-hidden="true" />
+            </button>
+            <button type="button" aria-label="More actions" (click)="toggleMoreActions()">
+              <cs-icon name="more_horiz" [size]="20" aria-hidden="true" />
+            </button>
+            @if (moreActionsOpen()) {
+              <div class="messages-action-menu" role="menu">
+                <button type="button" role="menuitem" (click)="markConversationComplete()">Mark reviewed</button>
+                <button type="button" role="menuitem" (click)="searchQuery.set(conversation.title)">Find related messages</button>
+              </div>
+            }
+          </div>
+        </header>
+
+        @if (statusMessage()) {
+          <p class="messages-status" role="status" aria-live="polite">{{ statusMessage() }}</p>
+        }
+
+        <div class="messages-chat__body">
+          @for (message of visibleMessages(); track message.id; let i = $index) {
+            @if (i === 0 || visibleMessages()[i - 1].day !== message.day) {
+              <div class="messages-day">{{ message.day }}</div>
+            }
+
+            @if (message.direction === 'system') {
+              <div class="messages-system">
+                <cs-icon name="info" [size]="16" aria-hidden="true" />
+                <span>{{ message.body }}</span>
+              </div>
+            } @else {
+              <article
+                class="messages-bubble-row"
+                [class.messages-bubble-row--outgoing]="message.direction === 'outgoing'"
+              >
+                @if (message.direction === 'incoming') {
+                  <span class="messages-avatar messages-avatar--small">
+                    {{ message.sender?.slice(0, 2) || 'AG' }}
+                  </span>
+                }
+                <div
+                  class="messages-bubble"
+                  [class.messages-bubble--outgoing]="message.direction === 'outgoing'"
+                >
+                  @if (message.sender && message.direction === 'incoming') {
+                    <strong>{{ message.sender }}</strong>
+                  }
+                  <p>{{ message.body }}</p>
+                  @if (message.attachment) {
+                    <div class="messages-attachment">
+                      <cs-icon name="description" [size]="22" aria-hidden="true" />
+                      <div>
+                        <span>{{ message.attachment.name }}</span>
+                        <small>{{ message.attachment.size }}</small>
+                      </div>
+                      <button type="button" aria-label="Download attachment" (click)="downloadAttachment(message)">
+                        <cs-icon name="download" [size]="18" aria-hidden="true" />
+                      </button>
+                    </div>
+                  }
+                  <span class="messages-time">
+                    {{ message.timestamp }}
+                    @if (message.direction === 'outgoing') {
+                      <cs-icon name="done_all" [size]="14" aria-hidden="true" />
+                    }
+                  </span>
+                </div>
+              </article>
+            }
+          }
+        </div>
+
+        <footer class="messages-composer">
+          <button type="button" aria-label="Add attachment" (click)="attachFile()">
+            <cs-icon name="add_circle" [size]="24" aria-hidden="true" />
+          </button>
+          @if (pendingAttachment(); as attachment) {
+            <span class="messages-composer__attachment">
+              <cs-icon name="attach_file" [size]="16" aria-hidden="true" />
+              {{ attachment.name }}
+              <button type="button" aria-label="Remove attachment" (click)="clearAttachment()">
+                <cs-icon name="close" [size]="14" aria-hidden="true" />
+              </button>
+            </span>
+          }
+          <input
+            type="text"
+            [ngModel]="draftMessage()"
+            (ngModelChange)="draftMessage.set($event)"
+            (keyup.enter)="sendMessage()"
+            placeholder="Write your Message..."
+            aria-label="Write your message"
+          />
+          <button
+            type="button"
+            class="messages-send"
+            [disabled]="!draftMessage().trim() && !pendingAttachment()"
+            (click)="sendMessage()"
+            aria-label="Send message"
+          >
+            <cs-icon name="send" [size]="20" aria-hidden="true" />
+          </button>
+        </footer>
+      }
+    </section>
   </div>
-</div>
+</section>

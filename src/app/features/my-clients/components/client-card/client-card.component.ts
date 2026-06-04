@@ -30,6 +30,7 @@ export type { IClient as ClientInfo };
       <cs-avatar
         [name]="clientName"
         [src]="client.avatar_url"
+        [initials]="client.initials"
         size="md"
         class="shrink-0"
       />
@@ -64,8 +65,7 @@ export class ClientCardComponent {
   }
 
   get clientAddress(): string {
-    const { street, city, state } = this.client.address;
-    return `${street}, ${city}, ${state}`;
+    const { street, city, state, zip } = this.client.address;
+    return [street, city, state, zip].filter(Boolean).join(', ');
   }
 }
-

@@ -1,0 +1,138 @@
+<section class="page-flow" aria-labelledby="page-flow-title">
+  <cs-page-header
+    id="page-flow-title"
+    title="Page Flow / Sitemap"
+    subtitle="Internal verification map for implemented Angular pages, sidebar order, and Figma frame references."
+  />
+
+  <div class="page-flow__summary" aria-label="Flow summary">
+    <article class="page-flow__stat">
+      <span class="page-flow__stat-value">{{ implementedPages.length }}</span>
+      <span class="page-flow__stat-label">Implemented pages</span>
+    </article>
+    <article class="page-flow__stat">
+      <span class="page-flow__stat-value">{{ redirects.length }}</span>
+      <span class="page-flow__stat-label">Legacy redirects</span>
+    </article>
+    <article class="page-flow__stat">
+      <span class="page-flow__stat-value">{{ externalLinks.length }}</span>
+      <span class="page-flow__stat-label">External links</span>
+    </article>
+  </div>
+
+  <div class="page-flow__grid">
+    <article class="page-flow__card page-flow__card--tree">
+      <header class="page-flow__card-header">
+        <cs-icon name="account_tree" [size]="24" aria-hidden="true" />
+        <div>
+          <h2>Visible app tree</h2>
+          <p>MainLayout route with sidebar-driven page order.</p>
+        </div>
+      </header>
+
+      <ol class="page-flow__tree" aria-label="Application route tree">
+        <li class="page-flow__tree-root">
+          <div class="page-flow__node page-flow__node--root">
+            <cs-icon name="dashboard" [size]="20" aria-hidden="true" />
+            <span>MainLayout</span>
+            <code>/</code>
+          </div>
+
+          <ol>
+            <li *ngFor="let page of implementedPages">
+              <div class="page-flow__node">
+                <cs-icon [name]="page.icon" [size]="20" aria-hidden="true" />
+                <a [routerLink]="page.route">{{ page.label }}</a>
+                <code>{{ page.route }}</code>
+              </div>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </article>
+
+    <article class="page-flow__card">
+      <header class="page-flow__card-header">
+        <cs-icon name="link" [size]="24" aria-hidden="true" />
+        <div>
+          <h2>Route to Figma mapping</h2>
+          <p>Matches the route baseline IDs used by <code>scripts/figma-export.mjs</code>.</p>
+        </div>
+      </header>
+
+      <div class="page-flow__table-wrap">
+        <table class="page-flow__table">
+          <thead>
+            <tr>
+              <th scope="col">Page</th>
+              <th scope="col">Route</th>
+              <th scope="col">Figma frame</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let page of implementedPages">
+              <td>
+                <span class="page-flow__page-label">
+                  <cs-icon [name]="page.icon" [size]="18" aria-hidden="true" />
+                  {{ page.label }}
+                </span>
+              </td>
+              <td><code>{{ page.route }}</code></td>
+              <td>
+                <a
+                  class="page-flow__figma-link"
+                  [href]="getFigmaNodeUrl(page.figmaNodeId)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="'Open Figma frame for ' + page.label"
+                >
+                  {{ page.figmaLabel }}
+                  <cs-icon name="open_in_new" [size]="14" aria-hidden="true" />
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+
+  <div class="page-flow__grid page-flow__grid--secondary">
+    <article class="page-flow__card">
+      <header class="page-flow__card-header">
+        <cs-icon name="swap_horiz" [size]="24" aria-hidden="true" />
+        <div>
+          <h2>Redirects</h2>
+          <p>Legacy URLs that resolve into current implemented pages.</p>
+        </div>
+      </header>
+
+      <ul class="page-flow__list" aria-label="Legacy redirect routes">
+        <li *ngFor="let redirect of redirects">
+          <cs-icon [name]="redirect.icon" [size]="20" aria-hidden="true" />
+          <a [routerLink]="redirect.route">{{ redirect.label }}</a>
+          <span>{{ redirect.figmaLabel }}</span>
+          <code>{{ redirect.route }}</code>
+        </li>
+      </ul>
+    </article>
+
+    <article class="page-flow__card">
+      <header class="page-flow__card-header">
+        <cs-icon name="public" [size]="24" aria-hidden="true" />
+        <div>
+          <h2>External sidebar links</h2>
+          <p>Visible in navigation but outside this Angular route tree.</p>
+        </div>
+      </header>
+
+      <ul class="page-flow__list" aria-label="External sidebar links">
+        <li *ngFor="let link of externalLinks">
+          <cs-icon [name]="link.icon" [size]="20" aria-hidden="true" />
+          <a [href]="link.href" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
+          <span>{{ link.href }}</span>
+        </li>
+      </ul>
+    </article>
+  </div>
+</section>

@@ -240,12 +240,12 @@
     <label>Theme</label>
     <select id="themeSelect" onchange="setTheme(this.value)">
       <option value="light">Light</option>
-      <option value="dark">Dark</option>
-      <option value="high-contrast">High Contrast</option>
+      <option value="soothing-dark">Soothing dark</option>
+      <option value="high-contrast">High contrast</option>
     </select>
     <label>Density</label>
     <select id="densitySelect" onchange="setDensity(this.value)">
-      <option value="default">Default</option>
+      <option value="default">Normal</option>
       <option value="compact">Compact</option>
       <option value="comfortable">Comfortable</option>
     </select>
@@ -263,7 +263,11 @@
     }
     // Initialize with saved preference or default
     var savedTheme = localStorage.getItem('cs360-theme') || 'light';
+    if (savedTheme === 'dark') savedTheme = 'soothing-dark';
     var savedDensity = localStorage.getItem('cs360-density') || 'default';
+    if (savedDensity === 'small') savedDensity = 'compact';
+    if (savedDensity === 'large') savedDensity = 'comfortable';
+    if (savedDensity === 'normal') savedDensity = 'default';
     document.documentElement.setAttribute('data-theme', savedTheme);
     document.documentElement.setAttribute('data-density', savedDensity);
     document.getElementById('themeSelect').value = savedTheme;

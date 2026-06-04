@@ -2,7 +2,7 @@
 
   <!-- Page Header -->
   <cs-page-header
-    title="My Documents"
+    title="Documents"
   >
     <div header-actions>
       <button type="button"
@@ -13,15 +13,30 @@
                transition-colors hover:bg-[var(--cs360-blue-50)]
                focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]"
         (click)="openAddFlyout()">
-        Add New Document
+        <cs-icon name="add" [size]="18" aria-hidden="true" />
+        Add New
       </button>
     </div>
   </cs-page-header>
 
   <!-- Filter Tabs (pills variant) -->
-  <div class="shrink-0 px-[var(--density-space-page)] pt-[var(--density-space-3)]">
+  <div class="documents-toolbar">
+    <label class="documents-search">
+      <span class="sr-only">Search documents</span>
+      <cs-icon name="search" [size]="18" aria-hidden="true" />
+      <input
+        type="search"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearch($event)"
+        placeholder="Search documents"
+      />
+    </label>
     <cs-tabs [tabs]="filterTabs" [activeTab]="activeFilter()" (activeTabChange)="onFilterChange($event)" variant="pills" />
   </div>
+
+  @if (statusMessage()) {
+    <p class="documents-status" role="status" aria-live="polite">{{ statusMessage() }}</p>
+  }
 
   <!-- Document Card List -->
   <cs-card-list
@@ -39,14 +54,23 @@
   >
     <ng-template csCardTemplate let-doc>
       <div class="flex flex-col gap-[var(--density-space-2)] min-w-0">
-        <span class="font-medium text-[var(--cs360-text-primary)] truncate">{{ doc.name }}</span>
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="inline-block rounded px-2 py-0.5 text-xs font-medium"
+        <div class="flex items-start justify-between gap-[var(--density-space-2)]">
+          <span class="font-medium text-[var(--cs360-text-primary)] truncate">{{ doc.name }}</span>
+          <cs-icon name="chevron_right" [size]="18" class="text-[var(--cs360-text-tertiary)]" aria-hidden="true" />
+        </div>
+        <div class="flex items-center gap-[var(--density-space-2)] flex-wrap">
+          <span class="inline-block rounded px-[var(--density-space-2)] py-[var(--density-space-1)] text-[length:var(--density-text-caption)] font-medium"
             [class]="typeBadgeClass(doc.type)">
             {{ doc.type }}
           </span>
+          @if (doc.status) {
+            <span class="inline-block rounded px-[var(--density-space-2)] py-[var(--density-space-1)] text-[length:var(--density-text-caption)] font-medium"
+              [class]="statusBadgeClass(doc.status)">
+              {{ doc.status }}
+            </span>
+          }
         </div>
-        <span class="text-sm text-[var(--cs360-text-secondary)]">Updated on {{ formatDate(doc.updatedOn) }}</span>
+        <span class="text-[length:var(--density-text-body-muted)] text-[var(--cs360-text-secondary)]">Updated on {{ formatDate(doc.updatedOn) }}</span>
       </div>
     </ng-template>
   </cs-card-list>
@@ -83,6 +107,9 @@
                    focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                    focus:border-[var(--cs360-action-primary)]"
             placeholder="Enter file name" />
+          @if (formSubmitted() && !docFileName.trim()) {
+            <span class="text-xs text-[var(--cs360-feedback-error)]">File name is required.</span>
+          }
         </div>
 
         <!-- Notes -->
@@ -106,11 +133,12 @@
         <!-- Attachments -->
         <div class="flex flex-col gap-[var(--density-space-2)]">
           <span class="text-sm font-medium text-[var(--cs360-text-primary)]">Attachments</span>
-          <div class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]">
+          <button type="button" class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]"
+            (click)="markAttachmentUploaded()">
             <cs-icon name="upload_file" [size]="32" class="text-[var(--cs360-text-tertiary)]" />
-            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">Click to Upload</span>
+            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">{{ attachmentUploaded ? 'Attachment Selected' : 'Click to Upload' }}</span>
             <span class="text-xs text-[var(--cs360-text-secondary)]">(Max. File size: 25 MB)</span>
-          </div>
+          </button>
         </div>
 
       </div>
@@ -124,8 +152,9 @@
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
             Compliance Type <span class="text-[var(--cs360-feedback-error)]">*</span>
           </label>
-          <select class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
-                         bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
+          <select [(ngModel)]="complianceType"
+            class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
+                          bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                          px-[var(--density-space-3)] min-h-[44px] text-sm
                          focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
                          focus:border-[var(--cs360-action-primary)]">
@@ -135,12 +164,15 @@
             <option value="HIPAA">HIPAA</option>
             <option value="TB">TB Test</option>
           </select>
+          @if (formSubmitted() && !complianceType) {
+            <span class="text-xs text-[var(--cs360-feedback-error)]">Compliance type is required.</span>
+          }
         </div>
 
         <!-- License No. -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">License No.</label>
-          <input type="text"
+          <input type="text" [(ngModel)]="complianceLicense"
             class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                    placeholder-[var(--cs360-text-tertiary)]
@@ -156,30 +188,36 @@
             <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
               Origin Date <span class="text-[var(--cs360-feedback-error)]">*</span>
             </label>
-            <input type="date"
+            <input type="date" [(ngModel)]="complianceOriginDate"
               class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                      bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                     px-[var(--density-space-3)] min-h-[44px] text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
-                     focus:border-[var(--cs360-action-primary)]" />
+                      px-[var(--density-space-3)] min-h-[44px] text-sm
+                      focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                      focus:border-[var(--cs360-action-primary)]" />
+            @if (formSubmitted() && !complianceOriginDate) {
+              <span class="text-xs text-[var(--cs360-feedback-error)]">Origin date is required.</span>
+            }
           </div>
           <div class="flex flex-1 flex-col gap-[var(--density-space-1)] min-w-0">
             <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">
               Expiration Date <span class="text-[var(--cs360-feedback-error)]">*</span>
             </label>
-            <input type="date"
+            <input type="date" [(ngModel)]="complianceExpirationDate"
               class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                      bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-                     px-[var(--density-space-3)] min-h-[44px] text-sm
-                     focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
-                     focus:border-[var(--cs360-action-primary)]" />
+                      px-[var(--density-space-3)] min-h-[44px] text-sm
+                      focus:outline-none focus:ring-2 focus:ring-[var(--cs360-action-primary)]
+                      focus:border-[var(--cs360-action-primary)]" />
+            @if (formSubmitted() && !complianceExpirationDate) {
+              <span class="text-xs text-[var(--cs360-feedback-error)]">Expiration date is required.</span>
+            }
           </div>
         </div>
 
         <!-- Notes -->
         <div class="flex flex-col gap-[var(--density-space-1)]">
           <label class="block text-sm font-medium text-[var(--cs360-text-primary)]">Notes</label>
-          <textarea rows="3"
+          <textarea rows="3" [(ngModel)]="complianceNotes"
             class="block w-full rounded-lg border border-[var(--cs360-neutral-300)]
                    bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
                    placeholder-[var(--cs360-text-tertiary)] resize-none
@@ -196,11 +234,12 @@
         <!-- Attachments -->
         <div class="flex flex-col gap-[var(--density-space-2)]">
           <span class="text-sm font-medium text-[var(--cs360-text-primary)]">Attachments</span>
-          <div class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]">
+          <button type="button" class="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-[var(--cs360-neutral-300)] p-8 text-center cursor-pointer transition-colors hover:bg-[var(--cs360-bg-alt)]"
+            (click)="markAttachmentUploaded()">
             <cs-icon name="upload_file" [size]="32" class="text-[var(--cs360-text-tertiary)]" />
-            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">Click to Upload</span>
+            <span class="text-sm font-medium text-[var(--cs360-action-primary)]">{{ attachmentUploaded ? 'Attachment Selected' : 'Click to Upload' }}</span>
             <span class="text-xs text-[var(--cs360-text-secondary)]">(Max. File size: 25 MB)</span>
-          </div>
+          </button>
         </div>
 
       </div>
@@ -215,7 +254,7 @@
     </button>
     <button type="button"
       class="flex-1 rounded-lg bg-[var(--cs360-action-primary)] text-white px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90"
-      (click)="closeAddFlyout()">
+      (click)="saveDocument()">
       Save
     </button>
   </div>
@@ -251,12 +290,12 @@
   <div flyout-footer class="flex gap-3">
     <button type="button"
       class="flex-1 rounded-lg border border-[var(--cs360-border-subtle)] px-4 py-2 text-sm font-medium text-[var(--cs360-text-secondary)] transition-colors hover:bg-[var(--cs360-bg-surface-hover)]"
-      (click)="closeViewFlyout()">
+      (click)="updateSelectedDoc()">
       Update
     </button>
     <button type="button"
       class="flex-1 rounded-lg bg-[var(--cs360-action-primary)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-      (click)="closeViewFlyout()">
+      (click)="downloadSelectedDoc()">
       Download
     </button>
   </div>

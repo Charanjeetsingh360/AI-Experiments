@@ -19,6 +19,7 @@ export interface IClient {
   dob: string;
   gender: 'Male' | 'Female' | string;
   avatar_url: string;
+  initials?: string;
   address: IClientAddress;
   phone: string;
   email: string;

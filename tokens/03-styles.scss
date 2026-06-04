@@ -169,7 +169,10 @@
   animation: cs360-skeleton-pulse 1.5s ease-in-out infinite;
 }
 
-[data-theme="dark"] .cs360-skeleton {
+[data-theme="dark"] .cs360-skeleton,
+[data-theme="soothing-dark"] .cs360-skeleton,
+[data-theme="stark-dark"] .cs360-skeleton,
+[data-theme="high-contrast"] .cs360-skeleton {
   background: linear-gradient(
     90deg,
     var(--cs360-neutral-900) 25%,
@@ -250,4 +253,3 @@ $semantic-utilities: (
 .s-space-comp     { padding:         var(--density-space-component); }
 .s-space-section  { margin-block:    var(--density-space-section); }
 .s-space-page     { padding:         var(--density-space-page); }
-

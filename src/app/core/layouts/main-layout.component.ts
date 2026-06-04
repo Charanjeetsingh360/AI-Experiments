@@ -13,12 +13,14 @@ import { ThemeService } from '../services/theme.service';
     <div class="app-layout">
       <app-sidebar 
         [collapsed]="sidebarCollapsed" 
-        (toggleCollapse)="toggleSidebar()">
+        [mobileOpen]="mobileSidebarOpen"
+        (toggleCollapse)="toggleSidebar()"
+        (closeSidebar)="closeMobileSidebar()">
       </app-sidebar>
       
       <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
         <app-topbar 
-          (toggleSidebar)="toggleSidebar()"
+          (toggleSidebar)="openMobileSidebar()"
           (toggleTheme)="themeService.toggleTheme()"
           (toggleDensity)="themeService.cycleDensity()">
         </app-topbar>
@@ -34,11 +36,14 @@ import { ThemeService } from '../services/theme.service';
       display: flex;
       min-height: 100vh;
       background-color: var(--cs360-bg);
+      overflow-x: hidden;
     }
 
     .main-content {
       flex: 1;
+      min-width: 0;
       margin-left: var(--cs360-sidebar-width);
+      padding-top: var(--cs360-topbar-height); /* offset for fixed topbar — all viewports */
       display: flex;
       flex-direction: column;
       transition: margin-left var(--cs360-motion-normal);
@@ -56,8 +61,10 @@ import { ThemeService } from '../services/theme.service';
       background-color: var(--cs360-bg-page);
     }
 
-    @media (max-width: 768px) {
-      .main-content {
+    /* Tablet landscape and below: sidebar is a drawer, content fills full width */
+    @media (max-width: 1024px) {
+      .main-content,
+      .main-content.sidebar-collapsed {
         margin-left: 0;
       }
     }
@@ -66,8 +73,17 @@ import { ThemeService } from '../services/theme.service';
 export class MainLayoutComponent {
   themeService = inject(ThemeService);
   sidebarCollapsed = false;
+  mobileSidebarOpen = false;
 
   toggleSidebar(): void {
     this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  openMobileSidebar(): void {
+    this.mobileSidebarOpen = true;
+  }
+
+  closeMobileSidebar(): void {
+    this.mobileSidebarOpen = false;
   }
 }

@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-28T14:12:26.792Z",
+  "timestamp": "2026-06-03T14:37:54.861Z",
   "source": "tokens/output/css/tokens.css",
   "tokenCount": 1829,
-  "integrityHash": "e4ad8c59c897a136258a12725b91324dea61522cafbc8ce2a7abfb16e7182298",
+  "integrityHash": "cdb5a115d7953a1cfe99d74b9ec53c3300d4ff45bf0c6c51e20fbf5b894ce2ae",
   "themes": [
     "light",
     "soothing-dark",
@@ -11,8 +11,8 @@
   ],
   "densities": [
     "default",
-    "large",
-    "small"
+    "compact",
+    "comfortable"
   ],
   "configuredThemes": [
     "light",

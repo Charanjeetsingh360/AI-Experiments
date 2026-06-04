@@ -1,11 +1,20 @@
 ---
 applyTo: "src/**/*.ts,src/**/*.html,src/**/*.scss"
-description: "CareGiver 360 portal coding preferences and non-negotiable design rules. Always apply these when writing or editing Angular components, templates, or styles."
+description: "CareGiver 360 portal coding preferences and non-negotiable design rules. Includes no raw hex colors, no raw SVG icons, and no inline styles for Angular components, templates, and styles."
 ---
 
 # CareGiver 360 — Coding Preferences & Design Rules
 
 These rules are **non-negotiable**. Never make guesses — always follow the structure already defined.
+
+---
+
+## Global UI Redlines ⛔
+
+- **No raw hex/colors:** never add `#hex`, `rgb()`, `hsl()`, named colors, or Tailwind color classes directly in Angular templates/components/styles; use semantic CSS tokens such as `var(--cs360-text-primary)`.
+- **No raw SVG icons:** never paste inline `<svg>`, copied Figma SVG paths, or downloaded icon assets; use `<cs-icon>` with Google Material Symbols Rounded names.
+- **No inline styles:** never use `style=""`, `[style.*]`, `ngStyle`, or component-generated raw style strings for UI styling; use Tailwind utilities and CSS custom properties from the token layers.
+- If a Figma value has no token yet, add it to the correct token layer first instead of bypassing the design system.
 
 ---
 
@@ -199,4 +208,3 @@ Before coding, fetch the Figma node and extract:
 - [ ] Each child's `layoutSizingHorizontal` and `layoutSizingVertical`: HUG / FILL / FIXED?
 - [ ] Text nodes: `fontSize`, `fontWeight`, `lineHeightPx`, resolved fill color
 - [ ] Then map to tokens. Never set a size or color from memory.
-

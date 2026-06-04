@@ -1,7 +1,29 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/layouts/main-layout.component';
+import { devRoutes } from './app.dev-routes';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () => import('./features/auth/auth.component')
+      .then(m => m.AuthComponent),
+    data: { mode: 'login' },
+    title: 'Login - CareGiver 360'
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./features/auth/auth.component')
+      .then(m => m.AuthComponent),
+    data: { mode: 'reset' },
+    title: 'Reset Password - CareGiver 360'
+  },
+  {
+    path: 'change-password',
+    loadComponent: () => import('./features/auth/auth.component')
+      .then(m => m.AuthComponent),
+    data: { mode: 'change' },
+    title: 'Change Password - CareGiver 360'
+  },
   {
     path: '',
     component: MainLayoutComponent,
@@ -59,6 +81,7 @@ export const routes: Routes = [
           .then(m => m.TrainingsComponent),
         title: 'Trainings - CareGiver 360'
       },
+      ...devRoutes,
       // Legacy redirects
       { path: 'dashboard', redirectTo: 'home', pathMatch: 'full' },
       { path: 'schedule',  redirectTo: 'shift-calendar', pathMatch: 'full' },
@@ -69,4 +92,3 @@ export const routes: Routes = [
     redirectTo: 'home'
   }
 ];
-

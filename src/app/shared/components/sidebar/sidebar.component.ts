@@ -17,13 +17,24 @@ interface NavItem {
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, CSIconComponent],
   template: `
-    <aside class="sidebar" [class.collapsed]="collapsed">
-      <!-- Logo -->
+    <aside class="sidebar" [class.collapsed]="collapsed" [class.mobile-open]="mobileOpen">
+      <!-- Logo — Figma colorful Care360 mark -->
       <div class="sidebar-logo">
-        <div class="logo-icon">
-          <cs-icon name="favorite" [size]="28" [filled]="true" />
-        </div>
-        <span class="logo-text" *ngIf="!collapsed">CareGiver 360</span>
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CareGiver 360 logo">
+          <!-- Left person (pink/red) -->
+          <circle cx="15" cy="13" r="5" fill="#E84B7B"/>
+          <path d="M8 30c0-3.866 3.134-7 7-7s7 3.134 7 7v4H8v-4z" fill="#E84B7B"/>
+          <!-- Right person (blue) -->
+          <circle cx="33" cy="13" r="5" fill="#1F63DA"/>
+          <path d="M26 30c0-3.866 3.134-7 7-7s7 3.134 7 7v4H26v-4z" fill="#1F63DA"/>
+          <!-- Top person (green) -->
+          <circle cx="24" cy="8" r="4.5" fill="#22C55E"/>
+          <path d="M17.5 24c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5v3h-13v-3z" fill="#22C55E"/>
+        </svg>
+
+        <button type="button" class="mobile-close" (click)="closeSidebar.emit()" aria-label="Close navigation">
+          <cs-icon name="close" [size]="24" aria-hidden="true" />
+        </button>
       </div>
 
       <!-- Navigation -->
@@ -36,12 +47,13 @@ interface NavItem {
              routerLinkActive="active"
              [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
              class="nav-item"
-             [title]="collapsed ? item.label : ''">
-            <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
-            <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
-            <span class="nav-badge" *ngIf="item.badge && !collapsed">{{ item.badge > 99 ? '99+' : item.badge }}</span>
-            <span class="nav-badge-dot" *ngIf="item.badge && collapsed"></span>
-          </a>
+             [title]="collapsed && !mobileOpen ? item.label : ''"
+             (click)="closeSidebar.emit()">
+             <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
+             <span class="nav-label" *ngIf="showExpandedLabels">{{ item.label }}</span>
+             <span class="nav-badge" *ngIf="item.badge && showExpandedLabels">{{ item.badge > 99 ? '99+' : item.badge }}</span>
+             <span class="nav-badge-dot" *ngIf="item.badge && !showExpandedLabels"></span>
+           </a>
 
           <!-- External link -->
           <a *ngIf="item.isExternal"
@@ -49,17 +61,18 @@ interface NavItem {
              target="_blank"
              rel="noopener noreferrer"
              class="nav-item"
-             [title]="collapsed ? item.label : ''">
-            <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
-            <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
-            <cs-icon *ngIf="!collapsed" name="open_in_new" [size]="14" class="external-icon" />
-          </a>
+             [title]="collapsed && !mobileOpen ? item.label : ''"
+             (click)="closeSidebar.emit()">
+             <cs-icon [name]="item.icon" [size]="24" class="nav-icon" />
+             <span class="nav-label" *ngIf="showExpandedLabels">{{ item.label }}</span>
+             <cs-icon *ngIf="showExpandedLabels" name="open_in_new" [size]="14" class="external-icon" />
+           </a>
 
         </ng-container>
       </nav>
 
       <!-- Copyright -->
-      <div class="sidebar-copyright" *ngIf="!collapsed">
+      <div class="sidebar-copyright" *ngIf="showExpandedLabels">
         <p class="copyright-text">&copy; {{ currentYear }} CareSmart, Inc.</p>
         <p class="copyright-text">All rights reserved.</p>
       </div>
@@ -100,27 +113,47 @@ interface NavItem {
     }
 
     .sidebar-logo {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: var(--cs360-space-3);
-      padding: var(--cs360-space-5);
+      justify-content: center;
+      padding: var(--cs360-space-4) var(--cs360-space-3);
+      min-height: 102px;
+      background-color: var(--color-white);
+      border-bottom: 1px solid var(--cs360-sidebar-border);
     }
 
-    .logo-icon {
-      color: var(--cs360-sidebar-primary-fg);
+    .logo-svg {
       flex-shrink: 0;
     }
 
-    .logo-text {
-      font-size: var(--cs360-text-lg);
-      font-weight: 600;
-      color: var(--cs360-sidebar-primary-fg);
-      white-space: nowrap;
+    .mobile-close {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--cs360-border-subtle);
+      border-radius: var(--cs360-radius-full);
+      background: var(--cs360-bg-surface);
+      color: var(--cs360-text-primary);
+      cursor: pointer;
+      transition: background-color var(--cs360-transition-fast), border-color var(--cs360-transition-fast);
+
+      &:hover {
+        background: var(--cs360-bg-surface-hover);
+        border-color: var(--cs360-border-default);
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--cs360-sidebar-ring);
+      }
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: var(--cs360-space-0);
+      padding: var(--cs360-space-4) 0 0 0;
       overflow-y: auto;
     }
 
@@ -146,8 +179,8 @@ interface NavItem {
       }
 
       &.active {
-        background-color: var(--cs360-sidebar-accent-bg);
-        color: var(--cs360-sidebar-accent-fg);
+        background-color: var(--cs360-sidebar-active);
+        color: var(--cs360-sidebar-text-active);
         border-radius: 0;
 
         .nav-icon {
@@ -239,22 +272,84 @@ interface NavItem {
       }
     }
 
-    @media (max-width: 768px) {
+    /* Tablet landscape + mobile: sidebar becomes a drawer overlay */
+    @media (max-width: 1024px) {
       .sidebar {
+        width: var(--cs360-sidebar-width);
         transform: translateX(-100%);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform var(--cs360-transition-base), visibility var(--cs360-transition-base);
+        z-index: 1000;
+      }
 
-        &.open {
-          transform: translateX(0);
+      .sidebar.mobile-open {
+        transform: translateX(0);
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .sidebar.collapsed {
+        width: var(--cs360-sidebar-width);
+
+        .sidebar-logo {
+          justify-content: center;
+          padding: var(--cs360-space-4) var(--cs360-space-3);
         }
+
+        .nav-item {
+          justify-content: flex-start;
+          padding: var(--cs360-space-3);
+        }
+      }
+
+      .sidebar-logo {
+        justify-content: center;
+        min-height: 72px;
+        padding: var(--cs360-space-4) var(--cs360-space-3);
+      }
+
+      .mobile-close {
+        position: absolute;
+        right: var(--cs360-space-4);
+        display: inline-flex;
+      }
+
+      .sidebar-nav {
+        padding: var(--cs360-space-4) var(--cs360-space-3);
+      }
+
+      .nav-item {
+        justify-content: flex-start;
+        padding: var(--cs360-space-3);
+        border-radius: var(--cs360-radius-md);
+      }
+
+      .collapse-toggle {
+        display: none;
+      }
+    }
+
+    /* Mobile phones: sidebar takes full width when open */
+    @media (max-width: 480px) {
+      .sidebar,
+      .sidebar.collapsed {
+        width: 100dvw;
       }
     }
   `]
 })
 export class SidebarComponent {
   @Input() collapsed = false;
+  @Input() mobileOpen = false;
   @Output() toggleCollapse = new EventEmitter<void>();
+  @Output() closeSidebar = new EventEmitter<void>();
 
   readonly currentYear = new Date().getFullYear();
+
+  get showExpandedLabels(): boolean {
+    return !this.collapsed || this.mobileOpen;
+  }
 
   // Icon names from https://fonts.google.com/icons?icon.style=Rounded
   // Navigation matches Figma: Caregiver Web Portal node 183-126608
@@ -262,7 +357,7 @@ export class SidebarComponent {
     { label: 'Home',            icon: 'home',           route: '/home' },
     { label: 'Shift Calendar',  icon: 'calendar_today', route: '/shift-calendar' },
     { label: 'My Clients',      icon: 'groups',         route: '/clients' },
-    { label: 'Messages',        icon: 'mail',           route: '/messages', badge: 3 },
+    { label: 'Messages',        icon: 'mail',           route: '/messages' },
     { label: 'Availability',    icon: 'event_busy',     route: '/availability' },
     { label: 'Documents',       icon: 'description',    route: '/documents' },
     { label: 'Caregiver Forms', icon: 'assignment',     route: '/caregiver-forms' },

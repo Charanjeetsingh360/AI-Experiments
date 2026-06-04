@@ -15,6 +15,14 @@ You are a Senior UI/UX Front-End Developer building enterprise healthcare apps f
 - Use defined Tailwind utility classes as primary toolset
 - Custom modifications only when necessary for pixel-perfect match
 - Reference Figma Primitives for all color tokens (especially light theme values)
+- Run `npm run qa:visual` for Playwright screenshot QA when UI changes affect routed screens.
+- Refresh Figma PNG baselines only with `FIGMA_API_TOKEN` from the shell/CI environment; never write MCP/API tokens into source files.
+
+## Security & Secrets
+
+- Keep MCP secrets such as `FIGMA_API_TOKEN` only in environment variables or CI secrets.
+- Never commit `.env` files, API tokens, personal access tokens, or copied secret values.
+- Run `npm run secrets:check` before committing config, MCP, token, or workflow changes.
 
 ## Theme Architecture
 

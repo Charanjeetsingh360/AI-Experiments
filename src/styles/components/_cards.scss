@@ -73,28 +73,50 @@
   }
 }
 
-// --- Shift Card (per Figma: Ongoing/Upcoming Shift) ---
+// --- Shift Card (per Figma: shift_card_type status palettes) ---
 .cs360-shift-card {
-  background-color: var(--cs360-bg-surface);
-  border: 1px solid var(--cs360-border-subtle);
+  background-color: var(--cs360-shift-card-bg);
+  border: 1px solid transparent;
+  border-left: 6px solid var(--cs360-shift-accent);
   border-radius: var(--cs360-radius-md);
   padding: var(--density-space-component);
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--density-space-component);
-  align-items: center;
+  align-items: start;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
   }
 
-  &.cs360-shift-card--ongoing {
-    border-left: 4px solid var(--cs360-feedback-success);
+  &.cs360-shift-card--scheduled,
+  &.cs360-shift-card--ongoing,
+  &.cs360-shift-card--adhoc,
+  &.cs360-shift-card--offline,
+  &.cs360-shift-card--upcoming {
+    --cs360-shift-card-bg: var(--cs360-shift-scheduled-bg);
+    --cs360-shift-accent: var(--cs360-shift-scheduled-accent);
   }
 
-  &.cs360-shift-card--upcoming {
-    border-left: 4px solid var(--cs360-feedback-info);
+  &.cs360-shift-card--approved,
+  &.cs360-shift-card--completed {
+    --cs360-shift-card-bg: var(--cs360-shift-approved-bg);
+    --cs360-shift-accent: var(--cs360-shift-approved-accent);
+  }
+
+  &.cs360-shift-card--open,
+  &.cs360-shift-card--offered,
+  &.cs360-shift-card--applied,
+  &.cs360-shift-card--declined,
+  &.cs360-shift-card--missed {
+    --cs360-shift-card-bg: var(--cs360-shift-open-bg);
+    --cs360-shift-accent: var(--cs360-shift-open-accent);
+  }
+
+  &.cs360-shift-card--meeting {
+    --cs360-shift-card-bg: var(--cs360-meeting-scheduled-bg);
+    --cs360-shift-accent: var(--cs360-meeting-scheduled-accent);
   }
 }
 
@@ -277,4 +299,3 @@
     }
   }
 }
-

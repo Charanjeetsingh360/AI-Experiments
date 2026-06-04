@@ -1269,7 +1269,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-:root, [data-density="default"] {
+:root, [data-density="default"], [data-density="normal"] {
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-50: #f9fafb;
@@ -1475,7 +1475,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-[data-density="large"] {
+[data-density="comfortable"], [data-density="large"] {
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-50: #f9fafb;
@@ -1681,7 +1681,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-[data-density="small"] {
+[data-density="compact"], [data-density="small"] {
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-50: #f9fafb;

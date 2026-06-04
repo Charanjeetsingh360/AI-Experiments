@@ -1,11 +1,13 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-export type Theme = 'light' | 'dark' | 'high-contrast';
+export type Theme = 'light' | 'soothing-dark' | 'high-contrast';
 export type Density = 'compact' | 'default' | 'comfortable';
 
 const THEME_STORAGE_KEY = 'cs360-theme';
 const DENSITY_STORAGE_KEY = 'cs360-density';
+const THEMES: Theme[] = ['light', 'soothing-dark', 'high-contrast'];
+const DENSITIES: Density[] = ['compact', 'default', 'comfortable'];
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class ThemeService {
   readonly density = this._density.asReadonly();
 
   // Computed values for convenience
-  readonly isDarkMode = computed(() => this._theme() === 'dark');
+  readonly isDarkMode = computed(() => this._theme() === 'soothing-dark');
   readonly isHighContrast = computed(() => this._theme() === 'high-contrast');
   readonly isCompact = computed(() => this._density() === 'compact');
   readonly isComfortable = computed(() => this._density() === 'comfortable');
@@ -32,31 +34,23 @@ export class ThemeService {
   }
 
   /**
-   * Initialize theme and density from localStorage or system preference
+   * Initialize theme and density from localStorage.
    */
   private initializeFromStorage(): void {
-    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    const storedDensity = localStorage.getItem(DENSITY_STORAGE_KEY) as Density | null;
+    const storedTheme = this.normalizeTheme(localStorage.getItem(THEME_STORAGE_KEY));
+    const storedDensity = this.normalizeDensity(localStorage.getItem(DENSITY_STORAGE_KEY));
 
-    if (storedTheme && ['light', 'dark', 'high-contrast'].includes(storedTheme)) {
+    if (storedTheme) {
       this.setTheme(storedTheme);
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.setTheme(prefersDark ? 'dark' : 'light');
+      this.setTheme('light');
     }
 
-    if (storedDensity && ['compact', 'default', 'comfortable'].includes(storedDensity)) {
+    if (storedDensity) {
       this.setDensity(storedDensity);
     } else {
       this.setDensity('default');
     }
-
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem(THEME_STORAGE_KEY)) {
-        this.setTheme(e.matches ? 'dark' : 'light');
-      }
-    });
   }
 
   /** Set the application theme — directly sets data-theme on <html> */
@@ -65,7 +59,7 @@ export class ThemeService {
     const html = this.doc.documentElement;
     html.setAttribute('data-theme', theme);
     // Also toggle Tailwind dark class for any dark: utility classes
-    if (theme === 'dark' || theme === 'high-contrast') {
+    if (theme === 'soothing-dark' || theme === 'high-contrast') {
       html.classList.add('dark');
     } else {
       html.classList.remove('dark');
@@ -81,13 +75,13 @@ export class ThemeService {
   }
 
   /**
-   * Toggle between light → dark → high-contrast → light
+   * Toggle between light → soothing dark → high-contrast → light
    */
   toggleTheme(): void {
     const current = this._theme();
     if (current === 'light') {
-      this.setTheme('dark');
-    } else if (current === 'dark') {
+      this.setTheme('soothing-dark');
+    } else if (current === 'soothing-dark') {
       this.setTheme('high-contrast');
     } else {
       this.setTheme('light');
@@ -109,10 +103,42 @@ export class ThemeService {
   }
 
   getAvailableThemes(): Theme[] {
-    return ['light', 'dark', 'high-contrast'];
+    return [...THEMES];
   }
 
   getAvailableDensities(): Density[] {
-    return ['compact', 'default', 'comfortable'];
+    return [...DENSITIES];
+  }
+
+  private normalizeTheme(value: string | null): Theme | null {
+    if (value === 'light' || value === 'high-contrast') {
+      return value;
+    }
+
+    if (value === 'dark' || value === 'soothing-dark') {
+      return 'soothing-dark';
+    }
+
+    return null;
+  }
+
+  private normalizeDensity(value: string | null): Density | null {
+    if (value === 'compact' || value === 'default' || value === 'comfortable') {
+      return value;
+    }
+
+    if (value === 'small') {
+      return 'compact';
+    }
+
+    if (value === 'medium' || value === 'normal') {
+      return 'default';
+    }
+
+    if (value === 'large') {
+      return 'comfortable';
+    }
+
+    return null;
   }
 }

@@ -1,0 +1,65 @@
+name: Visual QA
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/visual-qa.yml'
+      - 'package*.json'
+      - 'playwright.config.ts'
+      - 'src/**'
+      - 'tests/visual/**'
+      - 'tokens/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/visual-qa.yml'
+      - 'package*.json'
+      - 'playwright.config.ts'
+      - 'src/**'
+      - 'tests/visual/**'
+      - 'tokens/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    name: Playwright screenshot QA
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Check for committed MCP secrets
+        run: npm run secrets:check
+
+      - name: Run screenshot QA
+        run: npm run qa:visual
+        env:
+          CI: true
+
+      - name: Upload visual QA artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-artifacts
+          path: |
+            tests/visual/results
+            tests/visual/playwright-report
+            test-results
+          if-no-files-found: ignore

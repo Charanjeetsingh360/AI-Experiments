@@ -11,6 +11,12 @@
 npm-debug.log
 yarn-error.log
 
+# Local environment / MCP secrets
+.env
+.env.*
+!.env.example
+*.local.env
+
 # IDEs and editors
 .idea/
 .project
@@ -33,6 +39,11 @@ yarn-error.log
 .sass-cache/
 /connect.lock
 /coverage
+/test-results
+/playwright-report
+/blob-report
+/tests/visual/results
+/tests/visual/playwright-report
 /libpeerconnection.log
 testem.log
 /typings

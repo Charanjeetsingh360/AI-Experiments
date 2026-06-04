@@ -1,419 +1,446 @@
-<div class="flex flex-col h-full overflow-hidden">
-  <div class="flex flex-col flex-1 min-h-0">
+<section class="availability-page" aria-label="Available Shifts">
+  <cs-page-header
+    title="Available Shifts"
+    description="Review open, offered, applied and declined shifts from the Shift Calendar flow."
+  >
+    <div header-actions>
+      <button type="button" class="availability-page__soft-btn" (click)="showFilters.set(!showFilters())">
+        <cs-icon name="filter_alt" [size]="18" aria-hidden="true" />
+        Filters
+      </button>
+      <button type="button" class="availability-page__soft-btn" (click)="openCurrentShiftDetails()">
+        <cs-icon name="event_note" [size]="18" aria-hidden="true" />
+        Shift Details
+      </button>
+      <button type="button" class="availability-page__icon-btn" aria-label="More actions" (click)="toggleMoreActions()">
+        <cs-icon name="more_horiz" [size]="20" aria-hidden="true" />
+      </button>
+      @if (showMoreActions()) {
+        <div class="availability-page__menu" role="menu">
+          <button type="button" role="menuitem" (click)="openAvailabilityManager()">Add availability / unavailability</button>
+          <button type="button" role="menuitem" (click)="setStatus('offered')">View offered shifts</button>
+          <button type="button" role="menuitem" (click)="clearFilters()">Clear filters</button>
+          <button type="button" role="menuitem" (click)="prepareExport()">Export shifts</button>
+        </div>
+      }
+    </div>
+  </cs-page-header>
 
-    <!-- ══════════════════════ PAGE HEADER ══════════════════════ -->
-    <cs-page-header
-      title="Availability/Unavailability"
-      description="You can upload documents for this client."
-      (refresh)="onRefresh()"
-    >
-      <div header-actions>
-        <cs-btn (click)="openAddModal()" variant="primary" size="md">
-          <cs-icon name="add" [size]="16" aria-hidden="true" />
-          Add {{ activeTab() === 'availability' ? 'Availability' : 'Unavailability' }}
-        </cs-btn>
-      </div>
-    </cs-page-header>
+  @if (statusMessage()) {
+    <p class="availability-page__status" role="status" aria-live="polite">{{ statusMessage() }}</p>
+  }
 
-    <!-- ══════════════════════ TAB BAR ══════════════════════ -->
-    <div class="px-[var(--density-space-4)]">
-      <div class="flex items-center justify-between pb-[var(--density-space-4)]">
-        <div
-          class="inline-flex items-center h-[34px] rounded-[var(--cs360-radius-md)]
-                 border border-[var(--cs360-border-subtle)] overflow-hidden -space-x-px"
-          role="tablist"
-          aria-label="Availability tabs"
+  <div class="availability-page__toolbar">
+    <div class="availability-page__status-tabs" role="tablist" aria-label="Open shift status filters">
+      @for (tab of statusTabs; track tab.value) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="activeStatus() === tab.value"
+          [class.availability-page__status-tab--active]="activeStatus() === tab.value"
+          (click)="setStatus(tab.value)"
         >
-          @for (tab of tabs; track tab.value) {
-            <button
-              type="button"
-              role="tab"
-              class="inline-flex items-center justify-center h-[34px]
-                     px-[var(--density-space-2)] border border-[var(--cs360-border-subtle)]
-                     text-[length:var(--density-text-body-muted)] font-medium leading-[16.94px]"
-              [class.bg-\[var\(--cs360-action-primary\)\]]="activeTab() === tab.value"
-              [class.text-\[var\(--cs360-text-inverse\)\]]="activeTab() === tab.value"
-              [class.bg-transparent]="activeTab() !== tab.value"
-              [class.text-\[var\(--cs360-text-primary\)\]]="activeTab() !== tab.value"
-              [attr.aria-selected]="activeTab() === tab.value"
-              (click)="onTabChange(tab.value)"
-            >
-              {{ tab.label }}
+          {{ tab.label }} ({{ statusCounts()[tab.value] }})
+        </button>
+      }
+    </div>
+
+    <label class="availability-page__search">
+      <span class="sr-only">Search shifts</span>
+      <cs-icon name="search" [size]="18" aria-hidden="true" />
+      <input
+        type="search"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search shifts"
+      />
+    </label>
+  </div>
+
+  @if (showFilters()) {
+    <div class="availability-page__filters" aria-label="Additional shift filters">
+      <label>
+        <span>Date Range</span>
+        <input type="date" />
+      </label>
+      <label>
+        <span>Distance</span>
+        <select>
+          <option>Any distance</option>
+          <option>Under 10 miles</option>
+          <option>Under 25 miles</option>
+        </select>
+      </label>
+      <label>
+        <span>Service Type</span>
+        <select>
+          <option>All services</option>
+          <option>Healthcare Services</option>
+          <option>Companion Care</option>
+        </select>
+      </label>
+    </div>
+  }
+
+  <div class="availability-page__content">
+    <section class="availability-page__list" aria-label="Available shift list">
+      @for (group of selectedDateGroups(); track group.date) {
+        <article class="availability-page__group">
+          <header>
+            <div>
+              <h2>{{ group.date }}</h2>
+              <p>{{ group.dayName }}</p>
+            </div>
+            <span>{{ group.shifts.length }} shift{{ group.shifts.length === 1 ? '' : 's' }}</span>
+          </header>
+
+          <div class="availability-page__cards">
+            @for (shift of group.shifts; track shift.id) {
+              <button type="button" class="availability-page__shift-card" (click)="openShift(shift)">
+                <span class="availability-page__stripe"></span>
+                <span class="availability-page__shift-main">
+                  <span class="availability-page__shift-topline">
+                    <strong>{{ shift.clientName }}</strong>
+                    <span>{{ statusLabel(shift.status) }}</span>
+                  </span>
+                  <span class="availability-page__address">{{ shift.address }}</span>
+                  <span class="availability-page__time">
+                    <cs-icon name="schedule" [size]="16" aria-hidden="true" />
+                    {{ shift.startTime }} - {{ shift.endTime }} AST
+                    <span>{{ shift.duration }}</span>
+                  </span>
+                  <span class="availability-page__service">{{ shift.serviceType }}</span>
+                </span>
+                <span class="availability-page__shift-side">
+                  <span>{{ shift.distance }}</span>
+                  <strong>{{ shift.estimatedEarnings }}</strong>
+                  <cs-icon name="chevron_right" [size]="20" aria-hidden="true" />
+                </span>
+              </button>
+            }
+          </div>
+        </article>
+      } @empty {
+        <div class="availability-page__empty">
+          <cs-icon name="event_busy" [size]="36" aria-hidden="true" />
+          <p>No {{ statusLabel(activeStatus()).toLowerCase() }} shifts match your filters.</p>
+        </div>
+      }
+    </section>
+
+    <aside class="availability-page__calendar" aria-label="Calendar summary">
+      <header>
+        <button type="button" aria-label="Previous month">
+          <cs-icon name="chevron_left" [size]="18" aria-hidden="true" />
+        </button>
+        <strong>Nov 2025</strong>
+        <button type="button" aria-label="Next month">
+          <cs-icon name="chevron_right" [size]="18" aria-hidden="true" />
+        </button>
+      </header>
+      <div class="availability-page__weekdays">
+        @for (day of ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']; track day) {
+          <span>{{ day }}</span>
+        }
+      </div>
+      <div class="availability-page__days">
+        @for (day of [23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13]; track $index) {
+          <button type="button" [class.availability-page__day--active]="selectedCalendarDay() === day || day === 27 || day === 28" (click)="selectCalendarDay(day)">{{ day }}</button>
+        }
+      </div>
+    </aside>
+  </div>
+
+  <footer class="availability-page__footer">
+    <span>Showing {{ filteredShifts().length ? 1 : 0 }}-{{ filteredShifts().length }} of {{ filteredShifts().length }} items</span>
+    <label>
+      Show
+      <select aria-label="Items per page">
+        <option>20</option>
+      </select>
+    </label>
+  </footer>
+</section>
+
+<cs-flyout
+  [isOpen]="!!selectedShift()"
+  (isOpenChange)="!$event && closeShift()"
+  position="right"
+  width="520px"
+  ariaLabel="Shift details"
+>
+  <div flyout-header class="availability-page__flyout-header">
+    <h2>Shift Details</h2>
+    <button type="button" (click)="closeShift()" aria-label="Close shift details">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div flyout-body class="availability-page__flyout-body">
+    @if (selectedShift(); as shift) {
+      <section>
+        <span class="availability-page__detail-status">{{ statusLabel(shift.status) }}</span>
+        <h3>{{ shift.clientName }}</h3>
+        <p>{{ shift.address }}</p>
+      </section>
+
+      <dl>
+        <div>
+          <dt>Date</dt>
+          <dd>{{ shift.date }} ({{ shift.dayName }})</dd>
+        </div>
+        <div>
+          <dt>Time</dt>
+          <dd>{{ shift.startTime }} - {{ shift.endTime }} AST</dd>
+        </div>
+        <div>
+          <dt>Duration</dt>
+          <dd>{{ shift.duration }}</dd>
+        </div>
+        <div>
+          <dt>Service Type</dt>
+          <dd>{{ shift.serviceType }}</dd>
+        </div>
+        <div>
+          <dt>Pay Rate</dt>
+          <dd>{{ shift.payRate }}</dd>
+        </div>
+        <div>
+          <dt>Estimated Earnings</dt>
+          <dd>{{ shift.estimatedEarnings }}</dd>
+        </div>
+      </dl>
+
+      <article>
+        <h3>Notes</h3>
+        <p>{{ shift.notes }}</p>
+      </article>
+    }
+  </div>
+
+  <div flyout-footer class="availability-page__flyout-footer">
+    <button type="button" class="availability-page__secondary-btn" (click)="declineSelectedShift()">Decline</button>
+    <button type="button" class="availability-page__primary-btn" (click)="applyToSelectedShift()">{{ primaryActionLabel(selectedShift()) }}</button>
+  </div>
+</cs-flyout>
+
+<cs-flyout
+  [isOpen]="showAvailabilityManager()"
+  (isOpenChange)="!$event && closeAvailabilityManager()"
+  position="right"
+  width="620px"
+  ariaLabel="Availability management"
+>
+  <div flyout-header class="availability-page__flyout-header">
+    <h2>{{ availabilityTitle() }}</h2>
+    <button type="button" (click)="closeAvailabilityManager()" aria-label="Close availability manager">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div flyout-body class="availability-page__flyout-body availability-page__availability-manager">
+    @if (!availabilityMode()) {
+      <section class="availability-page__choice-grid" aria-label="Choose availability record type">
+        <button type="button" (click)="chooseAvailabilityMode('availability')">
+          <cs-icon name="event_available" [size]="28" aria-hidden="true" />
+          <span>Add Availability</span>
+          <small>Mark time you can accept visits.</small>
+        </button>
+        <button type="button" (click)="chooseAvailabilityMode('unavailability')">
+          <cs-icon name="event_busy" [size]="28" aria-hidden="true" />
+          <span>Add Unavailability</span>
+          <small>Block time you cannot accept visits.</small>
+        </button>
+      </section>
+    } @else {
+      <section class="availability-page__form-section">
+        @if (!canManageAvailability()) {
+          <p class="availability-page__readonly" role="note">This role has read-only permission for availability records.</p>
+        }
+
+        @if (availabilityMode() === 'unavailability') {
+          <label>
+            <span>Reason <b aria-hidden="true">*</b></span>
+            <select [(ngModel)]="availabilityReason" [disabled]="!canManageAvailability()">
+              <option value="">Select reason</option>
+              @for (reason of reasons; track reason) {
+                <option [value]="reason">{{ reason }}</option>
+              }
+            </select>
+          </label>
+        }
+
+        <div class="availability-page__form-grid">
+          <label>
+            <span>Start Date <b aria-hidden="true">*</b></span>
+            <input type="date" [(ngModel)]="availabilityStartDate" [disabled]="!canManageAvailability()" />
+          </label>
+          <label>
+            <span>Start Time</span>
+            <input type="text" [(ngModel)]="availabilityStartTime" [disabled]="availabilityAllDay || !canManageAvailability()" />
+          </label>
+          <label>
+            <span>End Time</span>
+            <input type="text" [(ngModel)]="availabilityEndTime" [disabled]="availabilityAllDay || !canManageAvailability()" />
+          </label>
+        </div>
+
+        <label class="availability-page__toggle-row">
+          <input
+            type="checkbox"
+            [ngModel]="availabilityAllDay"
+            (ngModelChange)="setAllDay($event)"
+            [disabled]="!canManageAvailability()"
+          />
+          <span>All Day (12:00 AM - 11:59 PM)</span>
+        </label>
+
+        <label>
+          <span>Notes</span>
+          <textarea rows="3" maxlength="500" [(ngModel)]="availabilityNotes" [disabled]="!canManageAvailability()"></textarea>
+        </label>
+      </section>
+
+      <section class="availability-page__form-section">
+        <h3>Recurrence Pattern</h3>
+        <div class="availability-page__form-grid">
+          <label>
+            <span>Recurrence</span>
+            <select [(ngModel)]="availabilityRecurrence" [disabled]="!canManageAvailability()">
+              @for (option of recurrenceOptions; track option) {
+                <option [value]="option">{{ option }}</option>
+              }
+            </select>
+          </label>
+          @if (availabilityRecurrence !== 'Once') {
+            <label>
+              <span>Every</span>
+              <input type="number" min="1" [(ngModel)]="repeatEvery" [disabled]="!canManageAvailability()" />
+            </label>
+            <label>
+              <span>Repeat Until</span>
+              <input type="number" min="1" [(ngModel)]="repeatUntil" [disabled]="!canManageAvailability()" />
+            </label>
+          }
+        </div>
+
+        @if (availabilityRecurrence === 'Daily') {
+          <label class="availability-page__toggle-row">
+            <input type="checkbox" [disabled]="!canManageAvailability()" />
+            <span>Every Weekday</span>
+          </label>
+        }
+
+        @if (availabilityRecurrence === 'Weekly') {
+          <div class="availability-page__weekday-picker" aria-label="Weekly recurrence days">
+            @for (day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; track day) {
+              <label>
+                <input
+                  type="checkbox"
+                  [ngModel]="weeklyDaySelected(day)"
+                  (ngModelChange)="updateWeeklyDay(day, $event)"
+                  [disabled]="!canManageAvailability()"
+                />
+                <span>{{ day }}</span>
+              </label>
+            }
+          </div>
+        }
+
+        @if (availabilityRecurrence === 'Monthly') {
+          <div class="availability-page__form-grid">
+            <label>
+              <span>Monthly Mode</span>
+              <select [(ngModel)]="monthlyMode" [disabled]="!canManageAvailability()">
+                <option value="ordinal">Ordinal day</option>
+                <option value="specific">Specific day</option>
+              </select>
+            </label>
+            @if (monthlyMode === 'ordinal') {
+              <label>
+                <span>Ordinal</span>
+                <select [(ngModel)]="monthlyOrdinal" [disabled]="!canManageAvailability()">
+                  <option>First</option>
+                  <option>Second</option>
+                  <option>Third</option>
+                  <option>Fourth</option>
+                  <option>Last</option>
+                </select>
+              </label>
+              <label>
+                <span>Day of Week</span>
+                <select [(ngModel)]="monthlyWeekday" [disabled]="!canManageAvailability()">
+                  <option>Monday</option>
+                  <option>Tuesday</option>
+                  <option>Wednesday</option>
+                  <option>Thursday</option>
+                  <option>Friday</option>
+                </select>
+              </label>
+            } @else {
+              <label>
+                <span>Day</span>
+                <input type="number" min="1" max="31" [(ngModel)]="monthlyDay" [disabled]="!canManageAvailability()" />
+              </label>
+            }
+          </div>
+        }
+
+        @if (availabilityRecurrence === 'Yearly') {
+          <div class="availability-page__form-grid">
+            <label>
+              <span>Yearly Mode</span>
+              <select [(ngModel)]="yearlyMode" [disabled]="!canManageAvailability()">
+                <option value="fixed">Fixed date</option>
+                <option value="floating">Floating day</option>
+              </select>
+            </label>
+            <label>
+              <span>Month</span>
+              <select [(ngModel)]="yearlyMonth" [disabled]="!canManageAvailability()">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+              </select>
+            </label>
+            @if (yearlyMode === 'fixed') {
+              <label>
+                <span>Date</span>
+                <input type="number" min="1" max="31" [(ngModel)]="yearlyDate" [disabled]="!canManageAvailability()" />
+              </label>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="availability-page__form-section">
+        <h3>Existing Records</h3>
+        <div class="availability-page__record-list">
+          @for (record of availabilityRecords(); track record.id) {
+            <button type="button" (click)="editAvailabilityRecord(record)">
+              <strong>{{ availabilityTypeLabel(record.type) }}</strong>
+              <span>{{ record.startDate }} · {{ record.startTime }} - {{ record.endTime }}</span>
+              <small>{{ record.recurrenceSummary }}</small>
             </button>
           }
         </div>
-
-        <div class="w-[68px] h-[34px]" aria-hidden="true"></div>
-  </div>
-</div>
-
-<!-- ══════════════════════ ADD MODAL ══════════════════════ -->
-<cs-flyout
-  [isOpen]="showAddModal()"
-  (isOpenChange)="showAddModal.set($event)"
-  position="center"
-  width="500px"
-  [zIndex]="1009"
-  headerPadding="none"
-  bodyPadding="none"
-  footerPadding="none"
-  headerPaddingClass="px-[var(--density-space-3)] pt-[var(--density-space-3)] pb-[var(--density-space-4)]"
-  (closed)="closeAddModal()"
->
-  <div flyout-header class="w-full">
-    <div class="flex items-start justify-between w-full">
-      <h2 class="text-[length:var(--density-text-heading)] font-medium leading-[24px] text-[var(--cs360-text-primary)]">
-        Add {{ activeTab() === 'availability' ? 'Availability' : 'Unavailability' }}
-      </h2>
-      <button
-        (click)="closeAddModal()"
-        class="p-[var(--density-space-1)] rounded-[var(--cs360-radius-sm)]
-               text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)]
-               hover:text-[var(--cs360-text-primary)] transition-colors"
-        aria-label="Close"
-      >
-        <cs-icon name="close" [size]="18" />
-      </button>
-    </div>
+      </section>
+    }
   </div>
 
-  <div flyout-body>
-    <form [formGroup]="addForm" class="flex flex-col gap-[10px] p-[10px]">
-      @if (activeTab() === 'unavailability') {
-        <div class="flex flex-col gap-[10px]">
-          <label class="text-sm font-medium leading-5 text-[var(--cs360-text-primary)]" for="add-reason">
-            Reason
-          </label>
-          <input
-            id="add-reason"
-            type="text"
-            formControlName="healthReason"
-            placeholder="e.g. Sick Day"
-            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-              rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-              text-[length:var(--density-text-body-muted)] placeholder-[var(--cs360-text-tertiary)]
-              outline-none focus:border-[var(--cs360-action-primary)]
-              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
-          />
-        </div>
-        <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-      }
-
-      <div class="flex flex-col gap-[10px]">
-        <div>
-          <label class="sr-only" for="add-date">Date</label>
-          <input
-            id="add-date"
-            type="date"
-            formControlName="date"
-            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-              rounded-[var(--cs360-radius-md)] border text-[length:var(--density-text-body-muted)]
-              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none transition-colors
-              placeholder-[var(--cs360-text-tertiary)]
-              focus:border-[var(--cs360-action-primary)]
-              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
-            [class.border-[var(--cs360-feedback-error)]]="hasError(addForm, 'date')"
-            [class.border-[var(--cs360-border-subtle)]]="!hasError(addForm, 'date')"
-          />
-          @if (hasError(addForm, 'date')) {
-            <p class="mt-[var(--density-space-1)] text-[length:var(--density-text-caption)] text-[var(--cs360-feedback-error)]">
-              Date is required
-            </p>
-          }
-        </div>
-
-        <label class="sr-only" for="add-start">Start Time</label>
-        <input
-          id="add-start"
-          type="time"
-          formControlName="startTime"
-          [disabled]="addForm.get('isFullDay')?.value"
-          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            text-[length:var(--density-text-body-muted)] outline-none transition-colors
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
-            disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-
-        <label class="sr-only" for="add-end">End Time</label>
-        <input
-          id="add-end"
-          type="time"
-          formControlName="endTime"
-          [disabled]="addForm.get('isFullDay')?.value"
-          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            text-[length:var(--density-text-body-muted)] outline-none transition-colors
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
-            disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-
-        <div class="grid grid-cols-2 gap-[10px]">
-          <div class="flex items-center justify-between">
-            <span class="text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
-              All Day
-            </span>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" formControlName="isFullDay" class="sr-only peer" aria-label="All day" />
-              <div class="w-10 h-5 rounded-full bg-[var(--cs360-border-default)] peer peer-checked:bg-[var(--cs360-action-primary)] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
-            </label>
-          </div>
-          <div class="flex items-center justify-end text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
-            Duration: {{ durationLabel(addForm) }}
-          </div>
-        </div>
-      </div>
-
-      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-
-      <div class="flex flex-col gap-[10px]">
-        <cs-tabs
-          [tabs]="repeatTabs"
-          [activeTab]="addForm.get('repeatType')?.value"
-          [fullWidth]="true"
-          (activeTabChange)="addForm.patchValue({ repeatType: $event })"
-        ></cs-tabs>
-      </div>
-
-      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-
-      <div class="flex flex-col gap-[10px]">
-        <div class="flex items-center justify-between">
-          <label class="text-[length:var(--density-text-body)] font-medium leading-[24px] text-[var(--cs360-text-secondary)]" for="add-notes">
-            Notes
-          </label>
-          <span class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-secondary)]">
-            {{ notesRemaining(addForm) }} Characters left
-          </span>
-        </div>
-        <textarea
-          id="add-notes"
-          formControlName="notes"
-          rows="3"
-          maxlength="{{ notesLimit }}"
-          placeholder="Add any additional notes..."
-          class="w-full px-[var(--density-space-2)] py-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            text-[length:var(--density-text-body-muted)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            placeholder-[var(--cs360-text-tertiary)] outline-none
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 resize-none"
-        ></textarea>
-      </div>
-    </form>
-  </div>
-
-  <div flyout-footer>
-    <div class="p-[10px]">
-      <div class="grid grid-cols-2 gap-[10px]">
-        <cs-btn (click)="closeAddModal()" variant="secondary" size="md" [fullWidth]="true">Cancel</cs-btn>
-        <cs-btn (click)="submitAdd()" variant="primary" size="md" [fullWidth]="true">Save</cs-btn>
-      </div>
-    </div>
+  <div flyout-footer class="availability-page__flyout-footer">
+    <button type="button" class="availability-page__secondary-btn" (click)="closeAvailabilityManager()">Cancel</button>
+    @if (availabilityMode() && canManageAvailability()) {
+      <button type="button" class="availability-page__primary-btn" (click)="saveAvailabilityRecord()">Save</button>
+    }
   </div>
 </cs-flyout>
-
-<!-- ══════════════════════ UPDATE MODAL ══════════════════════ -->
-<cs-flyout
-  [isOpen]="showEditModal()"
-  (isOpenChange)="showEditModal.set($event)"
-  position="center"
-  width="500px"
-  [zIndex]="1009"
-  headerPadding="none"
-  bodyPadding="none"
-  footerPadding="none"
-  headerPaddingClass="px-[var(--density-space-3)] pt-[var(--density-space-3)] pb-[var(--density-space-2)]"
-  (closed)="closeEditModal()"
->
-  <div flyout-header class="w-full">
-    <div class="flex items-start justify-between w-full">
-      <div class="flex flex-col gap-[var(--density-space-1)]">
-        <h2 class="text-[length:var(--density-text-heading)] font-medium leading-[24px] text-[var(--cs360-text-primary)]">
-          Update {{ selectedItem()?.type === 'availability' ? 'Availability' : 'Unavailability' }}
-        </h2>
-        @if (selectedItem(); as item) {
-          <p class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-primary)]">
-            {{ item.title }}
-          </p>
-        }
-      </div>
-      <button
-        (click)="closeEditModal()"
-        class="p-[var(--density-space-1)] rounded-[var(--cs360-radius-sm)]
-               text-[var(--cs360-text-tertiary)] hover:bg-[var(--cs360-bg-alt)]
-               hover:text-[var(--cs360-text-primary)] transition-colors"
-        aria-label="Close"
-      >
-        <cs-icon name="close" [size]="18" />
-      </button>
-    </div>
-  </div>
-
-  <div flyout-body>
-    <form [formGroup]="editForm" class="flex flex-col gap-[10px] p-[10px]">
-      @if (editForm.get('type')?.value === 'unavailability') {
-        <div class="flex flex-col gap-[10px]">
-          <label class="text-sm font-medium leading-5 text-[var(--cs360-text-primary)]" for="edit-reason">
-            Reason
-          </label>
-          <input
-            id="edit-reason"
-            type="text"
-            formControlName="healthReason"
-            placeholder="e.g. Sick Day"
-            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-              rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-              text-[length:var(--density-text-body-muted)] placeholder-[var(--cs360-text-tertiary)]
-              outline-none focus:border-[var(--cs360-action-primary)]
-              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
-          />
-        </div>
-        <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-      }
-
-      <div class="flex flex-col gap-[10px]">
-        <div>
-          <label class="sr-only" for="edit-date">Date</label>
-          <input
-            id="edit-date"
-            type="date"
-            formControlName="date"
-            class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-              rounded-[var(--cs360-radius-md)] border text-[length:var(--density-text-body-muted)]
-              bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)] outline-none transition-colors
-              placeholder-[var(--cs360-text-tertiary)]
-              focus:border-[var(--cs360-action-primary)]
-              focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20"
-            [class.border-[var(--cs360-feedback-error)]]="hasError(editForm, 'date')"
-            [class.border-[var(--cs360-border-subtle)]]="!hasError(editForm, 'date')"
-          />
-          @if (hasError(editForm, 'date')) {
-            <p class="mt-[var(--density-space-1)] text-[length:var(--density-text-caption)] text-[var(--cs360-feedback-error)]">
-              Date is required
-            </p>
-          }
-        </div>
-
-        <label class="sr-only" for="edit-start">Start Time</label>
-        <input
-          id="edit-start"
-          type="time"
-          formControlName="startTime"
-          [disabled]="editForm.get('isFullDay')?.value"
-          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            text-[length:var(--density-text-body-muted)] outline-none transition-colors
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
-            disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-
-        <label class="sr-only" for="edit-end">End Time</label>
-        <input
-          id="edit-end"
-          type="time"
-          formControlName="endTime"
-          [disabled]="editForm.get('isFullDay')?.value"
-          class="w-full h-[var(--density-control-height-lg)] px-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            text-[length:var(--density-text-body-muted)] outline-none transition-colors
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20
-            disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-
-        <div class="grid grid-cols-2 gap-[10px]">
-          <div class="flex items-center justify-between">
-            <span class="text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
-              All Day
-            </span>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" formControlName="isFullDay" class="sr-only peer" aria-label="All day" />
-              <div class="w-10 h-5 rounded-full bg-[var(--cs360-border-default)] peer peer-checked:bg-[var(--cs360-action-primary)] transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform peer-checked:after:translate-x-5"></div>
-            </label>
-          </div>
-          <div class="flex items-center justify-end text-[length:var(--density-text-body-sm)] font-normal leading-[18.2px] text-[var(--cs360-text-secondary-alt)]">
-            Duration: {{ durationLabel(editForm) }}
-          </div>
-        </div>
-      </div>
-
-      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-
-      <div class="flex flex-col gap-[10px]">
-        <cs-tabs
-          [tabs]="repeatTabs"
-          [activeTab]="editForm.get('repeatType')?.value"
-          [fullWidth]="true"
-          (activeTabChange)="editForm.patchValue({ repeatType: $event })"
-        ></cs-tabs>
-      </div>
-
-      <div class="h-px bg-[var(--cs360-border-subtle)]"></div>
-
-      <div class="flex flex-col gap-[10px]">
-        <div class="flex items-center justify-between">
-          <label class="text-[length:var(--density-text-body)] font-medium leading-[24px] text-[var(--cs360-text-secondary)]" for="edit-notes">
-            Notes
-          </label>
-          <span class="text-[length:var(--density-text-body-muted)] font-normal leading-[20px] text-[var(--cs360-text-secondary)]">
-            {{ notesRemaining(editForm) }} Characters left
-          </span>
-        </div>
-        <textarea
-          id="edit-notes"
-          formControlName="notes"
-          rows="3"
-          maxlength="{{ notesLimit }}"
-          placeholder="Add any additional notes..."
-          class="w-full px-[var(--density-space-2)] py-[var(--density-space-2)]
-            rounded-[var(--cs360-radius-md)] border border-[var(--cs360-border-subtle)]
-            text-[length:var(--density-text-body-muted)]
-            bg-[var(--cs360-bg-surface)] text-[var(--cs360-text-primary)]
-            placeholder-[var(--cs360-text-tertiary)] outline-none
-            focus:border-[var(--cs360-action-primary)]
-            focus:ring-2 focus:ring-[var(--cs360-action-primary)]/20 resize-none"
-        ></textarea>
-      </div>
-    </form>
-  </div>
-
-  <div flyout-footer>
-    <div class="p-[10px]">
-      <div class="flex items-center justify-between gap-[10px]">
-        <cs-btn (click)="deleteSelected()" variant="destructive" size="md">Delete</cs-btn>
-        <div class="flex items-center gap-[10px]">
-          <cs-btn (click)="closeEditModal()" variant="secondary" size="md">Cancel</cs-btn>
-          <cs-btn (click)="submitEdit()" variant="primary" size="md">Save</cs-btn>
-        </div>
-      </div>
-    </div>
-  </div>
-</cs-flyout>
-    <!-- ══════════════════════ CARD LIST ══════════════════════ -->
-    <div class="flex-1 min-h-0">
-      <cs-card-list
-        [items]="filteredItems()"
-        [totalItems]="totalItems()"
-        [columns]="3"
-        [showPagination]="false"
-        [emptyMessage]="'No ' + activeTab() + ' records found'"
-        (itemClick)="onItemClick($event)"
-      >
-        <ng-template csCardTemplate let-item>
-          <cs-availability-card [item]="item" />
-        </ng-template>
-      </cs-card-list>
-    </div>
-  </div>
-</div>

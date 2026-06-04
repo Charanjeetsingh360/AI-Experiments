@@ -3,12 +3,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface-secondary, #F3F4F6);
-  color: var(--color-text-secondary, #6B7280);
+  background: color-mix(in srgb, var(--cs360-blue-200) 50%, transparent);
+  color: var(--cs360-text-tertiary);
   overflow: hidden;
   flex-shrink: 0;
   user-select: none;
-  font-family: var(--font-family-base, "Inter", sans-serif);
+  font-family: inherit;
 
   &--circle { border-radius: 50%; }
   &--square  { border-radius: var(--radius-sm, 4px); }

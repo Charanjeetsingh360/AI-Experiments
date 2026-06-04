@@ -11,15 +11,16 @@
 [data-theme="light"] {
 
   /* ── BACKGROUNDS ─────────────────────────────────────────────── */
-  --cs360-bg-page:              var(--color-gray-50);           /* #f9fafb → Figma #F7F8F8 */
-  --cs360-bg:                   var(--color-gray-50);
+  --cs360-bg-page:              var(--surface-secondary);       /* app/page background */
+  --cs360-bg:                   var(--surface-secondary);
   --cs360-bg-default:           var(--surface-base);            /* #ffffff */
   --cs360-bg-surface:           var(--surface-base);            /* #ffffff */
   --cs360-bg-surface-hover:     var(--surface-tertiary);        /* #f3f4f6 */
   --cs360-bg-surface-active:    var(--surface-brand-background);/* #eff6ff */
+  --cs360-bg-surface-brand:     var(--surface-brand-background);/* notification/card active surface */
   --cs360-bg-alt:               var(--surface-secondary);       /* #f9fafb */
   --cs360-bg-muted:             var(--surface-tertiary);        /* #f3f4f6 */
-  --cs360-bg-subtle:            #EFF3F9;                        /* Figma chip surface */
+  --cs360-bg-subtle:            var(--surface-brand-background);/* Figma chip surface */
 
   /* ── TEXT ────────────────────────────────────────────────────── */
   --cs360-text-primary:         var(--text-primary);            /* #111827 */
@@ -28,7 +29,7 @@
   --cs360-text-muted:           var(--text-subtle);             /* #6b7280 */
   --cs360-text-inverse:         var(--text-inverse);            /* #ffffff */
   --cs360-text-disabled:        var(--text-disabled);           /* #d1d5db */
-  --cs360-text-strong:          #1e3a5f;                        /* Figma navy */
+  --cs360-text-strong:          var(--text-brand);
   --cs360-text-secondary-alt:   var(--text-subtle);
   --cs360-text-link:            var(--text-link);               /* #1d4ed8 */
   --cs360-text-link-hover:      var(--surface-brand-hover);     /* #1e40af */
@@ -56,15 +57,20 @@
   /* ── BORDERS ─────────────────────────────────────────────────── */
   --cs360-border-subtle:        var(--border-subtle);           /* #e5e7eb */
   --cs360-border-default:       var(--fields-border-default);   /* #9ca3af */
+  --cs360-border-medium:        var(--border-medium);
   --cs360-border-focus:         var(--fields-border-focus);     /* #1d4ed8 */
 
   /* ── ACTIONS / BUTTONS ───────────────────────────────────────── */
-  --cs360-action-primary:               var(--actions-primary-bg);       /* #1d4ed8 */
+  --cs360-action-primary:               var(--actions-primary-bg);
   --cs360-action-primary-default:       var(--actions-primary-bg);
   --cs360-action-primary-hover:         var(--actions-primary-hover);     /* #1e40af */
   --cs360-action-primary-active:        var(--actions-primary-pressed);   /* #1e3a8a */
   --cs360-action-primary-text:          var(--actions-primary-text);      /* #ffffff */
   --cs360-action-primary-subtle:        var(--actions-soft-bg);           /* #eff6ff */
+  --cs360-action-attention:             var(--actions-attention-bg);
+  --cs360-action-attention-hover:       var(--actions-attention-hover);
+  --cs360-action-attention-active:      var(--actions-attention-pressed);
+  --cs360-action-attention-text:        var(--actions-attention-text);
   --cs360-action-secondary:            var(--actions-secondary-bg);       /* #ffffff */
   --cs360-action-secondary-hover:      var(--actions-secondary-hover);    /* #dbeafe */
   --cs360-action-secondary-text:       var(--actions-secondary-text);     /* #111827 */
@@ -140,8 +146,16 @@
   --cs360-info-0:               var(--color-blue-50);
 
   /* ── SHIFT-SPECIFIC ──────────────────────────────────────────── */
-  --cs360-shift-card-bg:        var(--surface-base);
-  --cs360-shift-accent:         var(--actions-primary-bg);
+  --cs360-shift-scheduled-bg:       var(--status-shift-scheduled-bg);
+  --cs360-shift-scheduled-accent:   var(--status-shift-scheduled);
+  --cs360-shift-approved-bg:        var(--status-shift-approved-bg);
+  --cs360-shift-approved-accent:    var(--status-shift-approved);
+  --cs360-shift-open-bg:            var(--status-shift-open-bg);
+  --cs360-shift-open-accent:        var(--status-shift-open);
+  --cs360-meeting-scheduled-bg:     var(--status-meeting-scheduled-bg);
+  --cs360-meeting-scheduled-accent: var(--status-meeting-scheduled);
+  --cs360-shift-card-bg:            var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent:             var(--cs360-shift-scheduled-accent);
 
   /* ── PROMO ───────────────────────────────────────────────────── */
   --cs360-promo-bg-start:       var(--color-blue-600);
@@ -149,7 +163,7 @@
   --cs360-promo-text:           var(--text-inverse);
 
   /* ── SIDEBAR ─────────────────────────────────────────────────── */
-  --cs360-sidebar-width:            var(--size-sidebar);        /* 256px */
+  --cs360-sidebar-width:            200px;                      /* Figma sidebar */
   --cs360-sidebar-collapsed-width:  64px;
   --cs360-sidebar-bg:               var(--sidebar-primary-bg);
   --cs360-sidebar-border:           var(--sidebar-border);
@@ -157,8 +171,8 @@
   --cs360-sidebar-text-active:      var(--sidebar-text-active);
   --cs360-sidebar-icon:             var(--sidebar-icon);
   --cs360-sidebar-icon-active:      var(--sidebar-icon-active);
-  --cs360-sidebar-hover:            var(--sidebar-accent-bg);
-  --cs360-sidebar-active:           var(--sidebar-primary-bg);
+  --cs360-sidebar-hover:            var(--sidebar-secondary-bg);
+  --cs360-sidebar-active:           var(--sidebar-ring);
   --cs360-sidebar-ring:             var(--sidebar-ring);
   --cs360-sidebar-primary-bg:       var(--sidebar-primary-bg);
   --cs360-sidebar-primary-fg:       var(--sidebar-primary-foreground);
@@ -170,7 +184,7 @@
   /* ── TOPBAR ──────────────────────────────────────────────────── */
   --cs360-topbar-bg:            var(--surface-base);
   --cs360-topbar-border:        var(--border-subtle);
-  --cs360-topbar-height:        64px;
+  --cs360-topbar-height:        52px;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -179,7 +193,8 @@
    ══════════════════════════════════════════════════════════════════ */
 
 :root,
-[data-density="default"] {
+[data-density="default"],
+[data-density="normal"] {
   --density-space-1:          var(--spacing-1);    /* 4px */
   --density-space-2:          var(--spacing-2);    /* 8px */
   --density-space-3:          var(--spacing-3);    /* 12px */
@@ -192,6 +207,7 @@
   --density-space-section:    var(--spacing-8);    /* 32px */
 }
 
+[data-density="comfortable"],
 [data-density="large"] {
   --density-space-1:          var(--spacing-2);    /* 8px */
   --density-space-2:          var(--spacing-3);    /* 12px */
@@ -205,8 +221,9 @@
   --density-space-section:    var(--spacing-10);   /* 40px */
 }
 
+[data-density="compact"],
 [data-density="small"] {
-  --density-space-1:          2px;
+  --density-space-1:          var(--spacing-0-5); /* 2px */
   --density-space-2:          var(--spacing-1);    /* 4px */
   --density-space-3:          var(--spacing-2);    /* 8px */
   --density-space-4:          var(--spacing-3);    /* 12px */
@@ -216,35 +233,4 @@
   --density-space-component:  var(--spacing-3);    /* 12px */
   --density-space-page:       var(--spacing-4);    /* 16px */
   --density-space-section:    var(--spacing-6);    /* 24px */
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   DARK MODE OVERRIDES
-   ══════════════════════════════════════════════════════════════════ */
-
-[data-theme="soothing-dark"],
-[data-theme="stark-dark"],
-[data-theme="high-contrast"] {
-  --cs360-bg-page:              #111827;
-  --cs360-bg:                   #111827;
-  --cs360-bg-default:           #1f2937;
-  --cs360-bg-surface:           #1f2937;
-  --cs360-bg-surface-hover:     #374151;
-  --cs360-bg-surface-active:    #1e3a8a;
-  --cs360-bg-alt:               #111827;
-  --cs360-bg-muted:             #374151;
-  --cs360-bg-subtle:            #1e3a5f;
-
-  --cs360-text-primary:         var(--text-primary);
-  --cs360-text-secondary:       var(--text-secondary);
-  --cs360-text-muted:           var(--text-subtle);
-  --cs360-text-inverse:         #111827;
-  --cs360-text-strong:          #93c5fd;
-
-  --cs360-border-subtle:        var(--border-subtle);
-  --cs360-border-default:       var(--fields-border-default);
-
-  --cs360-sidebar-bg:           #111827;
-  --cs360-topbar-bg:            #1f2937;
-  --cs360-topbar-border:        var(--border-subtle);
 }

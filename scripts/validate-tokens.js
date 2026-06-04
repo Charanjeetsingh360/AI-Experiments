@@ -24,7 +24,7 @@ const HEX_COLOR_PATTERN = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\b/g;
 const UNSAFE_CHARS_PATTERN = /[<>]/;
 const CUSTOM_PROP_PATTERN = /^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/i;
 
-const EMITTED_DENSITIES = ['default', 'large', 'small'];
+const EMITTED_DENSITIES = ['default', 'compact', 'comfortable'];
 const EMITTED_THEMES = ['light', 'soothing-dark', 'high-contrast', 'stark-dark'];
 
 const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));

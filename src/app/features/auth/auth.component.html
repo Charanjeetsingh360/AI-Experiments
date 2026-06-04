@@ -1,0 +1,231 @@
+<main class="auth-shell">
+  <section class="auth-card" aria-labelledby="auth-title">
+    <header class="auth-header">
+      @if (mode() === 'reset') {
+        <button type="button" class="auth-icon-button" aria-label="Back to login" (click)="resetToLogin()">
+          <cs-icon name="west" [size]="24" aria-hidden="true" />
+        </button>
+      }
+      <div class="auth-logo" aria-label="CareSmartz360">
+        <span>CS</span>
+      </div>
+      <button type="button" class="auth-language" aria-label="Choose language">
+        English
+        <cs-icon name="expand_more" [size]="18" aria-hidden="true" />
+      </button>
+    </header>
+
+    <section class="auth-copy">
+      <h1 id="auth-title">{{ pageTitle() }}</h1>
+      <p>{{ pageSubtitle() }}</p>
+    </section>
+
+    @if (alertMessage()) {
+      <p class="auth-alert" role="alert">{{ alertMessage() }}</p>
+    }
+
+    @if (statusMessage()) {
+      <p class="auth-status" aria-live="polite">{{ statusMessage() }}</p>
+    }
+
+    @switch (mode()) {
+      @case ('login') {
+        <form class="auth-form" (submit)="$event.preventDefault(); login()">
+          <label class="auth-field">
+            <span>Username</span>
+            <input
+              type="text"
+              autocomplete="username"
+              [value]="username()"
+              (input)="updateField('username', $event)"
+            />
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <input
+              type="password"
+              autocomplete="current-password"
+              [value]="password()"
+              (input)="updateField('password', $event)"
+            />
+          </label>
+          <button type="submit" class="auth-primary-action">Login</button>
+        </form>
+
+        <nav class="auth-links" aria-label="Login help">
+          <a routerLink="/reset-password">Reset Password</a>
+          <a routerLink="/change-password">First Time User</a>
+        </nav>
+      }
+
+      @case ('reset') {
+        @if (resetStep() === 'username') {
+          <form class="auth-form" (submit)="$event.preventDefault(); startReset()">
+            <label class="auth-field">
+              <span>Username</span>
+              <input
+                type="text"
+                autocomplete="username"
+                [value]="resetUsername()"
+                (input)="updateField('resetUsername', $event)"
+              />
+            </label>
+            <button type="submit" class="auth-primary-action">Submit</button>
+          </form>
+        }
+
+        @if (resetStep() === 'method') {
+          <div class="auth-tabs" role="tablist" aria-label="Reset password method">
+            <button type="button" role="tab" [attr.aria-selected]="resetMethod() === 'otp'" [class.active]="resetMethod() === 'otp'" (click)="chooseResetMethod('otp')">OTP</button>
+            <button type="button" role="tab" [attr.aria-selected]="resetMethod() === 'security'" [class.active]="resetMethod() === 'security'" (click)="chooseResetMethod('security')">Security Answer</button>
+          </div>
+
+          @if (resetMethod() === 'otp') {
+            <section class="auth-method-card" aria-label="Request OTP">
+              <h2>Onetime Password</h2>
+              <p>Dear Benjamin, we'll send a Onetime Password to your registered email.</p>
+              <button type="button" class="auth-primary-action" (click)="requestOtp()">Get OTP</button>
+              <p class="auth-helper">Attempts remaining {{ otpAttemptsRemaining() }}</p>
+            </section>
+          } @else {
+            <form class="auth-form" (submit)="$event.preventDefault(); validateSecurityAnswer()">
+              <label class="auth-field">
+                <span>Security Answer</span>
+                <input
+                  type="text"
+                  autocomplete="off"
+                  [value]="securityAnswer()"
+                  (input)="updateField('securityAnswer', $event)"
+                />
+              </label>
+              <button type="submit" class="auth-primary-action">Submit</button>
+            </form>
+          }
+        }
+
+        @if (resetStep() === 'otp') {
+          <form class="auth-form" (submit)="$event.preventDefault(); validateOtp()">
+            <section class="auth-method-card">
+              <h2>OTP Verification</h2>
+              <p>Enter OTP we've sent a 6-digit verification code to benjamin.s&#64;email.com</p>
+            </section>
+            <label class="auth-field">
+              <span>OTP</span>
+              <input
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                [value]="resetOtp()"
+                (input)="updateField('resetOtp', $event)"
+              />
+            </label>
+            <button type="submit" class="auth-primary-action">Verify</button>
+            <button type="button" class="auth-text-action" (click)="requestOtp()">Resend OTP (Attempts remaining {{ otpAttemptsRemaining() }})</button>
+          </form>
+        }
+
+        @if (resetStep() === 'password') {
+          <form class="auth-form" (submit)="$event.preventDefault(); submitPasswordReset()">
+            <ng-container *ngTemplateOutlet="passwordFields"></ng-container>
+            <button type="submit" class="auth-primary-action">Submit</button>
+          </form>
+        }
+
+        @if (resetStep() === 'complete') {
+          <button type="button" class="auth-primary-action" (click)="resetToLogin()">Login</button>
+        }
+      }
+
+      @case ('change') {
+        <form class="auth-form" (submit)="$event.preventDefault(); submitRegistration()">
+          <label class="auth-field">
+            <span>OTP</span>
+            <input
+              type="password"
+              autocomplete="one-time-code"
+              [value]="registrationOtp()"
+              (input)="updateField('registrationOtp', $event)"
+            />
+          </label>
+          <ng-container *ngTemplateOutlet="passwordFields"></ng-container>
+          <label class="auth-field">
+            <span>Security Question</span>
+            <select [value]="securityQuestion()" (change)="updateSecurityQuestion($event)">
+              <option>What is your favorite care recipient memory?</option>
+              <option>What city were you born in?</option>
+              <option>What is your first school name?</option>
+            </select>
+          </label>
+          <label class="auth-field">
+            <span>Security Answer</span>
+            <input
+              type="text"
+              autocomplete="off"
+              [value]="registrationSecurityAnswer()"
+              (input)="updateField('registrationSecurityAnswer', $event)"
+            />
+          </label>
+          <button type="submit" class="auth-primary-action">Submit</button>
+        </form>
+      }
+    }
+
+    <section class="auth-app-links" aria-label="Download mobile apps">
+      <p>For a better experience install the CareSmartz360 Caregiver App.</p>
+      <div>
+        <a href="https://apps.apple.com/in/app/caresmartz360/id1496331588" target="_blank" rel="noopener noreferrer">
+          <cs-icon name="phone_iphone" [size]="18" aria-hidden="true" />
+          App Store
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.caresmartz360.pro&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+          <cs-icon name="android" [size]="18" aria-hidden="true" />
+          Play Store
+        </a>
+      </div>
+    </section>
+
+    <footer class="auth-footer">
+      <a href="#" aria-label="Terms">Terms</a>
+      <a href="#" aria-label="Privacy and Security">Privacy & Security</a>
+      <a href="#" aria-label="Support">Support</a>
+      <a href="#" aria-label="Help Centre">Help Centre</a>
+    </footer>
+  </section>
+
+  <aside class="auth-visual" aria-label="Caregiver portal preview">
+    <div class="auth-preview-card">
+      <p>Caregiver Web Portal</p>
+      <h2>Manage schedules, shifts, documents, trainings, and messages in one secure portal.</h2>
+      <ul>
+        <li><cs-icon name="calendar_month" [size]="18" aria-hidden="true" /> Shift Calendar</li>
+        <li><cs-icon name="folder_managed" [size]="18" aria-hidden="true" /> Documents</li>
+        <li><cs-icon name="school" [size]="18" aria-hidden="true" /> Trainings</li>
+      </ul>
+    </div>
+  </aside>
+</main>
+
+<ng-template #passwordFields>
+  <label class="auth-field">
+    <span>New Password</span>
+    <input
+      type="password"
+      autocomplete="new-password"
+      [value]="newPassword()"
+      (input)="updateField('newPassword', $event)"
+    />
+  </label>
+  <label class="auth-field">
+    <span>Confirm New Password</span>
+    <input
+      type="password"
+      autocomplete="new-password"
+      [value]="confirmPassword()"
+      (input)="updateField('confirmPassword', $event)"
+    />
+  </label>
+  <ul class="auth-password-rules" aria-label="Password criteria">
+    <li [class.valid]="passwordState().isStrong">Strong Password</li>
+    <li [class.valid]="passwordState().matches">Password Matched</li>
+  </ul>
+</ng-template>

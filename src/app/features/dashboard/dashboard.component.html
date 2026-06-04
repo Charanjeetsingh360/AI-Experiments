@@ -1,194 +1,472 @@
-<div class="flex h-full flex-col overflow-hidden" style="background:#F7F8F8">
-
-  <!-- Page Header -->
-  <cs-page-header title="Home">
-  </cs-page-header>
-
-  <!-- Two-column body -->
-  <div class="flex flex-1 overflow-hidden gap-4 p-4">
-
-    <!-- LEFT COLUMN -->
-    <div class="flex flex-1 flex-col gap-4 overflow-y-auto min-w-0">
-
-      <!-- Promo Banner -->
-      <div class="relative overflow-hidden rounded-xl flex items-center justify-between px-8 py-6"
-           style="background:linear-gradient(135deg,#f5e6d0 0%,#ede0cc 100%);min-height:100px">
-        <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full"
-          style="background:rgba(255,255,255,0.7)">
-          <cs-icon name="chevron_left" [size]="18" />
+<div class="dashboard-page">
+  <main class="dashboard-primary" aria-label="Home dashboard">
+    @if (banners().length > 0) {
+      <section class="promo-carousel" role="region" aria-label="Promotions and updates">
+        <button type="button" class="carousel-arrow" (click)="prevBanner()" aria-label="Previous slide">
+          <cs-icon name="chevron_left" [size]="24" aria-hidden="true" />
         </button>
-        <div class="flex-1 text-center">
-          <p class="font-black" style="font-size:3.5rem;color:#c8a882;opacity:0.85;line-height:1">25%</p>
-          <p class="font-bold tracking-widest" style="color:#c8a882;opacity:0.85;font-size:1rem">EXTRA ON THIS WEEKEND</p>
+
+        <div class="promo-frame">
+          <div class="promo-content" [class.promo-content--night]="currentBanner().variant === 'night'">
+            <div class="promo-copy">
+              <div class="promo-title-row">
+                <span class="promo-highlight">{{ currentBanner().highlight }}</span>
+                <span class="promo-title">{{ currentBanner().title }}</span>
+              </div>
+              <p class="promo-subtitle">{{ currentBanner().subtitle }}</p>
+            </div>
+
+            <span class="promo-watermark" [class.promo-watermark--moon]="currentBanner().variant === 'night'">
+              {{ currentBanner().variant === 'night' ? 'moon' : currentBanner().mark }}
+            </span>
+          </div>
         </div>
-        <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full"
-          style="background:rgba(255,255,255,0.7)">
-          <cs-icon name="chevron_right" [size]="18" />
+
+        <button type="button" class="carousel-arrow" (click)="nextBanner()" aria-label="Next slide">
+          <cs-icon name="chevron_right" [size]="24" aria-hidden="true" />
+        </button>
+      </section>
+    }
+
+    @if (statusMessage()) {
+      <p class="dashboard-status" role="status" aria-live="polite">{{ statusMessage() }}</p>
+    }
+
+    <section class="dashboard-section" aria-labelledby="ongoing-shift-title">
+      <div class="section-title-row">
+        <h2 id="ongoing-shift-title" class="section-title">Ongoing Shift</h2>
+        <button type="button" class="btn-token btn-token--primary" aria-label="Create adhoc shift" (click)="openAdhocShift()">
+          <cs-icon name="add" [size]="18" aria-hidden="true" />
+          <span>Adhoc Shift</span>
         </button>
       </div>
 
-      <!-- Ongoing Shift -->
-      <div>
-        <div class="mb-2 flex items-center justify-between">
-          <h2 class="text-base font-semibold" style="color:#1e293b">Ongoing Shift</h2>
-          <button type="button"
-            class="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-white"
-            style="background:#2563eb">
-            <cs-icon name="add" [size]="14" />
-            Adhoc Shift
-          </button>
-        </div>
-        <div class="rounded-xl p-4" style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
-          <div class="flex items-start justify-between mb-3">
-            <div class="flex items-center gap-3">
-              <cs-avatar name="Marry Edison" size="md" />
-              <div>
-                <p class="font-semibold" style="color:#1e293b">Marry, Edison</p>
-                <p class="text-sm" style="color:#64748b">99 Marina bay Street, New YorkApprox. Distance : 25 miles</p>
+      @if (ongoingShift(); as ongoing) {
+        <article class="shift-card shift-card--ongoing" [attr.aria-label]="'Ongoing shift for ' + ongoing.clientName">
+          <div class="shift-header">
+            <div class="module-user-info">
+              <div class="shift-avatar">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
+              </div>
+              <div class="client-info-text">
+                <h3 class="client-name">{{ ongoing.clientName }}</h3>
+                <div class="client-sub-info">
+                  <span>{{ ongoing.address }}</span>
+                  <span>Approx. Distance : {{ ongoing.distance }}</span>
+                </div>
               </div>
             </div>
-            <button type="button" style="color:#64748b">
-              <cs-icon name="description" [size]="18" />
+            <button type="button" class="icon-button" aria-label="View shift notes" (click)="openShiftDetail(ongoing)">
+              <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
             </button>
           </div>
-          <div class="flex items-center justify-between text-xs mb-0.5" style="color:#64748b">
-            <span>MM/DD/YY</span><span>MM/DD/YY</span>
-          </div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium" style="color:#1e293b">2:00 AM (AST)</span>
-            <div class="flex items-center gap-1 text-xs" style="color:#64748b">
-              <cs-icon name="schedule" [size]="13" /><span>0h 30m</span>
+
+          <div class="shift-timings-bar" aria-label="Shift timing">
+            <div class="time-slot time-slot--start">
+              <span class="time-slot-label">{{ ongoing.date }}</span>
+              <span class="time-slot-value">{{ ongoing.startTime }} (AST)</span>
             </div>
-            <span class="text-sm font-medium" style="color:#1e293b">2:30 AM (AST)</span>
+            <div class="timeline-connector">
+              <div class="duration-pill">
+                <cs-icon name="schedule" [size]="16" aria-hidden="true" />
+                <span>{{ ongoing.duration }}</span>
+              </div>
+            </div>
+            <div class="time-slot time-slot--end">
+              <span class="time-slot-label">{{ ongoing.date }}</span>
+              <span class="time-slot-value">{{ ongoing.endTime }} (AST)</span>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <button type="button"
-              class="flex-1 rounded-lg py-2 text-sm font-medium"
-              style="border:1px solid #e2e8f0;background:white;color:#1e293b">
-              Clocked-In 2:03 PM
+
+          <div class="shift-actions-row">
+            <button type="button" class="btn-shift btn-shift--ghost" disabled>
+              Clocked-In {{ ongoing.clockedInTime }}
             </button>
-            <button type="button"
-              class="flex-1 rounded-lg py-2 text-sm font-bold text-white"
-              style="background:#22c55e">
+            <button type="button" class="btn-shift btn-shift--attention" (click)="clockOut()" aria-label="Clock out of current shift">
               Clock-Out
             </button>
           </div>
-          <div class="mt-2 flex justify-center" style="color:#64748b">
-            <cs-icon name="expand_more" [size]="20" />
-          </div>
+
+          <button type="button" class="shift-card-details-toggle" aria-label="Show ongoing shift details" (click)="openShiftDetail(ongoing)">
+            <cs-icon name="expand_more" [size]="20" aria-hidden="true" />
+          </button>
+        </article>
+      } @else {
+        <div class="empty-shift-state">
+          <cs-icon name="info" [size]="24" aria-hidden="true" />
+          <p>No ongoing shift at the moment.</p>
         </div>
+      }
+    </section>
+
+    <section class="dashboard-section" aria-labelledby="upcoming-shift-title">
+      <div class="section-title-row">
+        <h2 id="upcoming-shift-title" class="section-title">Upcoming Shift</h2>
       </div>
 
-      <!-- Upcoming Shift -->
-      <div>
-        <h2 class="mb-2 text-base font-semibold" style="color:#1e293b">Upcoming Shift</h2>
-        <div class="rounded-xl p-4" style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
-          <div class="flex items-start justify-between mb-3">
-            <div class="flex items-center gap-3">
-              <cs-avatar name="Marry Edison" size="md" />
-              <div>
-                <p class="font-semibold" style="color:#1e293b">Marry, Edison</p>
-                <p class="text-sm" style="color:#64748b">99 Marina bay Street, New YorkApprox. Distance : 25 miles</p>
+      @for (upcoming of upcomingShifts(); track upcoming.id) {
+        <article class="shift-card shift-card--upcoming" [attr.aria-label]="'Upcoming shift for ' + upcoming.clientName">
+          <div class="shift-header">
+            <div class="module-user-info">
+              <div class="shift-avatar">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
+              </div>
+              <div class="client-info-text">
+                <h3 class="client-name">{{ upcoming.clientName }}</h3>
+                <div class="client-sub-info">
+                  <span>{{ upcoming.address }}</span>
+                  <span>Approx. Distance : {{ upcoming.distance }}</span>
+                </div>
               </div>
             </div>
-            <button type="button" style="color:#64748b">
-              <cs-icon name="description" [size]="18" />
+            <button type="button" class="icon-button" aria-label="View shift notes" (click)="openShiftDetail(upcoming)">
+              <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
             </button>
           </div>
-          <div class="flex items-center justify-between text-xs mb-0.5" style="color:#64748b">
-            <span>MM/DD/YY</span><span>MM/DD/YY</span>
-          </div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium" style="color:#1e293b">2:00 AM (AST)</span>
-            <div class="flex items-center gap-1 text-xs" style="color:#64748b">
-              <cs-icon name="schedule" [size]="13" /><span>0h 30m</span>
+
+          <div class="shift-timings-bar" aria-label="Shift timing">
+            <div class="time-slot time-slot--start">
+              <span class="time-slot-label">{{ upcoming.date }}</span>
+              <span class="time-slot-value">{{ upcoming.startTime }} (AST)</span>
             </div>
-            <span class="text-sm font-medium" style="color:#1e293b">2:30 AM (AST)</span>
+            <div class="timeline-connector">
+              <div class="duration-pill">
+                <cs-icon name="schedule" [size]="16" aria-hidden="true" />
+                <span>{{ upcoming.duration }}</span>
+              </div>
+            </div>
+            <div class="time-slot time-slot--end">
+              <span class="time-slot-label">{{ upcoming.date }}</span>
+              <span class="time-slot-value">{{ upcoming.endTime }} (AST)</span>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <button type="button"
-              class="flex-1 rounded-lg py-2 text-sm font-bold text-white"
-              style="background:#22c55e">
+
+          <div class="shift-actions-row">
+            <button type="button" class="btn-shift btn-shift--attention" (click)="clockIn(upcoming)">
               Clock-In
             </button>
-            <button type="button"
-              class="flex-1 rounded-lg py-2 text-sm font-medium"
-              style="border:1px solid #e2e8f0;background:white;color:#1e293b">
+            <button type="button" class="btn-shift btn-shift--attention">
               Clock-Out
             </button>
           </div>
-          <div class="mt-2 flex items-center justify-center gap-1 text-xs" style="color:#64748b">
-            <cs-icon name="swap_horiz" [size]="14" />
-            Back to Back Shift
-          </div>
-          <div class="mt-2 flex justify-center" style="color:#64748b">
-            <cs-icon name="expand_more" [size]="20" />
-          </div>
-        </div>
-      </div>
 
-      <!-- Chart Dropdowns -->
-      <div class="flex gap-3 pb-4">
-        <button type="button"
-          class="flex flex-1 items-center justify-between rounded-lg px-4 py-2.5 text-sm"
-          style="border:1px solid #e2e8f0;background:white;color:#1e293b;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
-          Hours Serviced
-          <cs-icon name="expand_more" [size]="18" />
-        </button>
-        <button type="button"
-          class="flex flex-1 items-center justify-between rounded-lg px-4 py-2.5 text-sm"
-          style="border:1px solid #e2e8f0;background:white;color:#1e293b;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
-          Scheduled vs Approved
-          <cs-icon name="expand_more" [size]="18" />
-        </button>
-      </div>
+          @if (upcoming.backToBack) {
+            <div class="shift-card-b2b-footer">
+              <cs-icon name="swap_horiz" [size]="16" aria-hidden="true" />
+              <span>Back to Back Shift</span>
+            </div>
+          }
 
-    </div>
-
-    <!-- RIGHT COLUMN: Alerts Panel -->
-    <div class="flex w-80 shrink-0 flex-col overflow-hidden rounded-xl"
-         style="border:1px solid #e2e8f0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
-
-      <!-- Tabs -->
-      <div class="p-3" style="border-bottom:1px solid #e2e8f0">
-        <div class="flex flex-wrap gap-1.5">
-          @for (tab of alertTabs; track tab) {
-          <button type="button"
-            (click)="activeAlertTab = tab"
-            class="rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-            [style]="activeAlertTab === tab
-              ? 'background:#2563eb;color:white'
-              : 'background:#F7F8F8;color:#64748b'">
-            {{ tab }}
+          <button type="button" class="shift-card-details-toggle" aria-label="Show upcoming shift details" (click)="openShiftDetail(upcoming)">
+            <cs-icon name="expand_more" [size]="20" aria-hidden="true" />
           </button>
+        </article>
+      }
+    </section>
+
+    <section class="stats-container" aria-label="Reports and metrics">
+      <article class="stats-card">
+        <header class="stats-header">
+          <div class="stats-title-block">
+            <h2 class="stats-title">Hours Serviced</h2>
+            <span class="stats-subtitle">Last 7 Days</span>
+          </div>
+          <span class="stats-summary-badge">Total: 42.5 hrs</span>
+        </header>
+
+        <div class="chart-controls">
+          <select class="chart-picker" aria-label="Hours serviced range">
+            <option>Month</option>
+            <option selected>Week</option>
+            <option>Today</option>
+          </select>
+        </div>
+
+        <div class="bar-chart-wrapper">
+          <div class="chart-y-gridlines" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          @for (bar of servicedBars; track bar.label + bar.value) {
+            <div class="chart-bar-container">
+              <div [class]="'chart-bar approved-bar ' + bar.heightClass" [attr.data-hours]="bar.value"></div>
+              <span class="chart-x-label">{{ bar.label }}</span>
+            </div>
           }
         </div>
-      </div>
 
-      <!-- Last 7 days -->
-      <div class="flex items-center justify-between px-4 py-2" style="border-bottom:1px solid #e2e8f0">
-        <span class="text-xs font-medium" style="color:#64748b">Last 7 days</span>
-        <button type="button" class="text-xs font-medium hover:underline" style="color:#2563eb">
-          Mark All as Read
-        </button>
-      </div>
-
-      <!-- Notifications -->
-      <div class="flex-1 overflow-y-auto">
-        @for (alert of alerts; track alert.id) {
-        <div class="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors hover:bg-[#F7F8F8]"
-             style="border-bottom:1px solid #f1f5f9">
-          <cs-icon name="warning" [size]="18" class="mt-0.5 shrink-0" style="color:#ef4444" />
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold" style="color:#1e293b">{{ alert.title }}</p>
-            <p class="text-xs mt-0.5 leading-snug" style="color:#64748b">{{ alert.body }}</p>
-          </div>
-          <cs-icon name="chevron_right" [size]="16" class="shrink-0 mt-1" style="color:#94a3b8" />
+        <div class="chart-legends">
+          <span class="legend-dot legend-dot--success"></span>
+          <span>Serviced Hours</span>
         </div>
-        }
-      </div>
+      </article>
 
+      <article class="stats-card">
+        <header class="stats-header">
+          <div class="stats-title-block">
+            <h2 class="stats-title">Scheduled vs Approved</h2>
+            <span class="stats-subtitle">Last 7 Days</span>
+          </div>
+          <span class="stats-summary-badge">Variance: -2 hrs</span>
+        </header>
+
+        <div class="chart-controls">
+          <select class="chart-picker" aria-label="Scheduled vs approved range">
+            <option>Month</option>
+            <option selected>Week</option>
+            <option>Today</option>
+          </select>
+        </div>
+
+        <div class="bar-chart-wrapper">
+          <div class="chart-y-gridlines" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          @for (bar of comparisonBars; track bar.label + bar.scheduledValue) {
+            <div class="chart-bar-container">
+              <div class="double-bar-wrapper">
+                <div [class]="'chart-bar scheduled-bar ' + bar.scheduledHeightClass" [attr.data-hours]="bar.scheduledValue"></div>
+                <div [class]="'chart-bar approved-bar ' + bar.approvedHeightClass" [attr.data-hours]="bar.approvedValue"></div>
+              </div>
+              <span class="chart-x-label">{{ bar.label }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="chart-legends">
+          <span class="legend-dot legend-dot--warning"></span>
+          <span>Scheduled</span>
+          <span class="legend-dot legend-dot--success"></span>
+          <span>Approved</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <aside class="alerts-panel" aria-labelledby="alerts-panel-title">
+    <h2 id="alerts-panel-title" class="sr-only">Notifications Center</h2>
+
+    <nav class="tabs-wrapper" role="tablist" aria-label="Notification Categories">
+      @for (tab of alertTabs; track tab) {
+        <button
+          type="button"
+          role="tab"
+          class="tab-btn"
+          (click)="activeAlertTab.set(tab)"
+          [class.tab-btn--active]="activeAlertTab() === tab"
+          [attr.aria-selected]="activeAlertTab() === tab"
+          [attr.aria-controls]="'tab-panel-' + tabId(tab)"
+          [id]="'tab-' + tabId(tab)"
+        >
+          {{ tab }}
+        </button>
+      }
+    </nav>
+
+    <div class="alerts-header">
+      <span class="alerts-title">Last 7 days</span>
+      <button type="button" class="btn-mark-all" (click)="markAllAsRead()">Mark All as Read</button>
     </div>
 
-  </div>
+    <div
+      class="alerts-list"
+      role="tabpanel"
+      [id]="'tab-panel-' + tabId(activeAlertTab())"
+      [attr.aria-labelledby]="'tab-' + tabId(activeAlertTab())"
+    >
+      @for (alert of filteredAlerts(); track alert.id) {
+        <article
+          class="alert-card"
+          role="button"
+          tabindex="0"
+          (click)="openAlert(alert)"
+          (keydown.enter)="openAlert(alert)"
+          (keydown.space)="$event.preventDefault(); openAlert(alert)"
+        >
+          <span class="alert-icon-wrapper" [class.alert-icon--warning]="alert.iconName === 'warning'">
+            <cs-icon [name]="alert.iconName" [size]="24" aria-hidden="true" />
+          </span>
+          <div class="alert-copy">
+            <h3>{{ alert.title }}</h3>
+            <p>{{ alert.body }}</p>
+          </div>
+          <cs-icon name="chevron_right" [size]="24" class="alert-chevron" aria-hidden="true" />
+        </article>
+      } @empty {
+        <div class="empty-alerts-state">
+          <cs-icon name="check_circle" [size]="28" aria-hidden="true" />
+          <p>All caught up!</p>
+        </div>
+      }
+    </div>
+  </aside>
+
+  <section class="mobile-alert-actions" aria-label="Notification actions">
+    @for (tab of alertTabs; track tab) {
+      <button
+        type="button"
+        class="mobile-alert-action"
+        (click)="openMobileAlertPanel(tab)"
+        [attr.aria-controls]="'mobile-alert-dialog'"
+        [attr.aria-expanded]="selectedMobileAlertTab() === tab"
+      >
+        <span class="mobile-alert-action-label">{{ tab }}</span>
+        <span class="mobile-alert-action-count" aria-label="Notification count">{{ alertCountFor(tab) }}</span>
+      </button>
+    }
+  </section>
+
+  @if (selectedMobileAlertTab(); as mobileAlertTab) {
+    <section
+      id="mobile-alert-dialog"
+      class="mobile-alert-dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'mobile-alert-title-' + tabId(mobileAlertTab)"
+      tabindex="-1"
+      (keydown.escape)="closeMobileAlertPanel()"
+    >
+      <header class="mobile-alert-dialog-header">
+        <div class="mobile-alert-dialog-title-block">
+          <span class="mobile-alert-dialog-eyebrow">Notifications</span>
+          <h2 class="mobile-alert-dialog-title" [id]="'mobile-alert-title-' + tabId(mobileAlertTab)">
+            {{ mobileAlertTab }}
+          </h2>
+        </div>
+        <button type="button" class="mobile-dialog-close" (click)="closeMobileAlertPanel()" aria-label="Close notifications popup">
+          <cs-icon name="close" [size]="24" aria-hidden="true" />
+        </button>
+      </header>
+
+      <div class="mobile-alert-dialog-meta">
+        <span class="alerts-title">Last 7 days</span>
+        <button type="button" class="btn-mark-all" (click)="markAllAsRead()">Mark All as Read</button>
+      </div>
+
+      <div class="alerts-list mobile-alert-dialog-list" role="list" [attr.aria-label]="mobileAlertTab + ' notifications'">
+        @for (alert of filteredAlerts(); track alert.id) {
+          <article
+            class="alert-card card-notification"
+            role="button"
+            tabindex="0"
+            (click)="openAlert(alert)"
+            (keydown.enter)="openAlert(alert)"
+            (keydown.space)="$event.preventDefault(); openAlert(alert)"
+          >
+            <span class="alert-icon-wrapper icon" [class.alert-icon--warning]="alert.iconName === 'warning'">
+              <cs-icon [name]="alert.iconName" [size]="24" [filled]="true" aria-hidden="true" />
+            </span>
+            <div class="alert-copy task-info">
+              <h3>{{ alert.title }}</h3>
+              <p>{{ alert.body }}</p>
+            </div>
+            <cs-icon name="chevron_right" [size]="24" class="alert-chevron action-icon" aria-hidden="true" />
+          </article>
+        } @empty {
+          <div class="empty-alerts-state">
+            <cs-icon name="check_circle" [size]="28" aria-hidden="true" />
+            <p>All caught up!</p>
+          </div>
+        }
+      </div>
+    </section>
+  }
 </div>
+
+<cs-flyout
+  [isOpen]="showAdhocFlyout()"
+  (isOpenChange)="!$event && closeAdhocShift()"
+  position="right"
+  width="460px"
+  ariaLabel="Create adhoc shift"
+>
+  <div flyout-header class="dashboard-flyout-header">
+    <h2>Create Adhoc Shift</h2>
+    <button type="button" (click)="closeAdhocShift()" aria-label="Close adhoc shift">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+  <div flyout-body class="dashboard-flyout-body">
+    <label>
+      Client Name
+      <input type="text" [(ngModel)]="adhocClientName" />
+    </label>
+    <label>
+      Start Time
+      <input type="time" [(ngModel)]="adhocStartTime" />
+    </label>
+    <label>
+      End Time
+      <input type="time" [(ngModel)]="adhocEndTime" />
+    </label>
+  </div>
+  <div flyout-footer class="dashboard-flyout-footer">
+    <button type="button" class="dashboard-btn-secondary" (click)="closeAdhocShift()">Cancel</button>
+    <button type="button" class="dashboard-btn-primary" (click)="saveAdhocShift()">Create</button>
+  </div>
+</cs-flyout>
+
+<cs-flyout
+  [isOpen]="!!selectedShiftDetail()"
+  (isOpenChange)="!$event && closeShiftDetail()"
+  position="right"
+  width="460px"
+  ariaLabel="Shift details"
+>
+  <div flyout-header class="dashboard-flyout-header">
+    <h2>Shift Details</h2>
+    <button type="button" (click)="closeShiftDetail()" aria-label="Close shift details">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+  <div flyout-body class="dashboard-flyout-body">
+    @if (selectedShiftDetail(); as shift) {
+      <section class="dashboard-detail-card">
+        <h3>{{ shift.clientName }}</h3>
+        <p>{{ shift.address }}</p>
+      </section>
+      <dl class="dashboard-detail-list">
+        <div><dt>Date</dt><dd>{{ shift.date }}</dd></div>
+        <div><dt>Time</dt><dd>{{ shift.startTime }} - {{ shift.endTime }} AST</dd></div>
+        <div><dt>Duration</dt><dd>{{ shift.duration }}</dd></div>
+        <div><dt>Distance</dt><dd>{{ shift.distance }}</dd></div>
+      </dl>
+    }
+  </div>
+  <div flyout-footer class="dashboard-flyout-footer">
+    <button type="button" class="dashboard-btn-primary" (click)="closeShiftDetail()">Done</button>
+  </div>
+</cs-flyout>
+
+<cs-flyout
+  [isOpen]="!!selectedAlert()"
+  (isOpenChange)="!$event && closeAlert()"
+  position="right"
+  width="460px"
+  ariaLabel="Notification details"
+>
+  <div flyout-header class="dashboard-flyout-header">
+    <h2>Notification Details</h2>
+    <button type="button" (click)="closeAlert()" aria-label="Close notification details">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+  <div flyout-body class="dashboard-flyout-body">
+    @if (selectedAlert(); as alert) {
+      <section class="dashboard-detail-card">
+        <cs-icon [name]="alert.iconName" [size]="24" aria-hidden="true" />
+        <h3>{{ alert.title }}</h3>
+        <p>{{ alert.body }}</p>
+        <small>{{ alert.timestamp }}</small>
+      </section>
+    }
+  </div>
+  <div flyout-footer class="dashboard-flyout-footer">
+    <button type="button" class="dashboard-btn-primary" (click)="closeAlert()">Acknowledge</button>
+  </div>
+</cs-flyout>

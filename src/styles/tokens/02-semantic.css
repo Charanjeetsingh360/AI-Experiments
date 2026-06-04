@@ -122,6 +122,7 @@
   --cs360-bg-default:                 var(--cs360-bg-surface);
   --cs360-bg-muted:                   var(--cs360-bg-alt);
   --cs360-bg-surface-active:          var(--cs360-bg-surface-hover);
+  --cs360-bg-surface-brand:           #f0f7ff;  /* Figma: surface/brand-background */
 
   /* Text aliases */
   --cs360-text-muted:                 var(--cs360-text-tertiary);
@@ -130,8 +131,16 @@
   --cs360-border-focus:               var(--cs360-action-primary);
 
   /* Shift card tokens */
-  --cs360-shift-card-bg:              var(--cs360-blue-25);   /* #EAEEF8 */
-  --cs360-shift-accent:               var(--cs360-blue-325);  /* #4DA6FF */
+  --cs360-shift-scheduled-bg:         var(--cs360-blue-25);    /* #EAEEF8 */
+  --cs360-shift-scheduled-accent:     var(--cs360-blue-325);   /* #4DA6FF */
+  --cs360-shift-approved-bg:          var(--cs360-green-25);   /* #EBF7F1 */
+  --cs360-shift-approved-accent:      var(--cs360-green-550);  /* #11A760 */
+  --cs360-shift-open-bg:              var(--cs360-red-25);     /* #FCECED */
+  --cs360-shift-open-accent:          var(--cs360-red-550);    /* #EA1B27 */
+  --cs360-meeting-scheduled-bg:       var(--cs360-amber-25);   /* #FDF7EC */
+  --cs360-meeting-scheduled-accent:   var(--cs360-amber-550);  /* #F8A719 */
+  --cs360-shift-card-bg:              var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent:               var(--cs360-shift-scheduled-accent);
 }
 
 /* ----------------------------------------------------------------------------- */
@@ -209,6 +218,7 @@
   --cs360-bg-default:      var(--cs360-neutral-800);
   --cs360-bg-muted:        var(--cs360-neutral-700);
   --cs360-bg-surface-active: var(--cs360-neutral-700);
+  --cs360-bg-surface-brand: #1e293b; /* dark equivalent of brand-background */
 
   /* TEXT ALIAS TOKENS */
   --cs360-text-muted:      var(--cs360-neutral-500);
@@ -248,8 +258,16 @@
   --cs360-focus-ring:      0 0 0 2px var(--cs360-blue-500);
 
   /* SHIFT CARD TOKENS */
-  --cs360-shift-card-bg:   var(--cs360-neutral-700);
-  --cs360-shift-accent:    var(--cs360-blue-350);
+  --cs360-shift-scheduled-bg:       rgba(77, 166, 255, 0.14);
+  --cs360-shift-scheduled-accent:   #60a5fa;
+  --cs360-shift-approved-bg:        rgba(17, 167, 96, 0.16);
+  --cs360-shift-approved-accent:    #4ade80;
+  --cs360-shift-open-bg:            rgba(234, 27, 39, 0.14);
+  --cs360-shift-open-accent:        #f87171;
+  --cs360-meeting-scheduled-bg:     rgba(248, 167, 25, 0.14);
+  --cs360-meeting-scheduled-accent: #fbbf24;
+  --cs360-shift-card-bg:            var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent:             var(--cs360-shift-scheduled-accent);
 }
 
 /* ----------------------------------------------------------------------------- */
@@ -329,6 +347,7 @@
   --cs360-bg-default:      #000000;
   --cs360-bg-muted:        #1a1a1a;
   --cs360-bg-surface-active: #0d0d0d;
+  --cs360-bg-surface-brand: #0a1628; /* HC dark equivalent of brand-background */
 
   /* TEXT ALIAS TOKENS */
   --cs360-text-muted:      #c8c8c8;
@@ -368,6 +387,14 @@
   --cs360-focus-ring:      0 0 0 3px #1aebff;
 
   /* SHIFT CARD TOKENS */
-  --cs360-shift-card-bg:   #000000;   /* Pure black card */
-  --cs360-shift-accent:    #1aebff;   /* Neon cyan left accent bar */
+  --cs360-shift-scheduled-bg:       #000000;
+  --cs360-shift-scheduled-accent:   #1aebff;
+  --cs360-shift-approved-bg:        #000000;
+  --cs360-shift-approved-accent:    #3ff23f;
+  --cs360-shift-open-bg:            #000000;
+  --cs360-shift-open-accent:        #ff6161;
+  --cs360-meeting-scheduled-bg:     #000000;
+  --cs360-meeting-scheduled-accent: #ffff01;
+  --cs360-shift-card-bg:            var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent:             var(--cs360-shift-scheduled-accent);
 }

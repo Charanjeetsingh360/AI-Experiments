@@ -1,0 +1,100 @@
+<article
+  class="shift-card-root"
+  [attr.aria-label]="'Shift for ' + shift.clientName"
+  (click)="onCardClick()"
+  (keydown.enter)="onCardClick()"
+  (keydown.space)="$event.preventDefault(); onCardClick()"
+  tabindex="0"
+>
+  <div class="shift-card-accent" aria-hidden="true"></div>
+
+  <div class="shift-card-body">
+    <!-- Header: avatar + name/address + notes icon -->
+    <header class="shift-card-header">
+      <div class="shift-card-user-info">
+        <div class="shift-card-avatar">
+          <img [src]="shift.avatarUrl || defaultAvatar" [alt]="shift.clientName" />
+        </div>
+        <div class="shift-card-client">
+          <h3 class="shift-card-client-name">{{ shift.clientName }}</h3>
+          <div class="shift-card-client-sub">
+            <span>{{ shift.clientAddress }}</span>
+            @if (shift.distance) {
+              <span>Approx. Distance : {{ shift.distance }}</span>
+            }
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="shift-card-icon-btn"
+        aria-label="View shift notes"
+        (click)="onNotesClick($event)"
+      >
+        <cs-icon name="description" [size]="24" aria-hidden="true" />
+      </button>
+    </header>
+
+    <!-- Time bar: start | duration pill | end -->
+    <div class="shift-card-timings" aria-label="Shift timings">
+      <div class="time-slot time-slot--start">
+        @if (shift.date) {
+          <span class="time-slot-date">{{ shift.date }}</span>
+        }
+        <span class="time-slot-value">{{ shift.startTime }} ({{ shift.timezone }})</span>
+        @if (shift.clockInTime) {
+          <span class="time-slot-clock">Clock-In {{ shift.clockInTime }}</span>
+        }
+      </div>
+
+      <div class="timeline-connector">
+        <div class="duration-pill">
+          <cs-icon name="schedule" [size]="16" aria-hidden="true" />
+          <span>{{ shift.duration }}</span>
+        </div>
+      </div>
+
+      <div class="time-slot time-slot--end">
+        @if (shift.date) {
+          <span class="time-slot-date">{{ shift.date }}</span>
+        }
+        <span class="time-slot-value">{{ shift.endTime }} ({{ shift.timezone }})</span>
+        @if (shift.clockOutTime) {
+          <span class="time-slot-clock">Clock-Out {{ shift.clockOutTime }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Footer: service code chip OR active clock-out action -->
+    @if (isActive) {
+      <div class="shift-card-actions">
+        <button
+          type="button"
+          class="btn-clock btn-clock--ghost"
+          disabled
+          aria-label="Currently clocked in"
+        >
+          Clocked-In {{ shift.clockInTime }}
+        </button>
+        <button
+          type="button"
+          class="btn-clock btn-clock--attention"
+          aria-label="Clock out of this shift"
+          (click)="onClockOut($event)"
+        >
+          Clock-Out
+        </button>
+      </div>
+    } @else if (shift.serviceType) {
+      <div class="shift-card-footer">
+        <span
+          class="service-code-chip"
+          [attr.data-tone]="resolvedTone"
+          [attr.aria-label]="'Service: ' + shift.serviceType"
+        >
+          {{ serviceCode }}
+        </span>
+      </div>
+    }
+  </div>
+</article>

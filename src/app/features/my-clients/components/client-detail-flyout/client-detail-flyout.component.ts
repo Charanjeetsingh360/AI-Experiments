@@ -101,7 +101,7 @@ export interface ClientAction {
               <div class="z-[1] -mx-[2px] flex shrink-0 items-center justify-center">
                 <div class="shrink-0 overflow-hidden rounded-full
                             shadow-[0_0_0_4px_var(--cs360-bg-surface),0_0_0_8px_var(--cs360-action-primary-subtle)]">
-                  <cs-avatar [name]="clientName" [src]="client.avatar_url" [sizePx]="70" />
+                  <cs-avatar [name]="clientName" [src]="client.avatar_url" [initials]="client.initials" [sizePx]="70" />
                 </div>
               </div>
 
@@ -294,8 +294,8 @@ export class ClientDetailFlyoutComponent {
 
   get clientAddress(): string {
     if (!this.client) return '';
-    const { street, city, state } = this.client.address;
-    return `${street}, ${city}, ${state}`;
+    const { street, city, state, zip } = this.client.address;
+    return [street, city, state, zip].filter(Boolean).join(', ');
   }
 
   onClose(): void {

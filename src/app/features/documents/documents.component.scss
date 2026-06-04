@@ -4,3 +4,54 @@
   height: 100%;
   overflow: hidden;
 }
+
+.documents-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--density-space-3);
+  padding: var(--density-space-3) var(--density-space-page) 0;
+}
+
+.documents-search {
+  display: flex;
+  min-height: var(--density-control-height-lg);
+  min-width: min(100%, 320px);
+  align-items: center;
+  gap: var(--density-space-2);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-bg-surface);
+  color: var(--cs360-text-tertiary);
+  padding: 0 var(--density-space-3);
+}
+
+.documents-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--cs360-text-primary);
+  font-size: var(--density-text-body);
+  outline: none;
+}
+
+.documents-search input::placeholder {
+  color: var(--cs360-text-tertiary);
+}
+
+.documents-status {
+  margin: var(--density-space-2) var(--density-space-page) 0;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-feedback-success-bg);
+  color: var(--cs360-feedback-success);
+  font-size: var(--density-text-body-muted);
+  padding: var(--density-space-2) var(--density-space-3);
+}
+
+input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--cs360-action-primary);
+}

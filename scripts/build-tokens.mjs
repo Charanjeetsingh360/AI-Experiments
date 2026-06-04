@@ -9,9 +9,9 @@
  *   tokens/sd-input/tokens/Color Theme/Soothing Dark Mode.json
  *   tokens/sd-input/tokens/Color Theme/High Contrast.json
  *   tokens/sd-input/tokens/Color Theme/Stark Dark Mode - Testcase.json
- *   tokens/sd-input/tokens/Density Modes/semantic-density.json  → Default
- *   tokens/sd-input/tokens/Density Modes/Large.json
- *   tokens/sd-input/tokens/Density Modes/Small.json
+ *   tokens/sd-input/tokens/Density Modes/semantic-density.json  → Normal/default
+ *   tokens/sd-input/tokens/Density Modes/Large.json             → Comfortable
+ *   tokens/sd-input/tokens/Density Modes/Small.json             → Compact
  *
  * Outputs:
  *   tokens/output/css/tokens.css  → all modes as CSS custom property blocks
@@ -109,9 +109,9 @@ async function main() {
   ];
 
   const densityModes = [
-    { label: 'density-default', selector: ':root, [data-density="default"]', file: path.join(DENSITY_DIR, 'semantic-density.json') },
-    { label: 'density-large',   selector: '[data-density="large"]',          file: path.join(DENSITY_DIR, 'Large.json') },
-    { label: 'density-small',   selector: '[data-density="small"]',          file: path.join(DENSITY_DIR, 'Small.json') },
+    { label: 'density-default',     selector: ':root, [data-density="default"], [data-density="normal"]', file: path.join(DENSITY_DIR, 'semantic-density.json') },
+    { label: 'density-comfortable', selector: '[data-density="comfortable"], [data-density="large"]',     file: path.join(DENSITY_DIR, 'Large.json') },
+    { label: 'density-compact',     selector: '[data-density="compact"], [data-density="small"]',         file: path.join(DENSITY_DIR, 'Small.json') },
   ];
 
   // 3. Build each mode block

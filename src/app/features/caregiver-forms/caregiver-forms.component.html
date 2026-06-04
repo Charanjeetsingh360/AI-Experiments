@@ -1,9 +1,187 @@
-<div class="flex h-full flex-col overflow-hidden">
-  <cs-page-header title="Caregiver Forms" description="Access and submit forms required for caregiving activities." />
-  <div class="flex flex-1 flex-col items-center justify-center gap-[var(--density-space-4)] text-[var(--cs360-text-secondary)]">
-    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--cs360-bg-alt)]">
-      <cs-icon name="assignment" [size]="40" />
+<section class="caregiver-forms" aria-label="Caregiver Forms">
+  <cs-page-header
+    title="Caregiver Forms"
+    description="Access, complete and submit forms required for caregiving activities."
+  >
+    <div header-actions>
+      <button type="button" class="caregiver-forms__primary-action" (click)="openAddForm()">
+        <cs-icon name="add" [size]="18" aria-hidden="true" />
+        Add New Form
+      </button>
     </div>
-    <p class="text-sm">Caregiver forms feature coming soon.</p>
+  </cs-page-header>
+
+  <div class="caregiver-forms__toolbar" aria-label="Caregiver form filters">
+    <label class="caregiver-forms__search">
+      <span class="sr-only">Search forms</span>
+      <cs-icon name="search" [size]="18" aria-hidden="true" />
+      <input
+        type="search"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search forms"
+      />
+    </label>
+
+    <label class="caregiver-forms__select">
+      <span>Form Status :</span>
+      <select
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)"
+        aria-label="Filter by form status"
+      >
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </label>
+
+    <button type="button" class="caregiver-forms__apply" (click)="applyFilters()">Apply</button>
+    <button type="button" class="caregiver-forms__reset" (click)="resetFilters()">Reset</button>
   </div>
-</div>
+
+  <div class="caregiver-forms__meta" aria-live="polite">
+    Showing {{ totalForms() }} caregiver form{{ totalForms() === 1 ? '' : 's' }}
+  </div>
+
+  <div class="caregiver-forms__grid" aria-label="Caregiver form cards">
+    @for (form of filteredForms(); track form.id; let first = $first) {
+      <article class="caregiver-forms__card">
+        <header>
+          <div>
+            <h2>{{ form.title }}</h2>
+            <p>{{ form.category }}</p>
+          </div>
+          <button type="button" aria-label="More form actions" *ngIf="first">
+            <cs-icon name="more_vert" [size]="20" aria-hidden="true" />
+          </button>
+        </header>
+
+        <span class="caregiver-forms__status" [ngClass]="statusClass(form.status)">
+          {{ form.status }}
+        </span>
+
+        <p class="caregiver-forms__modified">
+          Modified on {{ form.modifiedOn }} by {{ form.modifiedBy }}
+        </p>
+
+        <div class="caregiver-forms__progress">
+          <span>{{ progressText(form) }}</span>
+          <span>Due {{ form.dueDate }}</span>
+        </div>
+
+        <button type="button" class="caregiver-forms__open" (click)="openForm(form)">
+          {{ form.status === 'COMPLETED' ? 'Review Form' : 'Open Form' }}
+          <cs-icon name="chevron_right" [size]="18" aria-hidden="true" />
+        </button>
+      </article>
+    } @empty {
+      <div class="caregiver-forms__empty">
+        <cs-icon name="assignment" [size]="36" aria-hidden="true" />
+        <p>No caregiver forms match the current filters.</p>
+      </div>
+    }
+  </div>
+</section>
+
+<cs-flyout
+  [isOpen]="showAddFlyout()"
+  (isOpenChange)="showAddFlyout.set($event)"
+  position="right"
+  width="480px"
+  ariaLabel="Add New Form"
+>
+  <div flyout-header class="caregiver-forms__flyout-header">
+    <h2>Add New Form</h2>
+    <button type="button" (click)="closeAddForm()" aria-label="Close add form panel">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div flyout-body class="caregiver-forms__flyout-body">
+    <label>
+      <span>Form Template</span>
+      <select [ngModel]="newFormCategory()" (ngModelChange)="newFormCategory.set($event)">
+        <option>Daily Visit Note</option>
+        <option>Client Signature Form</option>
+        <option>Medication Reminder Log</option>
+        <option>Incident Report</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Form Name</span>
+      <input
+        type="text"
+        [ngModel]="newFormTitle()"
+        (ngModelChange)="newFormTitle.set($event)"
+        placeholder="Enter form name"
+      />
+    </label>
+
+    <div class="caregiver-forms__template-preview">
+      <cs-icon name="rule" [size]="24" aria-hidden="true" />
+      <div>
+        <strong>{{ newFormCategory() }}</strong>
+        <p>Includes client details, shift summary, notes, attachments and signature review.</p>
+      </div>
+    </div>
+  </div>
+
+  <div flyout-footer class="caregiver-forms__flyout-footer">
+    <button type="button" class="caregiver-forms__secondary-action" (click)="closeAddForm()">Cancel</button>
+    <button type="button" class="caregiver-forms__primary-action" (click)="createForm()">Create Form</button>
+  </div>
+</cs-flyout>
+
+<cs-flyout
+  [isOpen]="showReviewFlyout()"
+  (isOpenChange)="showReviewFlyout.set($event)"
+  position="right"
+  width="520px"
+  ariaLabel="Review caregiver form"
+>
+  <div flyout-header class="caregiver-forms__flyout-header">
+    <h2>{{ selectedForm()?.title || 'Caregiver Form' }}</h2>
+    <button type="button" (click)="closeReview()" aria-label="Close form review panel">
+      <cs-icon name="close" [size]="20" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div flyout-body class="caregiver-forms__review">
+    @if (selectedForm(); as form) {
+      <div class="caregiver-forms__review-summary">
+        <span class="caregiver-forms__status" [ngClass]="statusClass(form.status)">{{ form.status }}</span>
+        <p>{{ form.category }}</p>
+        <small>Modified on {{ form.modifiedOn }} by {{ form.modifiedBy }}</small>
+      </div>
+
+      <section>
+        <h3>Required Sections</h3>
+        <ul>
+          <li><cs-icon name="check_circle" [size]="18" aria-hidden="true" /> Client and shift details</li>
+          <li><cs-icon name="check_circle" [size]="18" aria-hidden="true" /> Care tasks completed</li>
+          <li><cs-icon name="check_circle" [size]="18" aria-hidden="true" /> Notes and observations</li>
+          <li><cs-icon name="check_circle" [size]="18" aria-hidden="true" /> Attachments and signatures</li>
+        </ul>
+      </section>
+
+      <label>
+        <span>Caregiver Notes</span>
+        <textarea rows="5" placeholder="Document visit notes and completion details."></textarea>
+      </label>
+    }
+  </div>
+
+  <div flyout-footer class="caregiver-forms__flyout-footer">
+    <button type="button" class="caregiver-forms__secondary-action" (click)="closeReview()">Close</button>
+    <button
+      type="button"
+      class="caregiver-forms__primary-action"
+      [disabled]="selectedForm()?.status === 'COMPLETED'"
+      (click)="submitSelectedForm()"
+    >
+      Submit for Approval
+    </button>
+  </div>
+</cs-flyout>

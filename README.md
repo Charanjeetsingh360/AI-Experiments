@@ -106,9 +106,9 @@ themeService.density()  // 'compact' | 'default' | 'comfortable'
 
 ## Figma MCP Integration
 
-### Sync Tokens from Figma
+### Export Figma Screenshot Baselines
 ```bash
-npm run figma:sync
+FIGMA_API_TOKEN=<your-token> npm run figma:export
 ```
 
 ### Generate Token Outputs
@@ -119,6 +119,18 @@ npm run tokens:generate
 ### Validate Tokens
 ```bash
 npm run tokens:validate
+```
+
+### Run Visual QA Screenshots
+```bash
+npm run qa:visual
+```
+
+Visual QA compares Angular routes against committed Figma PNG baselines in `tests/visual/figma-baselines`. Keep `FIGMA_API_TOKEN` in your shell or CI secrets only; never commit it to source files.
+
+### Check for Committed MCP Secrets
+```bash
+npm run secrets:check
 ```
 
 ## Quick Start

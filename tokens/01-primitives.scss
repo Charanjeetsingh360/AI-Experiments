@@ -73,6 +73,15 @@
   --cs360-accent-start: #FEF3C7;
   --cs360-accent-end:   #FDE68A;
   --cs360-accent-text:  #92400E;
+  --cs360-promo-weekend-bg-start: #FFF3D5;
+  --cs360-promo-weekend-bg-end:   #E5E7FF;
+  --cs360-promo-night-bg-start:   #CCF3E3;
+  --cs360-promo-night-bg-end:     #B4C8F5;
+  --cs360-promo-highlight-start:  #FFAE5C;
+  --cs360-promo-highlight-end:    #A6C7ED;
+  --cs360-promo-title:            #A1A1A1;
+  --cs360-promo-subtitle:         #E39F5B;
+  --cs360-promo-watermark:        rgba(255, 255, 255, 0.5);
 }
 
 // -----------------------------------------------------------------------------
@@ -100,9 +109,9 @@
   --cs360-space-32:  8rem;       // 128px
 
   // Component-specific spacing references
-  --cs360-sidebar-width:        16rem;    // 256px (Figma sidebar width)
-  --cs360-topbar-height:        4rem;     // 64px (Figma topbar height)
-  --cs360-right-panel-width:    20rem;    // 320px (Figma right panel)
+  --cs360-sidebar-width:        200px;    // Figma sidebar width
+  --cs360-topbar-height:        52px;     // Figma topbar height
+  --cs360-right-panel-width:    400px;    // Figma right module sidebar
   --cs360-max-content-width:    72rem;    // 1152px
 }
 
@@ -197,4 +206,3 @@
   --cs360-z-tooltip:     1070;
   --cs360-z-toast:       1080;
 }
-

@@ -47,28 +47,34 @@
   --cs360-neutral-950:  #020617;
 
   /* Success (Figma: Status / Success) */
+  --cs360-green-25:    #EBF7F1;  /* Figma status/shift/approved-bg */
   --cs360-green-0:     #ECFDF0;
   --cs360-green-50:    #F0FDF4;
   --cs360-green-100:   #DCFCE8;
   --cs360-green-200:   #B2F8C9;
   --cs360-green-500:   #10B981;
+  --cs360-green-550:   #11A760;  /* Figma status/shift/approved */
   --cs360-green-600:   #16A34A;
   --cs360-green-700:   #059669;
   --cs360-green-900:   #065F46;
 
   /* Error / Danger (Figma: Status / Error) */
+  --cs360-red-25:    #FCECED;  /* Figma status/shift/open-bg */
   --cs360-red-0:     #FEF2F3;
   --cs360-red-100:   #FEE2E2;
   --cs360-red-200:   #FECACA;
   --cs360-red-500:   #EF4444;
+  --cs360-red-550:   #EA1B27;  /* Figma status/shift/open */
   --cs360-red-700:   #B91C1C;
   --cs360-red-900:   #7F1D1D;
 
   /* Warning / Amber (Figma: Status / Warning) */
+  --cs360-amber-25:    #FDF7EC;  /* Figma status/meeting/scheduled-bg */
   --cs360-amber-0:     #FEF6E2;
   --cs360-amber-100:   #FEF0C0;
   --cs360-amber-200:   #FDE091;
   --cs360-amber-500:   #F59E0B;
+  --cs360-amber-550:   #F8A719;  /* Figma status/meeting/scheduled */
   --cs360-amber-700:   #B45309;
   --cs360-amber-900:   #78350F;
 
@@ -82,6 +88,15 @@
   --cs360-accent-start: #FEF3C7;
   --cs360-accent-end:   #FDE68A;
   --cs360-accent-text:  #92400E;
+  --cs360-promo-weekend-bg-start: #FFF3D5;
+  --cs360-promo-weekend-bg-end:   #E5E7FF;
+  --cs360-promo-night-bg-start:   #CCF3E3;
+  --cs360-promo-night-bg-end:     #B4C8F5;
+  --cs360-promo-highlight-start:  #FFAE5C;
+  --cs360-promo-highlight-end:    #A6C7ED;
+  --cs360-promo-title:            #A1A1A1;
+  --cs360-promo-subtitle:         #E39F5B;
+  --cs360-promo-watermark:        rgba(255, 255, 255, 0.5);
 }
 
 /* ----------------------------------------------------------------------------- */
@@ -111,8 +126,8 @@
   /* Component-specific spacing references */
   --cs360-sidebar-width:          200px;    /* Sidebar expanded width */
   --cs360-sidebar-collapsed-width: 64px;     /* Sidebar collapsed (icon-only) width */
-  --cs360-topbar-height:        4rem;     /* 64px (Figma topbar height) */
-  --cs360-right-panel-width:    20rem;    /* 320px (Figma right panel) */
+  --cs360-topbar-height:        52px;     /* Figma topbar height */
+  --cs360-right-panel-width:    400px;    /* Figma right module sidebar */
   --cs360-max-content-width:    72rem;    /* 1152px */
 }
 

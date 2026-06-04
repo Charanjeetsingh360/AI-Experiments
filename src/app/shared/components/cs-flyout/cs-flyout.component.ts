@@ -57,9 +57,7 @@ import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
 
       <!-- Panel -->
       <div
-        class="fixed flex flex-col overflow-hidden
-               bg-[var(--cs360-bg-surface)] shadow-2xl"
-        [class]="panelPositionClass"
+        [ngClass]="['fixed flex flex-col overflow-hidden bg-[var(--cs360-bg-surface)] shadow-2xl', panelPositionClass]"
         [class.cs360-slide-in-right]="!closing && position === 'right'"
         [class.cs360-slide-in-left]="!closing && position === 'left'"
         [class.cs360-slide-out-right]="closing && position === 'right'"
@@ -76,8 +74,7 @@ import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
       >
         <!-- Header slot -->
         <div
-          class="shrink-0 flex items-start"
-          [class]="resolvedHeaderPaddingClass"
+          [ngClass]="['shrink-0 flex items-start', resolvedHeaderPaddingClass]"
           [class.border-b]="showHeaderBorder"
           [class.border-[var(--cs360-border-subtle)]]="showHeaderBorder"
         >
@@ -86,7 +83,7 @@ import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
 
         <!-- Body slot — shows skeleton while isLoading -->
         <!-- flex-1 only for side panels (right/left); center modals use natural content height -->
-        <div [class]="bodyWrapperClass" [class]="bodyPaddingClass">
+        <div [ngClass]="[bodyWrapperClass, bodyPaddingClass]">
           @if (isLoading) {
             <cs-skeleton variant="flyout-body" />
           } @else {

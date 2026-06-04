@@ -5,7 +5,7 @@
  * Exports Figma frames as PNG baselines used by Playwright visual tests.
  *
  * Usage:
- *   FIGMA_TOKEN=<your_token> node scripts/figma-export.mjs
+ *   FIGMA_API_TOKEN=<your_token> npm run figma:export
  *
  * Add more routes by extending ROUTE_NODE_MAP below.
  * Node IDs are found in Figma → Inspect panel → right-click frame → Copy link.
@@ -23,11 +23,11 @@ const CONFIG     = JSON.parse(fs.readFileSync(path.join(ROOT, 'figma-mcp.config.
 
 const FILE_KEY   = CONFIG.figmaConfig.figmaFileId;          // XCvAxa7G7QgiTfk08G2LGg
 const API_BASE   = CONFIG.figmaConfig.figmaAPIEndpoint;     // https://api.figma.com/v1
-const TOKEN      = process.env.FIGMA_TOKEN || process.env.FIGMA_API_TOKEN;
+const TOKEN      = process.env.FIGMA_API_TOKEN || process.env.FIGMA_TOKEN;
 const OUTPUT_DIR = path.join(ROOT, 'tests/visual/figma-baselines');
 
 if (!TOKEN) {
-  console.error('❌  Set FIGMA_TOKEN or FIGMA_API_TOKEN env var first.');
+  console.error('❌  Set FIGMA_API_TOKEN env var first. Keep it in your shell or CI secret, never in source.');
   process.exit(1);
 }
 
@@ -38,11 +38,22 @@ if (!TOKEN) {
  * value : Figma node-id with colon replaced by hyphen  (e.g. 183:59750 → 183-59750)
  *         Open Figma → right-click frame → Copy link → grab node-id query param
  */
+// slug → Figma node-id (URL form with hyphen, e.g. "183-59750")
+// Set TODO entries by opening the frame in Figma → right-click → Copy link
+// and pasting the node-id query param value here. Entries with the literal
+// string "TODO" are skipped at export time.
+// Auto-discovered from Figma file XCvAxa7G7QgiTfk08G2LGg (Charan & Mehak Dec 2025 page)
+// Verify each frame in Figma before relying on diffs; replace with a more
+// canonical frame ID if the auto-pick doesn't match the implemented route.
 const ROUTE_NODE_MAP = {
-  'shift-calendar': '183-59750',
-  // ── add more screens below ──
-  // 'dashboard':       '12-3456',
-  // 'caregiver-home':  '45-7890',
+  'home':            '2766-112482',   // V3 / home
+  'shift-calendar':  '183-59750',     // V3 / My Schedule / Assigned
+  'clients':         '183-59846',     // Caregiver Web App / Client process / My Clients
+  'availability':    '183-59719',     // V2 / Available Shift(s)
+  'documents':       '183-59993',     // V1 / Key Documents
+  'messages':        '412-220750',    // Chat V3 / Full Screen
+  'caregiver-forms': '183-127256',    // Caregiver Forms
+  'trainings':       '183-59923',     // Trainings / V3
 };
 
 // Figma API expects colon-separated IDs (183:59750), URLs use hyphens
@@ -52,7 +63,19 @@ const toSlugId   = id => id.replace(':', '-');
 async function run() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  const nodeIds   = Object.values(ROUTE_NODE_MAP).map(toFigmaId).join(',');
+  const liveEntries = Object.entries(ROUTE_NODE_MAP).filter(([, id]) => id && id !== 'TODO');
+  const skipped     = Object.entries(ROUTE_NODE_MAP).filter(([, id]) => !id || id === 'TODO');
+
+  if (skipped.length) {
+    console.log(`ℹ️   Skipping ${skipped.length} route(s) without node-id: ${skipped.map(([s]) => s).join(', ')}`);
+  }
+
+  if (!liveEntries.length) {
+    console.error('❌  No live ROUTE_NODE_MAP entries to export. Fill in node-ids first.');
+    process.exit(1);
+  }
+
+  const nodeIds   = liveEntries.map(([, id]) => toFigmaId(id)).join(',');
   const endpoint  = `${API_BASE}/images/${FILE_KEY}?ids=${encodeURIComponent(nodeIds)}&scale=1&format=png`;
 
   console.log(`\n📐  Requesting PNG exports from Figma…`);
@@ -74,7 +97,7 @@ async function run() {
 
   let passed = 0, failed = 0;
 
-  for (const [slug, rawId] of Object.entries(ROUTE_NODE_MAP)) {
+  for (const [slug, rawId] of liveEntries) {
     const figmaId  = toFigmaId(rawId);
     const imageUrl = data.images?.[figmaId];
 

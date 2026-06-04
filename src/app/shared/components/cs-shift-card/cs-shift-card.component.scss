@@ -1,0 +1,325 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.shift-card-root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-shift-card-bg);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: var(--cs360-shadow-sm, 0 1px 2px rgba(15, 23, 42, 0.06));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Accent color by tone (status)
+:host[data-tone='scheduled'] .shift-card-root {
+  --cs360-shift-card-bg: var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent: var(--cs360-shift-scheduled-accent);
+}
+:host[data-tone='approved'] .shift-card-root {
+  --cs360-shift-card-bg: var(--cs360-shift-approved-bg);
+  --cs360-shift-accent: var(--cs360-shift-approved-accent);
+}
+:host[data-tone='in-progress'] .shift-card-root {
+  --cs360-shift-card-bg: var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent: var(--cs360-shift-approved-accent);
+}
+:host[data-tone='open'] .shift-card-root {
+  --cs360-shift-card-bg: var(--cs360-shift-scheduled-bg);
+  --cs360-shift-accent: var(--cs360-shift-open-accent);
+}
+:host[data-tone='meeting'] .shift-card-root {
+  --cs360-shift-card-bg: var(--cs360-meeting-scheduled-bg, var(--cs360-shift-scheduled-bg));
+  --cs360-shift-accent: var(--cs360-meeting-scheduled-accent, var(--cs360-shift-scheduled-accent));
+}
+
+.shift-card-accent {
+  flex: 0 0 6px;
+  width: 6px;
+  background: var(--cs360-shift-accent);
+}
+
+.shift-card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-3, 12px);
+  padding: var(--cs360-space-3, 12px);
+}
+
+// === Header ===
+.shift-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cs360-space-2, 8px);
+  width: 100%;
+}
+
+.shift-card-user-info {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: var(--cs360-space-3, 12px);
+  align-items: flex-start;
+}
+
+.shift-card-avatar {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.shift-card-client {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-1, 4px);
+}
+
+.shift-card-client-name {
+  margin: 0;
+  font-size: var(--cs360-text-base, 16px);
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.24px;
+  color: var(--cs360-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shift-card-client-sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--cs360-space-4, 16px);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm, 14px);
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.shift-card-icon-btn {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--cs360-text-primary);
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// === Timings bar ===
+.shift-card-timings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.time-slot {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 1px;
+  color: var(--cs360-text-primary);
+  white-space: nowrap;
+}
+
+.time-slot--end {
+  align-items: flex-end;
+}
+
+.time-slot-date {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+  color: var(--cs360-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.time-slot-value {
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+}
+
+.time-slot-clock {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+  color: var(--cs360-text-primary);
+}
+
+.timeline-connector {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  margin: 0 var(--cs360-space-2, 8px);
+
+  &::before,
+  &::after {
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--cs360-border-subtle);
+    content: '';
+  }
+}
+
+.duration-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs360-space-1, 4px);
+  padding: var(--cs360-space-1, 4px) var(--cs360-space-2, 8px);
+  border: 1px dashed var(--cs360-border-strong, #94a3b8);
+  border-radius: var(--cs360-radius-lg, 12px);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm, 14px);
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+// === Footer ===
+.shift-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--cs360-space-2, 8px);
+}
+
+.service-code-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  line-height: 1;
+
+  &[data-tone='approved'],
+  &[data-tone='scheduled'] {
+    background: var(--cs360-feedback-success-bg, #f0fdf4);
+    color: var(--cs360-feedback-success, #16a34a);
+  }
+
+  &[data-tone='open'] {
+    background: var(--cs360-feedback-error-bg, #fef2f2);
+    color: var(--cs360-feedback-error, #dc2626);
+  }
+
+  &[data-tone='meeting'] {
+    background: var(--cs360-feedback-info-bg, #eff6ff);
+    color: var(--cs360-feedback-info, #2563eb);
+  }
+}
+
+// === Active clock-out action ===
+.shift-card-actions {
+  display: flex;
+  width: 100%;
+  gap: var(--cs360-space-2, 8px);
+  align-items: stretch;
+}
+
+.btn-clock {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: var(--cs360-space-2, 8px) var(--cs360-space-4, 16px);
+  border: 0;
+  border-radius: var(--cs360-radius-md, 8px);
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.btn-clock--ghost {
+  background: var(--cs360-bg-surface, #fff);
+  color: var(--cs360-text-primary);
+  cursor: default;
+}
+
+.btn-clock--attention {
+  background: var(--cs360-feedback-success, #16a34a);
+  color: var(--cs360-text-inverse, #ffffff);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+// Responsive: stack timings on narrow screens
+@media (max-width: 640px) {
+  .shift-card-timings {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--cs360-space-2, 8px);
+  }
+
+  .time-slot--end {
+    align-items: flex-start;
+  }
+
+  .timeline-connector {
+    min-width: 0;
+    margin: 0;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}

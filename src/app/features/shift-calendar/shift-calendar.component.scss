@@ -1,9 +1,1411 @@
+// =====================================================================
+//  Shift Calendar - Figma-aligned styles
+//  Source: Figma node 183:59750 (Caregiver Web Portal)
+//  All values reference Caresmartz360 tokens (no hardcoded hex).
+// =====================================================================
+
 :host {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  // Fix 5: Figma main frame fill = rgb(247,248,248) / #F7F8F8 (style 1:646)
-  // Map to var(--cs360-bg-page) when token is available; fallback to exact Figma value
-  background-color: var(--cs360-bg-page, #F7F8F8);
+  background-color: var(--cs360-bg-page, #f7f8f8);
+}
+
+.shift-calendar-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0 var(--cs360-space-4, 16px);
+  overflow: hidden;
+}
+
+// =====================================================================
+//  Header — Figma node 2184:78072 (64h)
+// =====================================================================
+.sc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--cs360-space-3, 12px);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--cs360-space-4, 16px) 0;
+  position: relative;
+}
+
+.sc-header__title-block {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs360-space-2, 8px);
+}
+
+.sc-header__title {
+  margin: 0;
+  font-size: var(--cs360-text-xl, 20px);
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.24px;
+  color: var(--cs360-text-primary);
+}
+
+.sc-header__refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: var(--cs360-text-primary);
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--cs360-bg-alt);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.sc-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs360-space-2, 8px);
+  position: relative;
+}
+
+.sc-header__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cs360-space-2, 8px);
+  min-height: 34px;
+  padding: 4px 8px 4px 12px;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-bg-surface, #fff);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--cs360-bg-alt);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.sc-header__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 190px;
+  padding: var(--cs360-space-2, 8px);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-bg-surface, #fff);
+  box-shadow: var(--cs360-shadow-md, 0 4px 12px rgba(15, 23, 42, 0.1));
+
+  button {
+    border: 0;
+    background: transparent;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm, 14px);
+    padding: var(--cs360-space-2, 8px);
+    text-align: left;
+    border-radius: var(--cs360-radius-sm, 4px);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--cs360-bg-alt);
+    }
+  }
+}
+
+.sc-status {
+  margin: 0 0 var(--cs360-space-2, 8px);
+  padding: var(--cs360-space-2, 8px) var(--cs360-space-3, 12px);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-feedback-success-bg);
+  color: var(--cs360-feedback-success);
+  font-size: var(--cs360-text-sm, 14px);
+}
+
+// =====================================================================
+//  Tabs row — Figma node 1900:141229 (50h)
+//  Bordered pill row, active = blue filled bg + white text
+// =====================================================================
+.sc-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cs360-space-3, 12px);
+  width: 100%;
+  min-height: 50px;
+  padding: var(--cs360-space-2, 8px) 0;
+}
+
+.sc-tabs {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-bg-surface, #fff);
+  overflow: hidden;
+}
+
+.sc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  min-height: 34px;
+  padding: 0 var(--cs360-space-3, 12px);
+  border: 0;
+  border-right: 1px solid var(--cs360-border-subtle);
+  background: var(--cs360-bg-surface, #fff);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  &:hover:not(.sc-tab--active) {
+    background: var(--cs360-bg-alt);
+  }
+
+  &--active {
+    background: var(--cs360-action-primary);
+    color: var(--cs360-text-inverse, #fff);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: -2px;
+  }
+}
+
+.sc-view-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-bg-surface, #fff);
+  overflow: hidden;
+}
+
+.sc-view-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-right: 1px solid var(--cs360-border-subtle);
+  background: var(--cs360-bg-surface, #fff);
+  color: var(--cs360-text-tertiary, #64748b);
+  cursor: pointer;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  &--active {
+    color: var(--cs360-action-primary);
+    background: var(--cs360-action-primary-subtle, var(--cs360-bg-alt));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: -2px;
+  }
+}
+
+// =====================================================================
+//  Body — page_data: shift list + calendar widget
+//  Figma node 1913:147282 (1208w × 734h)
+// =====================================================================
+.sc-body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: var(--cs360-space-4, 16px);
+  padding-bottom: var(--cs360-space-4, 16px);
+  overflow: hidden;
+}
+
+.sc-list {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-y: auto;
+  padding-right: var(--cs360-space-1, 4px);
+}
+
+// Day group row: date column + cards column
+.sc-day-group {
+  display: flex;
+  gap: var(--cs360-space-3, 12px);
+  padding: var(--cs360-space-4, 16px) 0;
+  border-bottom: 1px solid var(--cs360-border-subtle);
+
+  &--last {
+    border-bottom: 0;
+  }
+}
+
+.sc-day-info {
+  flex: 0 0 90px;
+  min-width: 0;
+  padding-top: var(--cs360-space-1, 4px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-1, 4px);
+}
+
+.sc-day-info__date {
+  margin: 0;
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+  color: var(--cs360-text-primary);
+}
+
+.sc-day-info__name {
+  margin: 0;
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--cs360-text-primary);
+}
+
+.sc-day-info__hours {
+  margin: 0;
+  padding-top: var(--cs360-space-2, 8px);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--cs360-text-tertiary, #64748b);
+}
+
+.sc-day-shifts {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-3, 12px);
+}
+
+// =====================================================================
+//  Meetings list — Jira C360-36810 / Figma node 2318:74495
+// =====================================================================
+.sc-list--meetings {
+  padding-right: 0;
+}
+
+.sc-meeting-row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: var(--density-space-3);
+  padding: var(--density-space-3) 0;
+  border-bottom: 1px solid var(--cs360-border-subtle);
+
+  &--last {
+    border-bottom: 0;
+  }
+}
+
+.sc-meeting-day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--density-space-1);
+  padding-top: var(--density-space-1);
+}
+
+.sc-meeting-slot {
+  min-width: 0;
+}
+
+.sc-meeting-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+  color: var(--cs360-text-secondary);
+  font-size: var(--cs360-text-sm);
+}
+
+.sc-meeting-card {
+  display: grid;
+  grid-template-columns: 6px minmax(0, 1fr);
+  min-height: 112px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-feedback-warning-bg);
+  color: var(--cs360-text-primary);
+}
+
+.sc-meeting-card__accent {
+  background: var(--cs360-feedback-warning);
+}
+
+.sc-meeting-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--density-space-3);
+  min-width: 0;
+  padding: var(--density-space-3);
+}
+
+.sc-meeting-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--density-space-3);
+
+  h2 {
+    margin: 0;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  p {
+    margin: var(--density-space-1) 0 0;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-xs);
+    line-height: 16px;
+  }
+}
+
+.sc-meeting-card__notes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--cs360-radius-sm);
+  background: transparent;
+  color: var(--cs360-text-primary);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--cs360-bg-surface);
+  }
+}
+
+.sc-meeting-card__time {
+  display: grid;
+  grid-template-columns: auto minmax(24px, 1fr) auto minmax(24px, 1fr) auto;
+  align-items: center;
+  gap: var(--density-space-2);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm);
+  line-height: 20px;
+}
+
+.sc-meeting-card__line {
+  border-top: 1px dashed var(--cs360-border-default);
+}
+
+.sc-meeting-card__duration {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--density-space-1);
+  min-width: 76px;
+  min-height: 24px;
+  padding: 0 var(--density-space-2);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-full);
+  background: var(--cs360-bg-surface);
+  font-size: var(--cs360-text-xs);
+  white-space: nowrap;
+}
+
+.sc-meeting-card__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--density-space-2);
+
+  button {
+    min-height: 36px;
+    border: 0;
+    border-radius: var(--cs360-radius-sm);
+    background: var(--cs360-action-primary);
+    color: var(--cs360-action-primary-text);
+    font-size: var(--cs360-text-sm);
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--cs360-action-primary-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--cs360-action-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// =====================================================================
+//  Calendar widget — Figma node 3877:121280 (340w × 388h)
+// =====================================================================
+.sc-calendar {
+  flex: 0 0 340px;
+  width: 340px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs360-space-3, 12px);
+  padding: var(--cs360-space-4, 16px);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md, 8px);
+  background: var(--cs360-bg-surface, #fff);
+}
+
+.sc-calendar--meetings {
+  flex-basis: 240px;
+  width: 240px;
+  gap: var(--density-space-3);
+}
+
+// --- Mode switch (Monthly / Weekly toggle) ---
+.sc-calendar__mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs360-space-2, 8px);
+}
+
+.sc-calendar__mode-label {
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 500;
+  color: var(--cs360-text-tertiary, #64748b);
+  transition: color 0.15s ease;
+
+  &--active {
+    color: var(--cs360-text-primary);
+  }
+}
+
+.sc-calendar__switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: var(--cs360-action-primary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.sc-calendar__switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--cs360-bg-surface, #fff);
+  transition: transform 0.15s ease;
+}
+
+.sc-calendar__switch--weekly .sc-calendar__switch-thumb {
+  transform: translateX(18px);
+}
+
+// --- Month nav ---
+.sc-calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cs360-space-2, 8px);
+}
+
+.sc-calendar__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: transparent;
+  color: var(--cs360-text-tertiary, #64748b);
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--cs360-bg-alt);
+  }
+}
+
+.sc-calendar__nav-label {
+  font-size: var(--cs360-text-base, 16px);
+  font-weight: 500;
+  color: var(--cs360-text-primary);
+}
+
+// --- Week headers + grid ---
+.sc-calendar__weekheaders,
+.sc-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.sc-calendar__weekheader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cs360-text-tertiary, #64748b);
+}
+
+.sc-calendar__day {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-sm, 14px);
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &--out {
+    color: var(--cs360-text-disabled, #cbd5e1);
+  }
+
+  &--in-week {
+    border: 1px solid var(--cs360-action-primary);
+    background: var(--cs360-action-primary-subtle, rgba(0, 119, 255, 0.06));
+    border-radius: 0;
+  }
+
+  &--in-week:first-child,
+  &--in-week + &:not(.sc-calendar__day--in-week) {
+    // nothing special
+  }
+
+  &--today {
+    color: var(--cs360-action-primary);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 25%;
+      right: 25%;
+      bottom: 4px;
+      height: 2px;
+      background: var(--cs360-action-primary);
+      border-radius: 1px;
+    }
+  }
+
+  &--selected {
+    color: var(--cs360-action-primary);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 24%;
+      right: 24%;
+      bottom: 4px;
+      height: 2px;
+      background: var(--cs360-action-primary);
+      border-radius: var(--cs360-radius-full);
+    }
+  }
+
+  &--has-meeting:not(.sc-calendar__day--selected)::after {
+    content: '';
+    position: absolute;
+    left: 42%;
+    right: 42%;
+    bottom: 4px;
+    height: 2px;
+    background: var(--cs360-feedback-warning);
+    border-radius: var(--cs360-radius-full);
+  }
+
+  &:hover:not(&--out) {
+    background: var(--cs360-bg-alt);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: -2px;
+  }
+}
+
+.sc-calendar__footer {
+  margin: 0;
+  padding-top: var(--cs360-space-2, 8px);
+  text-align: center;
+  font-size: var(--cs360-text-sm, 14px);
+  color: var(--cs360-text-primary);
+}
+
+.sc-shift-profile {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 88px minmax(120px, 1fr);
+  gap: var(--density-space-3);
+  align-items: center;
+  padding: var(--density-space-3);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-bg-surface);
+}
+
+.sc-profile-side-action,
+.sc-profile-avatar {
+  border: 0;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.sc-profile-side-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--density-space-2);
+  min-height: 44px;
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+  color: var(--cs360-action-primary);
+  font-size: var(--cs360-text-sm);
+  font-weight: 600;
+
+  &:hover {
+    background: var(--cs360-action-primary-subtle);
+  }
+}
+
+.sc-profile-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--cs360-radius-full);
+  background: var(--cs360-feedback-warning-bg);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-lg);
+  font-weight: 700;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.sc-profile-address {
+  grid-column: 1 / -1;
+  text-align: center;
+
+  h3,
+  p {
+    margin: 0;
+    color: var(--cs360-text-primary);
+  }
+
+  h3 {
+    font-size: var(--cs360-text-base);
+    font-weight: 700;
+  }
+
+  p,
+  small {
+    display: block;
+    margin-top: var(--density-space-1);
+    font-size: var(--cs360-text-sm);
+  }
+
+  small {
+    color: var(--cs360-text-secondary);
+  }
+}
+
+.sc-shift-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--density-space-3);
+  padding: var(--density-space-3);
+  border-left: 5px solid var(--cs360-feedback-success);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-feedback-success-bg);
+
+  div {
+    min-width: 0;
+  }
+
+  span,
+  small {
+    display: block;
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-xs);
+  }
+
+  strong {
+    display: block;
+    margin-top: var(--density-space-1);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 700;
+  }
+}
+
+.sc-shift-summary__duration {
+  align-self: center;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--density-space-1);
+  padding: var(--density-space-1) var(--density-space-2);
+  border: 1px dashed var(--cs360-border-default);
+  border-radius: var(--cs360-radius-full);
+  background: var(--cs360-bg-surface);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-xs);
+  font-weight: 600;
+}
+
+.sc-shift-actions {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(72px, 1fr));
+  gap: var(--density-space-2);
+  overflow-x: auto;
+  padding-bottom: var(--density-space-1);
+}
+
+.sc-shift-action {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--density-space-1);
+  min-height: 76px;
+  padding: var(--density-space-2);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-bg-surface);
+  color: var(--cs360-text-primary);
+  font-size: var(--cs360-text-xs);
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover,
+  &--active {
+    border-color: var(--cs360-action-primary);
+    background: var(--cs360-action-primary-subtle);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--cs360-action-primary);
+    outline-offset: 2px;
+  }
+}
+
+.sc-shift-action__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-action-primary-subtle);
+  color: var(--cs360-action-primary);
+}
+
+.sc-shift-action--required .sc-shift-action__icon {
+  background: var(--cs360-feedback-warning-bg);
+  color: var(--cs360-feedback-warning);
+}
+
+.sc-shift-action--completed .sc-shift-action__icon {
+  background: var(--cs360-feedback-success-bg);
+  color: var(--cs360-feedback-success);
+}
+
+.sc-clockout-warning {
+  margin: 0;
+  padding: var(--density-space-2) var(--density-space-3);
+  border: 1px solid var(--cs360-feedback-error);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-feedback-error-bg);
+  color: var(--cs360-feedback-error);
+  font-size: var(--cs360-text-sm);
+  font-weight: 600;
+}
+
+.sc-shift-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--density-space-3);
+  padding: var(--density-space-3);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-lg);
+  background: var(--cs360-bg-surface);
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--density-space-3);
+  }
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-base);
+    font-weight: 700;
+  }
+
+  p {
+    margin-top: var(--density-space-1);
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-sm);
+    line-height: 20px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--density-space-1);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 600;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--cs360-border-subtle);
+    border-radius: var(--cs360-radius-md);
+    background: var(--cs360-bg-surface);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    padding: var(--density-space-2) var(--density-space-3);
+
+    &:focus {
+      outline: none;
+      border-color: var(--cs360-action-primary);
+      box-shadow: 0 0 0 2px var(--cs360-action-primary-subtle);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.sc-panel-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 var(--density-space-2);
+  border-radius: var(--cs360-radius-full);
+  background: var(--cs360-action-primary-subtle);
+  color: var(--cs360-action-primary);
+  font-size: var(--cs360-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sc-panel-badge--required {
+  background: var(--cs360-feedback-warning-bg);
+  color: var(--cs360-feedback-warning);
+}
+
+.sc-task-list,
+.sc-expense-list,
+.sc-history-list {
+  display: grid;
+  gap: var(--density-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sc-task-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: var(--density-space-3);
+  padding: var(--density-space-3);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+
+  strong,
+  small {
+    display: block;
+  }
+
+  strong {
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+  }
+
+  small {
+    margin-top: var(--density-space-1);
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-xs);
+  }
+}
+
+.sc-task-item--saved {
+  border-color: var(--cs360-feedback-success);
+}
+
+.sc-task-item__reason {
+  grid-column: 1 / -1;
+
+  b {
+    color: var(--cs360-feedback-error);
+  }
+}
+
+.sc-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--density-space-3);
+}
+
+.sc-expense-row,
+.sc-linked-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--density-space-2);
+  padding: var(--density-space-2);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+
+  span,
+  strong,
+  small {
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+  }
+
+  small {
+    color: var(--cs360-text-secondary);
+  }
+
+  button {
+    min-height: 32px;
+    border: 1px solid var(--cs360-border-subtle);
+    border-radius: var(--cs360-radius-sm);
+    background: var(--cs360-bg-surface);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-xs);
+    font-weight: 600;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+  }
+}
+
+.sc-signature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--density-space-3);
+
+  button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--density-space-1);
+    min-height: 128px;
+    border: 1px dashed var(--cs360-border-default);
+    border-radius: var(--cs360-radius-lg);
+    background: var(--cs360-bg-alt);
+    color: var(--cs360-text-primary);
+    cursor: pointer;
+  }
+
+  span {
+    font-size: var(--cs360-text-sm);
+    font-weight: 700;
+  }
+
+  small {
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-xs);
+  }
+}
+
+.sc-signature-grid .sc-signature-card--done {
+  border-style: solid;
+  border-color: var(--cs360-feedback-success);
+  background: var(--cs360-feedback-success-bg);
+}
+
+.sc-panel-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--density-space-2);
+}
+
+.sc-inline-status,
+.sc-empty-note,
+.sc-history-list li {
+  color: var(--cs360-text-secondary);
+  font-size: var(--cs360-text-sm);
+}
+
+.sc-history-list li {
+  padding: var(--density-space-2);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+}
+
+.sc-detail-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--density-space-2);
+  margin: 0;
+
+  div {
+    padding: var(--density-space-2);
+    border-radius: var(--cs360-radius-md);
+    background: var(--cs360-bg-alt);
+  }
+
+  dt {
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-xs);
+  }
+
+  dd {
+    margin: var(--density-space-1) 0 0;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 700;
+  }
+}
+
+.sc-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--density-space-3);
+  padding: var(--density-space-3);
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-surface);
+
+  h3 {
+    margin: 0;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-base);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-sm);
+    line-height: 20px;
+  }
+
+  dl {
+    display: grid;
+    gap: var(--density-space-2);
+    margin: 0;
+  }
+
+  dl > div {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: var(--density-space-3);
+  }
+
+  dt {
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-sm);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 500;
+  }
+}
+
+.sc-participant-list {
+  display: grid;
+  gap: var(--density-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--density-space-3);
+    padding: var(--density-space-2);
+    border-radius: var(--cs360-radius-sm);
+    background: var(--cs360-bg-alt);
+  }
+
+  span {
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 500;
+  }
+
+  small {
+    color: var(--cs360-text-secondary);
+    font-size: var(--cs360-text-xs);
+  }
+}
+
+.sc-primary-action,
+.sc-secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 var(--density-space-4);
+  border-radius: var(--cs360-radius-md);
+  font-size: var(--cs360-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sc-primary-action {
+  border: 0;
+  background: var(--cs360-action-primary);
+  color: var(--cs360-action-primary-text);
+
+  &:hover {
+    background: var(--cs360-action-primary-hover);
+  }
+}
+
+.sc-secondary-action {
+  border: 1px solid var(--cs360-border-subtle);
+  background: var(--cs360-bg-surface);
+  color: var(--cs360-text-primary);
+
+  &:hover {
+    background: var(--cs360-bg-alt);
+  }
+}
+
+.sc-expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--density-space-4);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--density-space-1);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    font-weight: 500;
+  }
+
+  strong,
+  small {
+    color: var(--cs360-feedback-error);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--cs360-border-subtle);
+    border-radius: var(--cs360-radius-md);
+    background: var(--cs360-bg-surface);
+    color: var(--cs360-text-primary);
+    font-size: var(--cs360-text-sm);
+    padding: var(--density-space-2) var(--density-space-3);
+
+    &:focus {
+      outline: none;
+      border-color: var(--cs360-action-primary);
+      box-shadow: 0 0 0 2px var(--cs360-action-primary-subtle);
+    }
+  }
+
+  textarea {
+    resize: none;
+  }
+}
+
+.sc-expense-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--density-space-3);
+}
+
+.sc-attachment-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--density-space-2);
+  min-height: 40px;
+  border: 1px dashed var(--cs360-border-default);
+  border-radius: var(--cs360-radius-md);
+  background: var(--cs360-bg-alt);
+  color: var(--cs360-action-primary);
+  font-size: var(--cs360-text-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+// =====================================================================
+//  Responsive
+// =====================================================================
+@media (max-width: 1024px) {
+  .sc-body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sc-calendar {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .sc-calendar--meetings {
+    max-width: none;
+  }
+
+  .sc-list {
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .sc-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sc-tabs-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sc-tabs,
+  .sc-view-toggle {
+    align-self: flex-start;
+  }
+
+  .sc-day-group {
+    flex-direction: column;
+  }
+
+  .sc-meeting-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-day-info {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--cs360-space-3, 12px);
+  }
+
+  .sc-day-info__hours {
+    padding-top: 0;
+  }
+
+  .sc-meeting-card__time {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-meeting-card__line {
+    display: none;
+  }
+
+  .sc-meeting-card__actions,
+  .sc-expense-form__grid,
+  .sc-shift-profile,
+  .sc-shift-summary,
+  .sc-form-grid,
+  .sc-signature-grid,
+  .sc-detail-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-shift-actions {
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
+  }
+
+  .sc-profile-address {
+    grid-column: auto;
+  }
+
+  .sc-task-item,
+  .sc-expense-row,
+  .sc-linked-item {
+    grid-template-columns: 1fr;
+  }
 }

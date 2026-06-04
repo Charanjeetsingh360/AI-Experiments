@@ -143,11 +143,8 @@ interface ShiftGroup {
             </div>
 
             @for (shift of group.shifts; track shift.id) {
-              <div class="mx-4 mb-3 flex overflow-hidden rounded-[10px] border
-                          border-[var(--cs360-feedback-error-border)]
-                          bg-[var(--cs360-feedback-error-bg)]">
-                <!-- Left red accent bar -->
-                <div class="w-[5px] shrink-0 bg-[var(--cs360-feedback-error)]"></div>
+              <div class="mx-4 mb-3 flex overflow-hidden rounded-[10px] bg-[var(--cs360-shift-open-bg)]">
+                <div class="w-[6px] shrink-0 bg-[var(--cs360-shift-open-accent)]"></div>
 
                 <!-- Card content -->
                 <div class="flex flex-1 flex-col gap-[10px] px-[14px] py-[var(--density-space-3)]">

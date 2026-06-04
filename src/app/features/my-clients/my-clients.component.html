@@ -2,25 +2,31 @@
 
   <!-- Page Header -->
   <cs-page-header
-    title="Clients"
-    description="Click on a client card to view their Care Plan, Emergency Contact and upcoming shifts."
+    title="My Clients"
+    description="You can view the Emergency Contact and Care Plan of each Client by clicking on Client Name."
+    (refresh)="refreshClients()"
   />
 
-    <!-- Client Grid -->
-  <div class="flex-1 overflow-hidden">
-    <cs-card-list
-      [items]="filteredClients()"
-      [totalItems]="totalClients()"
-      [columns]="3"
-      [pageSize]="9"
-      [showPagination]="false"
-      emptyMessage="No clients found"
-      (itemClick)="onClientClick($any($event))"
-    >
-      <ng-template csCardTemplate let-client let-i="index">
-        <app-client-card [client]="client" [index]="i" />
-      </ng-template>
-    </cs-card-list>
+  @if (statusMessage()) {
+    <p class="clients-status" role="status" aria-live="polite">{{ statusMessage() }}</p>
+  }
+
+  <div class="clients-grid-shell" aria-label="My Clients listing">
+    <div class="clients-grid" role="list">
+      @for (client of filteredClients(); track client.id; let i = $index) {
+        <button
+          type="button"
+          class="clients-card-button"
+          role="listitem"
+          [attr.aria-label]="client.full_name"
+          (click)="onClientClick(client)"
+        >
+          <app-client-card [client]="client" [index]="i" />
+        </button>
+      } @empty {
+        <div class="clients-empty" role="listitem">No clients found</div>
+      }
+    </div>
   </div>
 
   <!-- ═══════ Client Detail Flyout ═══════ -->
@@ -73,5 +79,59 @@
     (isOpenChange)="closeOpenShiftsFlyout()"
     (closed)="closeOpenShiftsFlyout()"
   />
-</div>
 
+  <cs-flyout
+    [isOpen]="showAssessmentFlyout()"
+    (isOpenChange)="!$event && closeAssessmentFlyout()"
+    position="right"
+    width="480px"
+    ariaLabel="Create client assessment"
+  >
+    <div flyout-header class="flex w-full items-center justify-between">
+      <h2 class="m-0 text-base font-semibold text-[var(--cs360-text-primary)]">Create Assessment</h2>
+      <button type="button" class="rounded p-[var(--density-space-1)] text-[var(--cs360-text-tertiary)] hover:text-[var(--cs360-text-primary)]" (click)="closeAssessmentFlyout()" aria-label="Close assessment form">
+        <cs-icon name="close" [size]="20" aria-hidden="true" />
+      </button>
+    </div>
+
+    <div flyout-body class="flex flex-col gap-[var(--density-space-4)]">
+      @if (selectedClient(); as client) {
+        <section class="rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-alt)] p-[var(--density-space-3)]">
+          <p class="m-0 text-sm font-semibold text-[var(--cs360-text-primary)]">{{ client.full_name }}</p>
+          <p class="m-0 text-sm text-[var(--cs360-text-secondary)]">{{ client.phone }} · {{ client.address.city }}, {{ client.address.state }}</p>
+        </section>
+      }
+
+      <label class="flex flex-col gap-[var(--density-space-1)] text-sm font-medium text-[var(--cs360-text-primary)]">
+        Assessment Name <span class="text-[var(--cs360-feedback-error)]">*</span>
+        <input type="text" [(ngModel)]="assessmentName" class="rounded-md border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-3)] py-[var(--density-space-2)] text-[var(--cs360-text-primary)]" />
+        @if (assessmentSubmitted() && !assessmentName.trim()) {
+          <span class="text-xs text-[var(--cs360-feedback-error)]">Assessment name is required.</span>
+        }
+      </label>
+
+      <label class="flex flex-col gap-[var(--density-space-1)] text-sm font-medium text-[var(--cs360-text-primary)]">
+        Assessment Type <span class="text-[var(--cs360-feedback-error)]">*</span>
+        <select [(ngModel)]="assessmentType" class="rounded-md border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-3)] py-[var(--density-space-2)] text-[var(--cs360-text-primary)]">
+          <option value="">Select assessment type</option>
+          <option value="Start of Care">Start of Care</option>
+          <option value="Care Plan Review">Care Plan Review</option>
+          <option value="Incident Follow-up">Incident Follow-up</option>
+        </select>
+        @if (assessmentSubmitted() && !assessmentType) {
+          <span class="text-xs text-[var(--cs360-feedback-error)]">Assessment type is required.</span>
+        }
+      </label>
+
+      <label class="flex flex-col gap-[var(--density-space-1)] text-sm font-medium text-[var(--cs360-text-primary)]">
+        Notes
+        <textarea [(ngModel)]="assessmentNotes" rows="4" class="resize-none rounded-md border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-3)] py-[var(--density-space-2)] text-[var(--cs360-text-primary)]" placeholder="Add assessment context"></textarea>
+      </label>
+    </div>
+
+    <div flyout-footer class="flex justify-end gap-[var(--density-space-3)]">
+      <button type="button" class="rounded-lg border border-[var(--cs360-border-subtle)] bg-[var(--cs360-bg-surface)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-primary)]" (click)="closeAssessmentFlyout()">Cancel</button>
+      <button type="button" class="rounded-lg bg-[var(--cs360-action-primary)] px-[var(--density-space-4)] py-[var(--density-space-2)] text-[length:var(--density-text-body-muted)] font-medium text-[var(--cs360-text-inverse)]" (click)="saveAssessment()">Create</button>
+    </div>
+  </cs-flyout>
+</div>
