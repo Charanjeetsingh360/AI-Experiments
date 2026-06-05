@@ -49,7 +49,7 @@ const ROUTE_NODE_MAP = {
   'home':            '2766-112482',   // V3 / home
   'shift-calendar':  '183-59750',     // V3 / My Schedule / Assigned
   'clients':         '183-59846',     // Caregiver Web App / Client process / My Clients
-  'availability':    '183-59719',     // V2 / Available Shift(s)
+  'availability':    '183-59885',     // V2 / Availability & Unavailability / Availability
   'documents':       '183-59993',     // V1 / Key Documents
   'messages':        '412-220750',    // Chat V3 / Full Screen
   'caregiver-forms': '183-127256',    // Caregiver Forms

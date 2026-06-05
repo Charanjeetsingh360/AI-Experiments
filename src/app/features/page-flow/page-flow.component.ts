@@ -67,8 +67,8 @@ export class PageFlowComponent {
       label: 'Availability',
       route: '/availability',
       icon: 'event_busy',
-      figmaNodeId: '183-59719',
-      figmaLabel: 'V2 / Available Shift(s)',
+      figmaNodeId: '183-59885',
+      figmaLabel: 'V2 / Availability & Unavailability / Availability',
       status: 'implemented',
     },
     {
