@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CsPageHeaderComponent } from '../../shared/components/cs-page-header/cs-page-header.component';
 import { CSFlyoutComponent } from '../../shared/components/cs-flyout/cs-flyout.component';
 import { CSIconComponent } from '../../shared/components/cs-icon/cs-icon.component';
 import { ClientCardComponent } from './components/client-card/client-card.component';
@@ -21,7 +20,6 @@ export type { IClient as Client };
 	imports: [
 		CommonModule,
 		FormsModule,
-		CsPageHeaderComponent,
 		CSFlyoutComponent,
 		CSIconComponent,
 		ClientCardComponent,
@@ -60,65 +58,37 @@ export class MyClientsComponent {
 	assessmentNotes = '';
 
 	private readonly allClients: IClient[] = [
+		this.createMarryEdisonClient('CLT-001'),
+		this.createMarryEdisonClient('CLT-002'),
+		this.createMarryEdisonClient('CLT-003'),
+		this.createMarryEdisonClient('CLT-004'),
 		{
-			id: 'CLT-001', full_name: 'Margaret Holloway', preferred_name: 'Maggie', age: 78,
-			dob: '1946-03-12', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=47',
-			address: { street: '142 Maple Grove Lane', city: 'Austin', state: 'TX', zip: '78701' },
-			phone: '+1 (512) 334-7821', email: 'm.holloway@email.com', status: 'Active',
-			care_type: 'Personal Care', payer_type: 'Medicaid',
-			diagnosis: ['Mild Dementia', 'Type 2 Diabetes', 'Hypertension'],
-			authorized_hours_per_week: 28, caregiver_assigned: 'Rosa Martinez',
-			next_visit: '2026-05-23T09:00:00', care_plan_status: 'Approved',
-			emergency_contact: { name: 'David Holloway', relation: 'Son', phone: '+1 (512) 887-4421' },
-			notes: 'Prefers morning visits. Requires assistance with bathing and medication reminders.',
-		},
-		{
-			id: 'CLT-002', full_name: 'Robert Chen', preferred_name: 'Bob', age: 83,
-			dob: '1942-11-05', gender: 'Male', avatar_url: 'https://i.pravatar.cc/150?img=67',
-			address: { street: '88 Sunset Blvd', city: 'Houston', state: 'TX', zip: '77002' },
-			phone: '+1 (713) 445-9023', email: 'robertchen42@gmail.com', status: 'Active',
-			care_type: 'Skilled Nursing', payer_type: 'VA Benefits',
-			diagnosis: ['COPD', 'Post-Stroke', 'Arthritis'],
-			authorized_hours_per_week: 35, caregiver_assigned: 'James Okafor',
-			next_visit: '2026-05-23T11:30:00', care_plan_status: 'Pending Review',
-			emergency_contact: { name: 'Linda Chen', relation: 'Daughter', phone: '+1 (713) 667-3310' },
-			notes: 'Veteran. Speaks Mandarin and English. Wheelchair user. Needs help with wound care.',
-		},
-		{
-			id: 'CLT-003', full_name: 'Eleanor Vasquez', preferred_name: 'Ellie', age: 71,
-			dob: '1954-07-22', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=44',
-			address: { street: '305 Birchwood Dr', city: 'San Antonio', state: 'TX', zip: '78205' },
-			phone: '+1 (210) 556-7401', email: 'evasquez71@outlook.com', status: 'Active',
-			care_type: 'Companion Care', payer_type: 'Private Pay',
-			diagnosis: ["Parkinson's Disease", 'Depression'],
-			authorized_hours_per_week: 20, caregiver_assigned: 'Angela Brooks',
-			next_visit: '2026-05-24T14:00:00', care_plan_status: 'Approved',
-			emergency_contact: { name: 'Carlos Vasquez', relation: 'Husband', phone: '+1 (210) 998-3411' },
-			notes: 'Lives with husband. Enjoys reading and TV. Benefits from social engagement.',
-		},
-		{
-			id: 'CLT-004', full_name: 'Harold Simmons', preferred_name: 'Harry', age: 89,
-			dob: '1936-09-01', gender: 'Male', avatar_url: 'https://i.pravatar.cc/150?img=70',
-			address: { street: '17 Oak Hill Road', city: 'Dallas', state: 'TX', zip: '75201' },
-			phone: '+1 (214) 773-6650', email: 'hsimmons1936@yahoo.com', status: 'On Hold',
-			care_type: 'Personal Care + Homemaking', payer_type: 'Long Term Care Insurance',
-			diagnosis: ['Congestive Heart Failure', 'Hearing Loss', 'Mild Cognitive Impairment'],
-			authorized_hours_per_week: 42, caregiver_assigned: 'Maria Patel',
-			next_visit: '2026-05-27T08:00:00', care_plan_status: 'Expiring Soon',
-			emergency_contact: { name: 'Susan Simmons-Clark', relation: 'Daughter', phone: '+1 (214) 882-4100' },
-			notes: 'On hold due to hospitalization. Hearing aids needed for all visits. Likes routine.',
-		},
-		{
-			id: 'CLT-005', full_name: 'Dorothy Nguyen', preferred_name: 'Dot', age: 75,
-			dob: '1950-02-18', gender: 'Female', avatar_url: 'https://i.pravatar.cc/150?img=56',
-			address: { street: '920 Lavender Court', city: 'Fort Worth', state: 'TX', zip: '76102' },
-			phone: '+1 (817) 662-5540', email: 'dot.nguyen50@gmail.com', status: 'Active',
-			care_type: 'Skilled Nursing + Physical Therapy', payer_type: 'Medicare',
-			diagnosis: ['Hip Replacement Recovery', 'Osteoporosis', 'Hypertension'],
-			authorized_hours_per_week: 30, caregiver_assigned: 'Kevin Walsh',
-			next_visit: '2026-05-22T10:00:00', care_plan_status: 'Approved',
-			emergency_contact: { name: 'Tran Nguyen', relation: 'Son', phone: '+1 (817) 445-7788' },
-			notes: 'Post-surgery recovery. Requires PT twice weekly. Vietnamese-speaking family.',
+			id: 'FAC-001',
+			full_name: 'Caresmartz Healthcare',
+			preferred_name: 'Caresmartz',
+			age: 0,
+			dob: '',
+			gender: 'Facility',
+			avatar_url: '',
+			initials: 'CN',
+			address: {
+				street: '533 Hansen Junction Apt. 021',
+				city: 'Lindmouth',
+				state: 'Altaville, California',
+				zip: '95221',
+			},
+			phone: '(123) 456-0987',
+			email: 'facility@caresmartz360.com',
+			status: 'Active',
+			care_type: 'Facility Care',
+			payer_type: 'Private Pay',
+			diagnosis: [],
+			authorized_hours_per_week: 0,
+			caregiver_assigned: '',
+			next_visit: '2026-05-23T02:00:00',
+			care_plan_status: 'Approved',
+			emergency_contact: { name: 'Facility Coordinator', relation: 'Coordinator', phone: '(123) 456-0987' },
+			notes: 'Facility client displayed with initials fallback per Figma.',
 		},
 	];
 
@@ -243,18 +213,43 @@ export class MyClientsComponent {
 
 	private loadContacts(): void {
 		this.clientContacts.set([
-			{ id: '1', name: 'Sarah Smith', relationship: 'Daughter', phone: '(555) 111-2222', email: 'sarah@email.com', address: '123 Oak St, Springfield, IL' },
-			{ id: '2', name: 'James Smith', relationship: 'Son', phone: '(555) 333-4444', email: 'james@email.com', address: '456 Elm St, Springfield, IL' },
-			{ id: '3', name: 'Dr. Wilson', relationship: 'Primary Physician', phone: '(555) 555-6666', email: 'dr.wilson@clinic.com', address: '789 Medical Center Dr, Springfield, IL' },
+			{ id: '1', name: 'John William', relationship: 'Son', phone: '(123) 456-0987', email: 'john.william@email.com', address: '99 Marina bay Street, New York' },
+			{ id: '2', name: 'Sarah Edison', relationship: 'Daughter', phone: '(123) 456-0988', email: 'sarah.edison@email.com', address: '99 Marina bay Street, New York' },
 		]);
 	}
 
 	private loadDocuments(): void {
 		this.clientDocuments.set([
-			{ id: '1', name: 'Care Authorization Letter', type: 'DOCUMENT', updatedOn: '01/15/2024', fileFormat: 'pdf' },
-			{ id: '2', name: 'HIPAA Consent Form', type: 'COMPLIANCE', updatedOn: '01/10/2024', fileFormat: 'pdf' },
-			{ id: '3', name: 'Emergency Contact Sheet', type: 'DOCUMENT', updatedOn: '12/20/2023', fileFormat: 'docx' },
-			{ id: '4', name: 'Medication List', type: 'DOCUMENT', updatedOn: '01/12/2024', fileFormat: 'pdf' },
+			{ id: '1', name: 'Self attested document', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
+			{ id: '2', name: 'Self attested document', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
+			{ id: '3', name: 'Self attested document', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
+			{ id: '4', name: 'Self attested document', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
+			{ id: '5', name: 'Self attested document', description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' },
 		]);
+	}
+
+	private createMarryEdisonClient(id: string): IClient {
+		return {
+			id,
+			full_name: 'Marry, Edison',
+			preferred_name: 'Marry',
+			age: 76,
+			dob: '1948-03-14',
+			gender: 'Female',
+			avatar_url: 'https://i.pravatar.cc/150?img=47',
+			address: { street: '99 Marina bay Street', city: 'New York', state: '', zip: '' },
+			phone: '(123) 456-0987',
+			email: 'marry.edison@email.com',
+			status: 'Active',
+			care_type: 'Healthcare Services (Authorized)',
+			payer_type: 'Private Pay',
+			diagnosis: ['Healthcare Services'],
+			authorized_hours_per_week: 8,
+			caregiver_assigned: 'John William',
+			next_visit: '2026-05-23T02:00:00',
+			care_plan_status: 'Approved',
+			emergency_contact: { name: 'John William', relation: 'Son', phone: '(123) 456-0987' },
+			notes: 'Figma reference client for the My Clients card layout and detail flow.',
+		};
 	}
 }

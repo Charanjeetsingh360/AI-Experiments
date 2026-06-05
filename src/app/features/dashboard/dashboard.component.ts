@@ -36,6 +36,10 @@ interface Shift {
   duration: string;
   clockedInTime?: string;
   backToBack?: boolean;
+  detailsExpanded?: boolean;
+  serviceInfo?: string;
+  remainingHrs?: string;
+  payRate?: string;
 }
 
 interface ChartBar {
@@ -323,6 +327,24 @@ export class DashboardComponent {
   closeShiftDetail(): void {
     this.selectedShiftDetail.set(null);
   }
+
+  toggleShiftDetails(shift: Shift): void {
+    shift.detailsExpanded = !shift.detailsExpanded;
+  }
+
+  /* Shift control placeholder actions */
+  openTasks(_shift: Shift): void { /* TODO: navigate to tasks */ }
+  openCareNotes(_shift: Shift): void { /* TODO: navigate to care notes */ }
+  openFamilyNotes(_shift: Shift): void { /* TODO: navigate to family notes */ }
+  openClientSign(_shift: Shift): void { /* TODO: navigate to client signature */ }
+  openCaregiverSign(_shift: Shift): void { /* TODO: navigate to caregiver signature */ }
+  openLogBreak(_shift: Shift): void { /* TODO: navigate to log break */ }
+  openSurvey(_shift: Shift): void { /* TODO: navigate to survey */ }
+  openInjury(_shift: Shift): void { /* TODO: navigate to injury/incident */ }
+  openExpense(_shift: Shift): void { /* TODO: navigate to expense */ }
+  openGoals(_shift: Shift): void { /* TODO: navigate to goals */ }
+  openClientForms(_shift: Shift): void { /* TODO: navigate to client forms */ }
+  openTimesheetMap(_shift: Shift): void { /* TODO: navigate to timesheet map */ }
 
   markAllAsRead(): void {
     const activeTab = this.activeAlertTab();

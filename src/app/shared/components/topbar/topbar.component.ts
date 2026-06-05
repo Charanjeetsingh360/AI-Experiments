@@ -42,36 +42,6 @@ import { CSFlyoutComponent } from '../cs-flyout/cs-flyout.component';
 
       <!-- Right: Actions -->
       <div class="topbar-right">
-        <div class="appearance-switchers" aria-label="Display preferences">
-          <label class="appearance-field">
-            <span class="appearance-label">Theme</span>
-            <select
-              class="appearance-select"
-              aria-label="Color theme"
-              [value]="themeService.theme()"
-              (change)="setThemeFromEvent($event)"
-            >
-              @for (theme of themes; track theme) {
-                <option [value]="theme">{{ themeLabels[theme] }}</option>
-              }
-            </select>
-          </label>
-
-          <label class="appearance-field">
-            <span class="appearance-label">Density</span>
-            <select
-              class="appearance-select"
-              aria-label="Density mode"
-              [value]="themeService.density()"
-              (change)="setDensityFromEvent($event)"
-            >
-              @for (density of densities; track density) {
-                <option [value]="density">{{ densityLabels[density] }}</option>
-              }
-            </select>
-          </label>
-        </div>
-
         <button type="button" class="btn-adhoc-shift" aria-label="Add adhoc shift">
           + Adhoc Shift
         </button>

@@ -47,10 +47,12 @@ import { CsSkeletonComponent } from '../cs-skeleton/cs-skeleton.component';
     @if (visible) {
       <!-- Backdrop -->
       <div
-        class="fixed inset-0 bg-black/40 backdrop-blur-[1px]"
+        class="fixed inset-0 backdrop-blur-[1px]"
         [class.cs360-backdrop-in]="!closing"
         [class.cs360-backdrop-out]="closing"
+        [class.hidden]="!hasBackdrop"
         [style.z-index]="zIndex"
+        [style.background]="hasBackdrop ? 'var(--cs360-bg-overlay)' : 'transparent'"
         (click)="onBackdropClick()"
         aria-hidden="true"
       ></div>

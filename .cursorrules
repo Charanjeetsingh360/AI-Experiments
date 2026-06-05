@@ -110,6 +110,41 @@ All Tailwind utilities in this repo map to CSS custom properties — never raw v
 
 ## Figma → Angular Workflow (ALWAYS complete in this order)
 
+### SECTION-DRIVEN FIGMA INVENTORY PROTOCOL
+
+When a Figma section link is provided, the agent owns discovery.
+
+1. Fetch the section and build a complete inventory before implementation:
+   - primary screens
+   - popup frames
+   - modal frames
+   - flyout/tray frames
+   - component sets
+   - hidden annotation/note layers
+   - prototype overlay targets when available
+
+2. Do not ask the user for child popup/modal node IDs if they are discoverable
+   inside the provided section.
+
+3. Use discovered node IDs internally for implementation passes.
+
+4. Ask the user only when:
+   - the overlay target points outside the provided section,
+   - the section data cannot be fetched through any configured path,
+   - prototype interaction mapping is ambiguous,
+   - or the required overlay frame is genuinely absent.
+
+5. No guessing is allowed. If exact overlay layout data is missing, stop and
+   report the precise missing artifact.
+
+6. If one Figma data route fails, try configured alternatives before declaring
+   a blocker: MCP metadata, design context, variable definitions, screenshot
+   verification, REST/API data, local Figma plugin export, then user input.
+
+7. Code Connect is optional support, not the sole source of truth. A Code
+   Connect failure is a tool/session/mapping issue until proven otherwise; do
+   not infer subscription, Dev Mode, or seat access from that failure.
+
 ### STEP 1 — Figma Variable Extraction (REQUIRED before any code)
 
 List every Figma variable found in the design as a table:

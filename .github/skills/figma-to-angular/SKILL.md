@@ -27,6 +27,29 @@ URL format: figma.com/design/{FILE_ID}/...?node-id={NODE_ID}
 NODE_ID format: replace "-" with ":" (e.g. 4445-169799 → 4445:169799)
 ```
 
+**Section inventory is mandatory when the URL targets a section.** Before generating Angular code from a Figma section, build a node inventory of the section. Separate:
+
+- primary screens
+- popup frames
+- modal frames
+- flyout/tray frames
+- component sets
+- hidden annotation/note layers
+- prototype overlay targets when available
+
+Do not ask the user for child popup/modal node IDs if they are discoverable inside the provided section. Use discovered node IDs internally for implementation passes. Ask the user only when an overlay points outside the section, the section cannot be fetched through any configured path, prototype mapping is ambiguous, or the required overlay frame is genuinely absent.
+
+**Data fallback order:**
+1. Figma MCP `get_metadata` for section inventory.
+2. Figma MCP `get_design_context` for implementation-grade node data.
+3. Figma MCP `get_variable_defs` for token bindings.
+4. Figma MCP `get_screenshot` for visual verification only.
+5. Figma REST API if token access is available.
+6. Local Figma plugin export if MCP/API data is incomplete or capped.
+7. Ask the user only after all available data paths fail.
+
+**Code Connect handling:** Code Connect (`.figma.ts`) is optional support, not the sole source of truth. If Code Connect fails, treat it as a tool/session/mapping issue and continue through the fallback order. Do not infer subscription, Dev Mode, or seat access from that failure.
+
 **Option A — Figma MCP (preferred if available):**
 ```
 get_design_context(fileKey: FILE_ID, nodeId: NODE_ID)
@@ -38,7 +61,7 @@ GET https://api.figma.com/v1/files/{FILE_ID}/nodes?ids={NODE_ID}&depth=15
 X-FIGMA-TOKEN: ${FIGMA_API_TOKEN}
 ```
 
-> Do NOT proceed to Phase 2 without Figma data in hand.
+> Do NOT proceed to Phase 2 without Figma data in hand. For section links, do NOT proceed without the section inventory.
 
 ---
 
@@ -92,6 +115,7 @@ Use the skeleton in [implementation-patterns.md](./references/implementation-pat
 - Text nodes: exact font-size token, font-weight, line-height, color token
 - Icons: ALWAYS `<cs-icon name="..." [size]="N" />` — never raw SVG
 - Never add properties that weren't in the Figma data
+- Overlays, popovers, dropdowns, modals, flyouts, and contextual trays must be implemented from discovered overlay frames, not guessed
 
 ---
 

@@ -362,24 +362,19 @@
   }
 }
 
+/* ===================================================================
+   SHIFT CARD — Figma: shift_card_type
+   Structure: shift-card > bar + shif-data > 4 modules
+   =================================================================== */
 .shift-card {
-  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: var(--cs360-space-4);
+  align-items: start;
   width: 100%;
-  overflow: hidden;
-  padding: var(--cs360-space-2) var(--cs360-space-2) var(--cs360-space-2) 14px;
-  border-radius: var(--cs360-radius-md);
+  overflow: clip;
+  padding: 0;
+  border-radius: var(--cs360-radius-md); /* Figma: radius/rounded-lg = 8px */
   background: var(--cs360-shift-card-bg);
-
-  &::before {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 6px;
-    background: var(--cs360-shift-accent);
-    content: '';
-  }
+  cursor: pointer;
 }
 
 .shift-card--ongoing,
@@ -388,144 +383,171 @@
   --cs360-shift-accent: var(--cs360-shift-scheduled-accent);
 }
 
-.shift-header,
-.module-user-info,
-.shift-actions-row,
-.shift-card-b2b-footer {
-  display: flex;
+/* Accent bar — Figma: "bar" (6px, shrink-0, self-stretch) */
+.bar {
+  width: 6px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: var(--cs360-shift-accent);
 }
 
-.shift-header {
-  align-items: flex-start;
-  justify-content: space-between;
+/* Content area — Figma: "shif_data" (flex-col, flex 1, gap xl=16px, padding md=8px) */
+.shif-data {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--cs360-space-4); /* Figma: spacing/xl = 16px */
+  min-width: 0;
+  padding: var(--cs360-space-2); /* Figma: spacing/md = 8px */
+}
+
+/* --- Module 1: module_shift_details (user info + notes icon) --- */
+.module-shift-details {
+  display: flex;
+  align-items: start;
+  gap: var(--cs360-space-0-5); /* Figma: spacing/xs = 2px */
   width: 100%;
-  min-height: 48px;
-  gap: var(--cs360-space-1);
 }
 
 .module-user-info {
-  flex: 1 1 auto;
+  display: flex;
+  flex: 1 1 0;
+  align-items: start;
+  gap: var(--cs360-space-3); /* Figma: spacing/lg = 12px */
   min-width: 0;
-  align-items: flex-start;
-  gap: var(--cs360-space-3);
 }
 
-.client-info-text {
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 64px;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.client-info {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   flex-direction: column;
-  gap: var(--cs360-space-1);
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
   min-width: 0;
+  word-break: break-word;
+  color: var(--cs360-text-primary);
+  text-align: left;
 }
 
 .client-name {
-  overflow: hidden;
-  font-size: var(--cs360-text-base);
+  font-size: var(--cs360-text-base); /* Figma: font-sizes/body-strong = 16px */
   font-weight: 500;
-  line-height: 24px;
-  letter-spacing: -0.24px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 24px; /* Figma: line-height/heading-4 */
+  letter-spacing: -0.24px; /* Figma: font/tracking-heading */
 }
 
-.client-sub-info {
+.module-address-info {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--cs360-space-0-5) var(--cs360-space-4);
-  overflow: hidden;
-  color: var(--cs360-text-primary);
-  font-size: var(--cs360-text-sm);
-  line-height: 20px;
+  align-items: center;
+  gap: var(--cs360-space-0-5) var(--cs360-space-4); /* Figma: spacing/xl = 2px 16px */
+  font-size: var(--cs360-text-sm); /* Figma: 14px */
+  font-weight: 400;
+  line-height: 20px; /* Figma: line-height/body-base */
+  letter-spacing: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.icon-button {
-  display: inline-flex;
-  flex: 0 0 24px;
-  align-items: center;
-  justify-content: center;
+.notes-icon {
+  display: flex;
+  align-items: start;
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
+  cursor: pointer;
   color: var(--cs360-text-primary);
 }
 
-.shift-timings-bar {
+/* --- Module 2: module_shift_timings --- */
+.module-shift-timings {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
 }
 
-.time-slot {
+.start,
+.end {
   display: flex;
-  flex: 0 0 auto;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
+  min-width: 0;
+}
+
+.starttime,
+.endtime {
+  display: flex;
   flex-direction: column;
-  gap: 1px; /* Figma: 41px timings-bar = label(20px) + 1px + value(20px); was var(--cs360-space-1)=4px which gave 44px */
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
   color: var(--cs360-text-primary);
   white-space: nowrap;
 }
 
-.time-slot--end {
+.endtime {
   align-items: flex-end;
 }
 
-.time-slot-label {
-  overflow: hidden;
-  font-size: var(--cs360-text-xs);
+.time-label {
+  font-size: 12px; /* Figma: font-sizes/caption */
   font-weight: 400;
   line-height: 20px;
   letter-spacing: -0.24px;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.time-slot-value,
-.duration-pill {
-  font-size: var(--cs360-text-sm);
-  line-height: 20px;
-}
-
-.time-slot-value {
+.time-value {
+  font-size: var(--cs360-text-sm); /* Figma: font-sizes/body-base = 14px */
   font-weight: 500;
+  line-height: normal;
   letter-spacing: -0.24px;
 }
 
-.timeline-connector {
-  position: relative;
+.connector-line {
+  flex: 1 1 0;
+  height: 1px;
+  min-width: 0;
+  background: var(--cs360-border-subtle);
+}
+
+.duration {
   display: flex;
-  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
-  margin: 0 var(--cs360-space-2);
-
-  &::before,
-  &::after {
-    flex: 1 1 auto;
-    height: 1px;
-    background: var(--cs360-border-subtle);
-    content: '';
-  }
-}
-
-.duration-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--cs360-space-1);
-  padding: var(--cs360-space-1) var(--cs360-space-2);
-  border: 1px dashed var(--cs360-border-medium);
-  border-radius: var(--cs360-radius-lg); /* Figma: --radius/rounded-xl = 12px */
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
+  padding: var(--cs360-space-1) var(--cs360-space-2); /* Figma: py sm=4px, px md=8px */
+  border: 1px dashed var(--cs360-border-medium); /* Figma: border/medium */
+  border-radius: 12px; /* Figma: radius/rounded-xl */
+  flex-shrink: 0;
+  font-size: var(--cs360-text-sm);
+  font-weight: 400;
+  line-height: 20px;
   color: var(--cs360-text-primary);
+  white-space: nowrap;
 }
 
-.shift-actions-row {
-  width: 100%;
-  gap: var(--cs360-space-2);
-  align-items: center;
+/* --- Module 3: module_actions --- */
+.module-actions {
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
+  gap: 8px; /* Figma: 8px explicit */
+  width: 100%;
 }
 
-.btn-shift {
+.actions {
   display: inline-flex;
   flex: 1 1 0;
   align-items: center;
@@ -534,57 +556,108 @@
   min-height: 40px;
   max-height: 44px;
   max-width: 300px;
-  padding: var(--cs360-space-2) var(--cs360-space-4);
-  border: 0;
-  border-radius: var(--cs360-radius-md);
-  font-size: var(--cs360-text-sm);
+  padding: var(--cs360-radius-md) var(--cs360-space-4); /* Figma: py rounded-lg=8px, px xl=16px */
+  border: 1px solid transparent;
+  border-radius: var(--cs360-radius-md); /* Figma: radius/rounded-lg = 8px */
+  overflow: clip;
+  font-size: var(--cs360-text-sm); /* Figma: font-sizes/body-base = 14px */
   font-weight: 500;
-  color: var(--cs360-action-primary-text);
+  line-height: normal;
+  letter-spacing: 0;
+  text-align: center;
   cursor: pointer;
 }
 
-.btn-shift--ghost {
-  border: 1px solid transparent;
-  background: var(--cs360-bg-surface);
-  color: var(--cs360-action-ghost-text);
+.actions--ghost {
+  background: var(--cs360-bg-surface); /* Figma: actions/ghost/bg = white */
+  border-color: transparent; /* Figma: border/transparent */
+  color: var(--cs360-action-ghost-text); /* Figma: actions/ghost/text = #1e293b */
   cursor: default;
 }
 
-.btn-shift--attention {
-  background: var(--cs360-action-attention);
-  color: var(--cs360-action-attention-text);
+.actions--attention {
+  background: var(--cs360-action-attention); /* Figma: actions/attention/bg = #16a34a */
+  color: var(--cs360-action-attention-text); /* Figma: actions/attention/text = white */
 }
 
+/* B2B footer */
 .shift-card-b2b-footer {
+  display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
   gap: var(--cs360-space-2-5);
   width: 100%;
-  min-height: 20px;
   color: var(--cs360-text-primary);
   font-size: var(--cs360-text-sm);
   line-height: 20px;
 }
 
-/* Shift card photo avatar */
-.shift-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 2px solid var(--cs360-border-subtle);
-
-  img { width: 100%; height: 100%; object-fit: cover; }
+/* --- Module 4: module_shift_details toggle (expand/collapse) --- */
+.module-shift-details-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
 }
 
-.shift-card-details-toggle {
-  display: inline-flex;
+.direction {
+  display: flex;
+  flex: 1 1 0;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 32px;
+  min-width: 0;
   color: var(--cs360-text-primary);
+}
+
+/* Shift Controls 4x3 grid — Figma: "Shift Controls" */
+.shift-controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  border: 1px solid var(--cs360-border-subtle);
+  border-radius: var(--cs360-radius-md); /* Figma: radius/rounded-lg = 8px */
+  overflow: clip;
+}
+
+.shift-control-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
+  padding: var(--cs360-space-2) 0; /* Figma: py md=8px, px none */
+  border: 1px solid var(--cs360-border-subtle);
+  background: transparent;
+  cursor: pointer;
+  color: var(--cs360-text-primary);
+
+  span {
+    font-size: 10px; /* Figma: font-sizes/micro */
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.24px;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+/* Shift Other Info — Figma: module_shift_other_info */
+.module-shift-other-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cs360-space-1); /* Figma: spacing/sm = 4px */
+  width: 100%;
+  padding: var(--cs360-space-1) 0; /* Figma: py sm */
+
+  p {
+    font-size: var(--cs360-text-sm);
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-align: center;
+    color: var(--cs360-text-primary);
+  }
 }
 
 .empty-shift-state,

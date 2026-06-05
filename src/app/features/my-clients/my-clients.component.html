@@ -1,11 +1,19 @@
 <div class="flex h-full flex-col overflow-hidden">
 
-  <!-- Page Header -->
-  <cs-page-header
-    title="My Clients"
-    description="You can view the Emergency Contact and Care Plan of each Client by clicking on Client Name."
-    (refresh)="refreshClients()"
-  />
+  <header class="clients-header">
+    <div class="clients-title-row">
+      <h1>My Clients</h1>
+      <button
+        type="button"
+        class="clients-refresh"
+        aria-label="Refresh clients"
+        (click)="refreshClients()"
+      >
+        <cs-icon name="cached" [size]="20" aria-hidden="true" />
+      </button>
+    </div>
+    <p>You can view the Emergency Contact and Care Plan of each Client by clicking on Client Name.</p>
+  </header>
 
   @if (statusMessage()) {
     <p class="clients-status" role="status" aria-live="polite">{{ statusMessage() }}</p>
@@ -14,15 +22,21 @@
   <div class="clients-grid-shell" aria-label="My Clients listing">
     <div class="clients-grid" role="list">
       @for (client of filteredClients(); track client.id; let i = $index) {
-        <button
-          type="button"
-          class="clients-card-button"
+        <div
+          class="clients-card-item"
           role="listitem"
           [attr.aria-label]="client.full_name"
           (click)="onClientClick(client)"
         >
-          <app-client-card [client]="client" [index]="i" />
-        </button>
+          <button
+            type="button"
+            class="clients-card-button"
+            [attr.aria-label]="'View client details for ' + client.full_name"
+            (click)="onClientClick(client); $event.stopPropagation()"
+          >
+            <app-client-card [client]="client" [index]="i" />
+          </button>
+        </div>
       } @empty {
         <div class="clients-empty" role="listitem">No clients found</div>
       }

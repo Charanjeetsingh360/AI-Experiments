@@ -51,6 +51,60 @@ export class Cs<Name>Component {
 
 ## Common Component Patterns
 
+### Overlay & Popover Implementation Pattern
+
+Overlays, popovers, dropdowns, modals, flyouts, and contextual trays must be
+implemented from discovered overlay frames, not guessed.
+
+**Execution model:**
+1. Primary pass: implement base screens and wire trigger methods only.
+2. Overlay pass: implement each discovered overlay frame using its extracted
+   node ID, dimensions, auto-layout, padding, typography, colors, and
+   interaction metadata.
+3. Use existing workspace components where applicable, such as `cs-flyout`,
+   `cs-icon`, `cs-card`, and shared form/button components.
+4. If exact overlay metadata is unavailable, stop with a precise missing-data
+   message instead of inventing Tailwind layout.
+
+**Primary pass trigger example:**
+
+```html
+<button
+  type="button"
+  class="inline-flex items-center gap-[var(--density-space-2)]"
+  [attr.aria-expanded]="isAvailableAppsOpen()"
+  (click)="openAvailableAppsPopover()"
+>
+  <cs-icon name="apps" [size]="20" />
+  Available Apps
+</button>
+```
+
+**Overlay pass wrapper example:**
+
+```html
+<cs-flyout
+  [isOpen]="isAvailableAppsOpen()"
+  (isOpenChange)="isAvailableAppsOpen.set($event)"
+  position="center"
+  width="532px"
+  height="auto"
+  ariaLabel="Available Apps"
+>
+  <div flyout-header>
+    <!-- Header content comes from the discovered overlay frame. -->
+  </div>
+
+  <div flyout-body>
+    <!-- Body content comes from the discovered overlay frame. -->
+  </div>
+</cs-flyout>
+```
+
+> Width/height values in examples are placeholders. In production work, read
+> them from the discovered overlay node's bounds and map internal spacing,
+> color, typography, and radius through CS360 tokens before implementation.
+
 ### Card Component
 
 ```html

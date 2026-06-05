@@ -43,53 +43,126 @@
 
       @if (ongoingShift(); as ongoing) {
         <article class="shift-card shift-card--ongoing" [attr.aria-label]="'Ongoing shift for ' + ongoing.clientName">
-          <div class="shift-header">
-            <div class="module-user-info">
-              <div class="shift-avatar">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
-              </div>
-              <div class="client-info-text">
-                <h3 class="client-name">{{ ongoing.clientName }}</h3>
-                <div class="client-sub-info">
-                  <span>{{ ongoing.address }}</span>
-                  <span>Approx. Distance : {{ ongoing.distance }}</span>
+          <div class="bar"></div>
+          <div class="shif-data">
+            <!-- Module 1: User Info (module_shift_details > module_user_info + Notes) -->
+            <div class="module-shift-details">
+              <div class="module-user-info">
+                <div class="avatar">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
+                </div>
+                <div class="client-info">
+                  <h3 class="client-name">{{ ongoing.clientName }}</h3>
+                  <div class="module-address-info">
+                    <span>{{ ongoing.address }}</span>
+                    <span>Approx. Distance : {{ ongoing.distance }}</span>
+                  </div>
                 </div>
               </div>
+              <button type="button" class="notes-icon" aria-label="View shift notes" (click)="openShiftDetail(ongoing)">
+                <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
+              </button>
             </div>
-            <button type="button" class="icon-button" aria-label="View shift notes" (click)="openShiftDetail(ongoing)">
-              <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
-            </button>
-          </div>
 
-          <div class="shift-timings-bar" aria-label="Shift timing">
-            <div class="time-slot time-slot--start">
-              <span class="time-slot-label">{{ ongoing.date }}</span>
-              <span class="time-slot-value">{{ ongoing.startTime }} (AST)</span>
-            </div>
-            <div class="timeline-connector">
-              <div class="duration-pill">
+            <!-- Module 2: Shift Timings -->
+            <div class="module-shift-timings" aria-label="Shift timing">
+              <div class="start">
+                <div class="starttime">
+                  <span class="time-label">{{ ongoing.date }}</span>
+                  <span class="time-value">{{ ongoing.startTime }} (AST)</span>
+                </div>
+                <div class="connector-line"></div>
+              </div>
+              <div class="duration">
                 <cs-icon name="schedule" [size]="16" aria-hidden="true" />
                 <span>{{ ongoing.duration }}</span>
               </div>
+              <div class="end">
+                <div class="connector-line"></div>
+                <div class="endtime">
+                  <span class="time-label">{{ ongoing.date }}</span>
+                  <span class="time-value">{{ ongoing.endTime }} (AST)</span>
+                </div>
+              </div>
             </div>
-            <div class="time-slot time-slot--end">
-              <span class="time-slot-label">{{ ongoing.date }}</span>
-              <span class="time-slot-value">{{ ongoing.endTime }} (AST)</span>
+
+            <!-- Module 3: Actions -->
+            <div class="module-actions">
+              <button type="button" class="actions actions--ghost" disabled>
+                Clocked-In {{ ongoing.clockedInTime }}
+              </button>
+              <button type="button" class="actions actions--attention" (click)="clockOut()" aria-label="Clock out of current shift">
+                Clock-Out
+              </button>
             </div>
-          </div>
 
-          <div class="shift-actions-row">
-            <button type="button" class="btn-shift btn-shift--ghost" disabled>
-              Clocked-In {{ ongoing.clockedInTime }}
-            </button>
-            <button type="button" class="btn-shift btn-shift--attention" (click)="clockOut()" aria-label="Clock out of current shift">
-              Clock-Out
-            </button>
-          </div>
+            <!-- Module 4: Shift Details (expand/collapse) -->
+            <div class="module-shift-details-toggle" role="button" tabindex="0" (click)="toggleShiftDetails(ongoing)" (keydown.enter)="toggleShiftDetails(ongoing)" aria-label="Show shift details">
+              <div class="direction">
+                <cs-icon name="keyboard_arrow_down" [size]="32" aria-hidden="true" />
+              </div>
+            </div>
 
-          <button type="button" class="shift-card-details-toggle" aria-label="Show ongoing shift details" (click)="openShiftDetail(ongoing)">
-            <cs-icon name="expand_more" [size]="20" aria-hidden="true" />
-          </button>
+            @if (ongoing.detailsExpanded) {
+              <div class="shift-controls">
+                <button type="button" class="shift-control-item" (click)="openTasks(ongoing)">
+                  <cs-icon name="assignment" [size]="32" aria-hidden="true" />
+                  <span>Tasks</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openCareNotes(ongoing)">
+                  <cs-icon name="clinical_notes" [size]="32" aria-hidden="true" />
+                  <span>Care Notes</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openFamilyNotes(ongoing)">
+                  <cs-icon name="diversity_4" [size]="32" aria-hidden="true" />
+                  <span>Notes for Family</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openClientSign(ongoing)">
+                  <cs-icon name="signature" [size]="32" aria-hidden="true" />
+                  <span>Client Sign</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openCaregiverSign(ongoing)">
+                  <cs-icon name="signature" [size]="32" aria-hidden="true" />
+                  <span>Caregiver Sign</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openLogBreak(ongoing)">
+                  <cs-icon name="alarm_pause" [size]="32" aria-hidden="true" />
+                  <span>Log Break</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openSurvey(ongoing)">
+                  <cs-icon name="list_alt_check" [size]="32" aria-hidden="true" />
+                  <span>Survey</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openInjury(ongoing)">
+                  <cs-icon name="health_and_safety" [size]="32" aria-hidden="true" />
+                  <span>Injury/Incident</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openExpense(ongoing)">
+                  <cs-icon name="paid" [size]="32" aria-hidden="true" />
+                  <span>Expense</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openGoals(ongoing)">
+                  <cs-icon name="flag" [size]="32" aria-hidden="true" />
+                  <span>Goals</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openClientForms(ongoing)">
+                  <cs-icon name="list_alt_check" [size]="32" aria-hidden="true" />
+                  <span>Client Forms</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openTimesheetMap(ongoing)">
+                  <cs-icon name="mode_of_travel" [size]="32" aria-hidden="true" />
+                  <span>Timesheet Map</span>
+                </button>
+              </div>
+
+              <!-- Shift Other Info (auth/pay info) -->
+              <div class="module-shift-other-info">
+                <p>{{ ongoing.serviceInfo }}</p>
+                <p>{{ ongoing.remainingHrs }}</p>
+                <p>{{ ongoing.payRate }}</p>
+              </div>
+            }
+          </div>
         </article>
       } @else {
         <div class="empty-shift-state">
@@ -106,60 +179,132 @@
 
       @for (upcoming of upcomingShifts(); track upcoming.id) {
         <article class="shift-card shift-card--upcoming" [attr.aria-label]="'Upcoming shift for ' + upcoming.clientName">
-          <div class="shift-header">
-            <div class="module-user-info">
-              <div class="shift-avatar">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
-              </div>
-              <div class="client-info-text">
-                <h3 class="client-name">{{ upcoming.clientName }}</h3>
-                <div class="client-sub-info">
-                  <span>{{ upcoming.address }}</span>
-                  <span>Approx. Distance : {{ upcoming.distance }}</span>
+          <div class="bar"></div>
+          <div class="shif-data">
+            <!-- Module 1: User Info -->
+            <div class="module-shift-details">
+              <div class="module-user-info">
+                <div class="avatar">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0M0QTg4MiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTciIHI9IjkiIGZpbGw9IiNENEE4ODQiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIzOCIgcng9IjE0IiByeT0iMTAiIGZpbGw9IiM4QjY5MTQiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjE2IiByPSIxLjgiIGZpbGw9IiMzRDJCMUYiLz48cGF0aCBkPSJNMTYgMjEuNSBRMjAgMjUgMjQgMjEuNSIgc3Ryb2tlPSIjOEI2MzQ4IiBzdHJva2Utd2lkdGg9IjEuMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Marry Edison" />
+                </div>
+                <div class="client-info">
+                  <h3 class="client-name">{{ upcoming.clientName }}</h3>
+                  <div class="module-address-info">
+                    <span>{{ upcoming.address }}</span>
+                    <span>Approx. Distance : {{ upcoming.distance }}</span>
+                  </div>
                 </div>
               </div>
+              <button type="button" class="notes-icon" aria-label="View shift notes" (click)="openShiftDetail(upcoming)">
+                <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
+              </button>
             </div>
-            <button type="button" class="icon-button" aria-label="View shift notes" (click)="openShiftDetail(upcoming)">
-              <cs-icon name="description" [size]="24" [filled]="true" aria-hidden="true" />
-            </button>
-          </div>
 
-          <div class="shift-timings-bar" aria-label="Shift timing">
-            <div class="time-slot time-slot--start">
-              <span class="time-slot-label">{{ upcoming.date }}</span>
-              <span class="time-slot-value">{{ upcoming.startTime }} (AST)</span>
-            </div>
-            <div class="timeline-connector">
-              <div class="duration-pill">
+            <!-- Module 2: Shift Timings -->
+            <div class="module-shift-timings" aria-label="Shift timing">
+              <div class="start">
+                <div class="starttime">
+                  <span class="time-label">{{ upcoming.date }}</span>
+                  <span class="time-value">{{ upcoming.startTime }} (AST)</span>
+                </div>
+                <div class="connector-line"></div>
+              </div>
+              <div class="duration">
                 <cs-icon name="schedule" [size]="16" aria-hidden="true" />
                 <span>{{ upcoming.duration }}</span>
               </div>
+              <div class="end">
+                <div class="connector-line"></div>
+                <div class="endtime">
+                  <span class="time-label">{{ upcoming.date }}</span>
+                  <span class="time-value">{{ upcoming.endTime }} (AST)</span>
+                </div>
+              </div>
             </div>
-            <div class="time-slot time-slot--end">
-              <span class="time-slot-label">{{ upcoming.date }}</span>
-              <span class="time-slot-value">{{ upcoming.endTime }} (AST)</span>
+
+            <!-- Module 3: Actions -->
+            <div class="module-actions">
+              <button type="button" class="actions actions--attention" (click)="clockIn(upcoming)">
+                Clock-In
+              </button>
+              <button type="button" class="actions actions--attention">
+                Clock-Out
+              </button>
             </div>
+
+            @if (upcoming.backToBack) {
+              <div class="shift-card-b2b-footer">
+                <cs-icon name="swap_horiz" [size]="16" aria-hidden="true" />
+                <span>Back to Back Shift</span>
+              </div>
+            }
+
+            <!-- Module 4: Shift Details (expand/collapse) -->
+            <div class="module-shift-details-toggle" role="button" tabindex="0" (click)="toggleShiftDetails(upcoming)" (keydown.enter)="toggleShiftDetails(upcoming)" aria-label="Show shift details">
+              <div class="direction">
+                <cs-icon name="keyboard_arrow_down" [size]="32" aria-hidden="true" />
+              </div>
+            </div>
+
+            @if (upcoming.detailsExpanded) {
+              <div class="shift-controls">
+                <button type="button" class="shift-control-item" (click)="openTasks(upcoming)">
+                  <cs-icon name="assignment" [size]="32" aria-hidden="true" />
+                  <span>Tasks</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openCareNotes(upcoming)">
+                  <cs-icon name="clinical_notes" [size]="32" aria-hidden="true" />
+                  <span>Care Notes</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openFamilyNotes(upcoming)">
+                  <cs-icon name="diversity_4" [size]="32" aria-hidden="true" />
+                  <span>Notes for Family</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openClientSign(upcoming)">
+                  <cs-icon name="signature" [size]="32" aria-hidden="true" />
+                  <span>Client Sign</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openCaregiverSign(upcoming)">
+                  <cs-icon name="signature" [size]="32" aria-hidden="true" />
+                  <span>Caregiver Sign</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openLogBreak(upcoming)">
+                  <cs-icon name="alarm_pause" [size]="32" aria-hidden="true" />
+                  <span>Log Break</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openSurvey(upcoming)">
+                  <cs-icon name="list_alt_check" [size]="32" aria-hidden="true" />
+                  <span>Survey</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openInjury(upcoming)">
+                  <cs-icon name="health_and_safety" [size]="32" aria-hidden="true" />
+                  <span>Injury/Incident</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openExpense(upcoming)">
+                  <cs-icon name="paid" [size]="32" aria-hidden="true" />
+                  <span>Expense</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openGoals(upcoming)">
+                  <cs-icon name="flag" [size]="32" aria-hidden="true" />
+                  <span>Goals</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openClientForms(upcoming)">
+                  <cs-icon name="list_alt_check" [size]="32" aria-hidden="true" />
+                  <span>Client Forms</span>
+                </button>
+                <button type="button" class="shift-control-item" (click)="openTimesheetMap(upcoming)">
+                  <cs-icon name="mode_of_travel" [size]="32" aria-hidden="true" />
+                  <span>Timesheet Map</span>
+                </button>
+              </div>
+
+              <div class="module-shift-other-info">
+                <p>{{ upcoming.serviceInfo }}</p>
+                <p>{{ upcoming.remainingHrs }}</p>
+                <p>{{ upcoming.payRate }}</p>
+              </div>
+            }
           </div>
-
-          <div class="shift-actions-row">
-            <button type="button" class="btn-shift btn-shift--attention" (click)="clockIn(upcoming)">
-              Clock-In
-            </button>
-            <button type="button" class="btn-shift btn-shift--attention">
-              Clock-Out
-            </button>
-          </div>
-
-          @if (upcoming.backToBack) {
-            <div class="shift-card-b2b-footer">
-              <cs-icon name="swap_horiz" [size]="16" aria-hidden="true" />
-              <span>Back to Back Shift</span>
-            </div>
-          }
-
-          <button type="button" class="shift-card-details-toggle" aria-label="Show upcoming shift details" (click)="openShiftDetail(upcoming)">
-            <cs-icon name="expand_more" [size]="20" aria-hidden="true" />
-          </button>
         </article>
       }
     </section>

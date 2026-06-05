@@ -73,8 +73,7 @@ interface NavItem {
 
       <!-- Copyright -->
       <div class="sidebar-copyright" *ngIf="showExpandedLabels">
-        <p class="copyright-text">&copy; {{ currentYear }} CareSmart, Inc.</p>
-        <p class="copyright-text">All rights reserved.</p>
+        <p class="copyright-text">&copy; {{ currentYear }} Caresmartz, Inc. All Rights Reserved.</p>
       </div>
 
       <!-- Collapse Toggle -->

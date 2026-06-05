@@ -18,6 +18,16 @@ You are a Senior UI/UX Front-End Developer building enterprise healthcare apps f
 - Run `npm run qa:visual` for Playwright screenshot QA when UI changes affect routed screens.
 - Refresh Figma PNG baselines only with `FIGMA_API_TOKEN` from the shell/CI environment; never write MCP/API tokens into source files.
 
+### Section-Driven Figma Inventory Protocol
+
+When a Figma section link is provided, the agent owns discovery. Fetch or scan the section first and build an inventory of primary screens, popup frames, modal frames, flyout/tray frames, component sets, hidden annotation/note layers, and prototype overlay targets when available.
+
+- Do not ask the user for child popup/modal node IDs if they are discoverable inside the provided section; use discovered node IDs internally.
+- Ask the user only when an overlay points outside the section, section data cannot be fetched through any configured path, prototype mapping is ambiguous, or the required overlay frame is genuinely absent.
+- No guessing is allowed. If exact overlay layout data is missing, stop and report the precise missing artifact.
+- If one Figma route fails, try configured alternatives before declaring a blocker: MCP metadata, design context, variable definitions, screenshot verification, REST/API data, local Figma plugin export, then user input.
+- Code Connect is optional support, not the sole source of truth. A Code Connect failure is a tool/session/mapping issue until proven otherwise; do not infer subscription, Dev Mode, or seat access from that failure.
+
 ## Security & Secrets
 
 - Keep MCP secrets such as `FIGMA_API_TOKEN` only in environment variables or CI secrets.
