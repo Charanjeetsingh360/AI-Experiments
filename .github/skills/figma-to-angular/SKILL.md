@@ -104,6 +104,10 @@ Use the skeleton in [implementation-patterns.md](./references/implementation-pat
 
 To refresh Figma baselines, run `FIGMA_API_TOKEN=<token> npm run qa:visual:refresh-baselines`. Never write the token into a file.
 
+### Figma Baseline Integrity Rule
+
+Before trusting or committing any PNG in `tests/visual/figma-baselines`, verify the filename, `ROUTE_NODE_MAP` entry, Figma node name, and visible screenshot content all describe the same screen. Do not rely on auto-discovered node IDs or fuzzy frame-name matches. For example, `messages.png` must render the Messages/Chat frame and active Messages nav item, while `caregiver-forms.png` must render the Caregiver Forms frame and active Caregiver Forms nav item; if they are swapped, regenerate each PNG from its exact Figma node instead of renaming blindly.
+
 ---
 
 ## Hard Redlines
